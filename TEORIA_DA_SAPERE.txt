@@ -1,0 +1,32 @@
+1.  Quante variabili globali ci sono? Quali sono e perche' sono necessarie?
+2.  Come sono stati gestiti echo, echo -n ed echo con argomenti?
+3.  Come funziona exit senza argomenti?
+4.  Cosa succede con exit 42, exit -1, exit abc, exit 256?
+5.  Cosa fa '$?' ?
+6.  come cambia '$?' dopo che un comando fallisce?
+7.  Sai calcolare qualcosa come expr $? + $??
+8.  Cosa succede se fai ctr-C, ctr-D, ctrl-\?
+    -a prompt vuoto?
+    -durante l’inserimento di un comando?
+    -con comandi bloccanti come cat?
+9.  Come gestisci gli argomenti racchiusi tra doppi apici?
+10. "echo $USER" cosa stampa?
+11. Come gestisci 'stringhe con spazi', '$USER', '| > <'?
+12. Come funziona env?
+13. come si crea o modifica una variabile con export?
+14. come si rimuove una variabile con unset?
+15. come controlli i cambiamenti?
+16. Come fuzniona cd con percorsi validi, invalidi, cd.., ce .?
+17. cosa succede se eseguo ls senza path?
+18. Cosa succede se unsetto $PATH?
+19. Cosa succede se $PATH ha piu' directory?
+20. Come gestisci <, >, >>, <<?
+21. Cosa succede con redirezioni multiple dello stesso tipo?
+22. Hai implementato l'heredoc? come funziona?
+23. Come funziona cat file | grep bla | more?
+24. Cosa succede se il primo comando fallisce (ls fileinesistente | grep)?
+25. Sai gestire pipe + redirezione insieme?
+
+
+Le variabili d’ambiente seguono una sintassi rigida:
+il nome può contenere solo lettere (A–Z, a–z), cifre (0–9) e underscore (_), ma non può iniziare con una cifra.

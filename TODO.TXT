@@ -1,0 +1,331 @@
+PROBLEMI RISOLTI ALLA FINE DEL FILE
+
+TODO:
+
+(?) se apro bash de ntro bash env deve riportare differenti livelli di shell,
+SHLVL=2 --> SHLVL=3 etc
+
+//pipe e reindirizzamento
+### 🧵 Pipe e redirezioni
+
+- [ ]  Redirezioni output `>` e `>>`
+- [ ]  Redirezioni input `<`
+- [ ]  Heredoc `<<` (senza cronologia)
+
+
+
+
+13/14/15-07
+PROBLEMI RISOLTI
+contorllare echo echo '''"$USER"' --> nostro minishell scrive:  "$USER" con uno spazio davanti, non deve --> RISOLTO
+capire perche scrive "minishell:" prima di outout dopo comando '' $USER'' --> RISOLTO (in execute_command_path)
+c'era
+	if (!command_path)
+	{
+		ft_printf("minishell: %s command not found\n", args[0]); <-- tolto minishell
+		return (-1);
+	}
+
+	if (!command_path)
+	{
+		ft_printf("%s command not found\n", args[0]);
+		return (-1);
+	}
+
+
+AGGIUNTO
+NON RICHIESTO DA SUBJECT O EVALUATION SHEET MA MOLTO CARINO ehehhe
+echo $0 --> dice quale script sta runnando.
+per esempio se sei su zsh scrive /bin/zsh
+se sei su bash scrive bash
+se sei su minishell scrive ./minishell
+
+
+SISTEMATO
+MODIFICANDO HANDLE_PARENT_PROCESS
+minishell nostro da:
+mini-shell  ➤ sleep 100
+^_^_^_^_^_^_^_^_^_^_^_^_^_^_^_^\Quit: 3
+waitpid: Interrupted system call
+mini-shell  ➤
+
+
+
+BASH SHELL:
+vhacman@e3r1p6:~/Desktop$ sleep 100
+^_^_^_^_^_^_^_^_^_^_^_^\Quit (core dumped)
+vhacman@e3r1p6:~/Desktop$
+
+----------------------------
+
+SISTEMATO
+
+
+mini-shell  ➤ echo hello'world'
+hello world
+mini-shell  ➤ echo hello""world
+hello world
+
+
+SISTEMATO
+Quando esce con exit hello
+deve uscire con codice 2
+esce con codice 255
+cambiato codice uscita in funzione exit non is_numeric
+
+
+RICONTROLLATO E CORRETTO NEL PARSER.
+
+vhacman@e3r1p4:~/Desktop/mini-shell$ echo hello'world'
+helloworld
+vhacman@e3r1p4:~/Desktop/mini-shell$ echo hello""world
+helloworld
+vhacman@e3r1p4:~/Desktop/mini-shell$
+
+
+5/08
+exit | exit
+
+mini-shell  ➤ exit | exit
+[CREATE] token: 'exit' at 0x4b57a40
+[CREATE] token: '|' at 0x4b57b40
+[CREATE] token: 'exit' at 0x4b57c90
+==16744== Invalid free() / delete / delete[] / realloc()
+==16744==    at 0x484988F: free (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==16744==    by 0x1096D7: free_token_list (in /home/vhacman/Desktop/PROGETTI_42/mini-shell/minishell)
+==16744==    by 0x10986D: cleanup (in /home/vhacman/Desktop/PROGETTI_42/mini-shell/minishell)
+==16744==    by 0x10B289: exit_default (in /home/vhacman/Desktop/PROGETTI_42/mini-shell/minishell)
+==16744==    by 0x10B119: handle_exit (in /home/vhacman/Desktop/PROGETTI_42/mini-shell/minishell)
+==16744==    by 0x10BA71: handle_builtin (in /home/vhacman/Desktop/PROGETTI_42/mini-shell/minishell)
+==16744==    by 0x10C84C: execute_cmd_in_pipe (in /home/vhacman/Desktop/PROGETTI_42/mini-shell/minishell)
+==16744==    by 0x10CDBB: handle_child_process (in /home/vhacman/Desktop/PROGETTI_42/mini-shell/minishell)
+==16744==    by 0x10CE44: execute_single_command (in /home/vhacman/Desktop/PROGETTI_42/mini-shell/minishell)
+==16744==    by 0x10CB5B: execute_commands_loop (in /home/vhacman/Desktop/PROGETTI_42/mini-shell/minishell)
+==16744==    by 0x10CC84: execute_pipeline (in /home/vhacman/Desktop/PROGETTI_42/mini-shell/minishell)
+==16744==    by 0x109EC0: execute_command (in /home/vhacman/Desktop/PROGETTI_42/mini-shell/minishell)
+==16744==  Address 0x4b57aa0 is 0 bytes inside a block of size 5 free'd
+==16744==    at 0x484988F: free (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==16744==    by 0x109740: free_args_array (in /home/vhacman/Desktop/PROGETTI_42/mini-shell/minishell)
+==16744==    by 0x10B278: exit_default (in /home/vhacman/Desktop/PROGETTI_42/mini-shell/minishell)
+==16744==    by 0x10B119: handle_exit (in /home/vhacman/Desktop/PROGETTI_42/mini-shell/minishell)
+==16744==    by 0x10BA71: handle_builtin (in /home/vhacman/Desktop/PROGETTI_42/mini-shell/minishell)
+==16744==    by 0x10C84C: execute_cmd_in_pipe (in /home/vhacman/Desktop/PROGETTI_42/mini-shell/minishell)
+==16744==    by 0x10CDBB: handle_child_process (in /home/vhacman/Desktop/PROGETTI_42/mini-shell/minishell)
+==16744==    by 0x10CE44: execute_single_command (in /home/vhacman/Desktop/PROGETTI_42/mini-shell/minishell)
+==16744==    by 0x10CB5B: execute_commands_loop (in /home/vhacman/Desktop/PROGETTI_42/mini-shell/minishell)
+==16744==    by 0x10CC84: execute_pipeline (in /home/vhacman/Desktop/PROGETTI_42/mini-shell/minishell)
+==16744==    by 0x109EC0: execute_command (in /home/vhacman/Desktop/PROGETTI_42/mini-shell/minishell)
+==16744==    by 0x10DA70: process_tokens (in /home/vhacman/Desktop/PROGETTI_42/mini-shell/minishell)
+==16744==  Block was alloc'd at
+==16744==    at 0x4846828: calloc (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==16744==    by 0x10EE3D: ft_strdup (in /home/vhacman/Desktop/PROGETTI_42/mini-shell/minishell)
+==16744==    by 0x10A3EE: create_token (in /home/vhacman/Desktop/PROGETTI_42/mini-shell/minishell)
+==16744==    by 0x10A1D3: handle_word_token (in /home/vhacman/Desktop/PROGETTI_42/mini-shell/minishell)
+==16744==    by 0x10A2E2: process_next_token (in /home/vhacman/Desktop/PROGETTI_42/mini-shell/minishell)
+==16744==    by 0x10A356: parse_line_to_tokens (in /home/vhacman/Desktop/PROGETTI_42/mini-shell/minishell)
+==16744==    by 0x10DADB: handle_input (in /home/vhacman/Desktop/PROGETTI_42/mini-shell/minishell)
+==16744==    by 0x10D80B: start_colored_prompt (in /home/vhacman/Desktop/PROGETTI_42/mini-shell/minishell)
+==16744==    by 0x10DE30: main (in /home/vhacman/Desktop/PROGETTI_42/mini-shell/minishell)
+==16744==
+==16744== Invalid free() / delete / delete[] / realloc()
+==16744==    at 0x484988F: free (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==16744==    by 0x1095AF: free_cmd (in /home/vhacman/Desktop/PROGETTI_42/mini-shell/minishell)
+==16744==    by 0x109612: free_cmd_list (in /home/vhacman/Desktop/PROGETTI_42/mini-shell/minishell)
+==16744==    by 0x109896: cleanup (in /home/vhacman/Desktop/PROGETTI_42/mini-shell/minishell)
+==16744==    by 0x10B289: exit_default (in /home/vhacman/Desktop/PROGETTI_42/mini-shell/minishell)
+==16744==    by 0x10B119: handle_exit (in /home/vhacman/Desktop/PROGETTI_42/mini-shell/minishell)
+==16744==    by 0x10BA71: handle_builtin (in /home/vhacman/Desktop/PROGETTI_42/mini-shell/minishell)
+==16744==    by 0x10C84C: execute_cmd_in_pipe (in /home/vhacman/Desktop/PROGETTI_42/mini-shell/minishell)
+==16744==    by 0x10CDBB: handle_child_process (in /home/vhacman/Desktop/PROGETTI_42/mini-shell/minishell)
+==16744==    by 0x10CE44: execute_single_command (in /home/vhacman/Desktop/PROGETTI_42/mini-shell/minishell)
+==16744==    by 0x10CB5B: execute_commands_loop (in /home/vhacman/Desktop/PROGETTI_42/mini-shell/minishell)
+==16744==    by 0x10CC84: execute_pipeline (in /home/vhacman/Desktop/PROGETTI_42/mini-shell/minishell)
+==16744==  Address 0x4b57db0 is 0 bytes inside a block of size 16 free'd
+==16744==    at 0x484988F: free (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==16744==    by 0x10976C: free_args_array (in /home/vhacman/Desktop/PROGETTI_42/mini-shell/minishell)
+==16744==    by 0x10B278: exit_default (in /home/vhacman/Desktop/PROGETTI_42/mini-shell/minishell)
+==16744==    by 0x10B119: handle_exit (in /home/vhacman/Desktop/PROGETTI_42/mini-shell/minishell)
+==16744==    by 0x10BA71: handle_builtin (in /home/vhacman/Desktop/PROGETTI_42/mini-shell/minishell)
+==16744==    by 0x10C84C: execute_cmd_in_pipe (in /home/vhacman/Desktop/PROGETTI_42/mini-shell/minishell)
+==16744==    by 0x10CDBB: handle_child_process (in /home/vhacman/Desktop/PROGETTI_42/mini-shell/minishell)
+==16744==    by 0x10CE44: execute_single_command (in /home/vhacman/Desktop/PROGETTI_42/mini-shell/minishell)
+==16744==    by 0x10CB5B: execute_commands_loop (in /home/vhacman/Desktop/PROGETTI_42/mini-shell/minishell)
+==16744==    by 0x10CC84: execute_pipeline (in /home/vhacman/Desktop/PROGETTI_42/mini-shell/minishell)
+==16744==    by 0x109EC0: execute_command (in /home/vhacman/Desktop/PROGETTI_42/mini-shell/minishell)
+==16744==    by 0x10DA70: process_tokens (in /home/vhacman/Desktop/PROGETTI_42/mini-shell/minishell)
+==16744==  Block was alloc'd at
+==16744==    at 0x4846828: calloc (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==16744==    by 0x10C3E3: create_and_populate_cmd (in /home/vhacman/Desktop/PROGETTI_42/mini-shell/minishell)
+==16744==    by 0x10C4CA: convert_tokens_to_cmd_list (in /home/vhacman/Desktop/PROGETTI_42/mini-shell/minishell)
+==16744==    by 0x109E8A: execute_command (in /home/vhacman/Desktop/PROGETTI_42/mini-shell/minishell)
+==16744==    by 0x10DA70: process_tokens (in /home/vhacman/Desktop/PROGETTI_42/mini-shell/minishell)
+==16744==    by 0x10DB5D: handle_input (in /home/vhacman/Desktop/PROGETTI_42/mini-shell/minishell)
+==16744==    by 0x10D80B: start_colored_prompt (in /home/vhacman/Desktop/PROGETTI_42/mini-shell/minishell)
+==16744==    by 0x10DE30: main (in /home/vhacman/Desktop/PROGETTI_42/mini-shell/minishell)
+==16744==
+exit
+==16745== Invalid free() / delete / delete[] / realloc()
+==16745==    at 0x484988F: free (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==16745==    by 0x1096D7: free_token_list (in /home/vhacman/Desktop/PROGETTI_42/mini-shell/minishell)
+==16745==    by 0x10986D: cleanup (in /home/vhacman/Desktop/PROGETTI_42/mini-shell/minishell)
+==16745==    by 0x10B289: exit_default (in /home/vhacman/Desktop/PROGETTI_42/mini-shell/minishell)
+==16745==    by 0x10B119: handle_exit (in /home/vhacman/Desktop/PROGETTI_42/mini-shell/minishell)
+==16745==    by 0x10BA71: handle_builtin (in /home/vhacman/Desktop/PROGETTI_42/mini-shell/minishell)
+==16745==    by 0x10C84C: execute_cmd_in_pipe (in /home/vhacman/Desktop/PROGETTI_42/mini-shell/minishell)
+==16745==    by 0x10CDBB: handle_child_process (in /home/vhacman/Desktop/PROGETTI_42/mini-shell/minishell)
+==16745==    by 0x10CE44: execute_single_command (in /home/vhacman/Desktop/PROGETTI_42/mini-shell/minishell)
+==16745==    by 0x10CB5B: execute_commands_loop (in /home/vhacman/Desktop/PROGETTI_42/mini-shell/minishell)
+==16745==    by 0x10CC84: execute_pipeline (in /home/vhacman/Desktop/PROGETTI_42/mini-shell/minishell)
+==16745==    by 0x109EC0: execute_command (in /home/vhacman/Desktop/PROGETTI_42/mini-shell/minishell)
+==16745==  Address 0x4b57cf0 is 0 bytes inside a block of size 5 free'd
+==16745==    at 0x484988F: free (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==16745==    by 0x109740: free_args_array (in /home/vhacman/Desktop/PROGETTI_42/mini-shell/minishell)
+==16745==    by 0x10B278: exit_default (in /home/vhacman/Desktop/PROGETTI_42/mini-shell/minishell)
+==16745==    by 0x10B119: handle_exit (in /home/vhacman/Desktop/PROGETTI_42/mini-shell/minishell)
+==16745==    by 0x10BA71: handle_builtin (in /home/vhacman/Desktop/PROGETTI_42/mini-shell/minishell)
+==16745==    by 0x10C84C: execute_cmd_in_pipe (in /home/vhacman/Desktop/PROGETTI_42/mini-shell/minishell)
+==16745==    by 0x10CDBB: handle_child_process (in /home/vhacman/Desktop/PROGETTI_42/mini-shell/minishell)
+==16745==    by 0x10CE44: execute_single_command (in /home/vhacman/Desktop/PROGETTI_42/mini-shell/minishell)
+==16745==    by 0x10CB5B: execute_commands_loop (in /home/vhacman/Desktop/PROGETTI_42/mini-shell/minishell)
+==16745==    by 0x10CC84: execute_pipeline (in /home/vhacman/Desktop/PROGETTI_42/mini-shell/minishell)
+==16745==    by 0x109EC0: execute_command (in /home/vhacman/Desktop/PROGETTI_42/mini-shell/minishell)
+==16745==    by 0x10DA70: process_tokens (in /home/vhacman/Desktop/PROGETTI_42/mini-shell/minishell)
+==16745==  Block was alloc'd at
+==16745==    at 0x4846828: calloc (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==16745==    by 0x10EE3D: ft_strdup (in /home/vhacman/Desktop/PROGETTI_42/mini-shell/minishell)
+==16745==    by 0x10A3EE: create_token (in /home/vhacman/Desktop/PROGETTI_42/mini-shell/minishell)
+==16745==    by 0x10A1D3: handle_word_token (in /home/vhacman/Desktop/PROGETTI_42/mini-shell/minishell)
+==16745==    by 0x10A2E2: process_next_token (in /home/vhacman/Desktop/PROGETTI_42/mini-shell/minishell)
+==16745==    by 0x10A356: parse_line_to_tokens (in /home/vhacman/Desktop/PROGETTI_42/mini-shell/minishell)
+==16745==    by 0x10DADB: handle_input (in /home/vhacman/Desktop/PROGETTI_42/mini-shell/minishell)
+==16745==    by 0x10D80B: start_colored_prompt (in /home/vhacman/Desktop/PROGETTI_42/mini-shell/minishell)
+==16745==    by 0x10DE30: main (in /home/vhacman/Desktop/PROGETTI_42/mini-shell/minishell)
+==16745==
+==16745== Invalid free() / delete / delete[] / realloc()
+==16745==    at 0x484988F: free (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==16745==    by 0x1095AF: free_cmd (in /home/vhacman/Desktop/PROGETTI_42/mini-shell/minishell)
+==16745==    by 0x109612: free_cmd_list (in /home/vhacman/Desktop/PROGETTI_42/mini-shell/minishell)
+==16745==    by 0x109896: cleanup (in /home/vhacman/Desktop/PROGETTI_42/mini-shell/minishell)
+==16745==    by 0x10B289: exit_default (in /home/vhacman/Desktop/PROGETTI_42/mini-shell/minishell)
+==16745==    by 0x10B119: handle_exit (in /home/vhacman/Desktop/PROGETTI_42/mini-shell/minishell)
+==16745==    by 0x10BA71: handle_builtin (in /home/vhacman/Desktop/PROGETTI_42/mini-shell/minishell)
+==16745==    by 0x10C84C: execute_cmd_in_pipe (in /home/vhacman/Desktop/PROGETTI_42/mini-shell/minishell)
+==16745==    by 0x10CDBB: handle_child_process (in /home/vhacman/Desktop/PROGETTI_42/mini-shell/minishell)
+==16745==    by 0x10CE44: execute_single_command (in /home/vhacman/Desktop/PROGETTI_42/mini-shell/minishell)
+==16745==    by 0x10CB5B: execute_commands_loop (in /home/vhacman/Desktop/PROGETTI_42/mini-shell/minishell)
+==16745==    by 0x10CC84: execute_pipeline (in /home/vhacman/Desktop/PROGETTI_42/mini-shell/minishell)
+==16745==  Address 0x4b57e70 is 0 bytes inside a block of size 16 free'd
+==16745==    at 0x484988F: free (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==16745==    by 0x10976C: free_args_array (in /home/vhacman/Desktop/PROGETTI_42/mini-shell/minishell)
+==16745==    by 0x10B278: exit_default (in /home/vhacman/Desktop/PROGETTI_42/mini-shell/minishell)
+==16745==    by 0x10B119: handle_exit (in /home/vhacman/Desktop/PROGETTI_42/mini-shell/minishell)
+==16745==    by 0x10BA71: handle_builtin (in /home/vhacman/Desktop/PROGETTI_42/mini-shell/minishell)
+==16745==    by 0x10C84C: execute_cmd_in_pipe (in /home/vhacman/Desktop/PROGETTI_42/mini-shell/minishell)
+==16745==    by 0x10CDBB: handle_child_process (in /home/vhacman/Desktop/PROGETTI_42/mini-shell/minishell)
+==16745==    by 0x10CE44: execute_single_command (in /home/vhacman/Desktop/PROGETTI_42/mini-shell/minishell)
+==16745==    by 0x10CB5B: execute_commands_loop (in /home/vhacman/Desktop/PROGETTI_42/mini-shell/minishell)
+==16745==    by 0x10CC84: execute_pipeline (in /home/vhacman/Desktop/PROGETTI_42/mini-shell/minishell)
+==16745==    by 0x109EC0: execute_command (in /home/vhacman/Desktop/PROGETTI_42/mini-shell/minishell)
+==16745==    by 0x10DA70: process_tokens (in /home/vhacman/Desktop/PROGETTI_42/mini-shell/minishell)
+==16745==  Block was alloc'd at
+==16745==    at 0x4846828: calloc (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==16745==    by 0x10C3E3: create_and_populate_cmd (in /home/vhacman/Desktop/PROGETTI_42/mini-shell/minishell)
+==16745==    by 0x10C4CA: convert_tokens_to_cmd_list (in /home/vhacman/Desktop/PROGETTI_42/mini-shell/minishell)
+==16745==    by 0x109E8A: execute_command (in /home/vhacman/Desktop/PROGETTI_42/mini-shell/minishell)
+==16745==    by 0x10DA70: process_tokens (in /home/vhacman/Desktop/PROGETTI_42/mini-shell/minishell)
+==16745==    by 0x10DB5D: handle_input (in /home/vhacman/Desktop/PROGETTI_42/mini-shell/minishell)
+==16745==    by 0x10D80B: start_colored_prompt (in /home/vhacman/Desktop/PROGETTI_42/mini-shell/minishell)
+==16745==    by 0x10DE30: main (in /home/vhacman/Desktop/PROGETTI_42/mini-shell/minishell)
+==16745==
+[DEBUG] Freeing env list...
+[DEBUG] Done freeing env list.
+==16744==
+==16744== HEAP SUMMARY:
+==16744==     in use at exit: 232,914 bytes in 238 blocks
+==16744==   total heap usage: 787 allocs, 551 frees, 265,039 bytes allocated
+==16744==
+==16744== LEAK SUMMARY:
+==16744==    definitely lost: 0 bytes in 0 blocks
+==16744==    indirectly lost: 0 bytes in 0 blocks
+==16744==      possibly lost: 0 bytes in 0 blocks
+==16744==    still reachable: 0 bytes in 0 blocks
+==16744==         suppressed: 232,914 bytes in 238 blocks
+==16744==
+==16744== For lists of detected and suppressed errors, rerun with: -s
+==16744== ERROR SUMMARY: 2 errors from 2 contexts (suppressed: 0 from 0)
+==16745==
+==16745== HEAP SUMMARY:
+==16745==     in use at exit: 232,914 bytes in 238 blocks
+==16745==   total heap usage: 787 allocs, 551 frees, 265,039 bytes allocated
+==16745==
+==16745== LEAK SUMMARY:
+==16745==    definitely lost: 0 bytes in 0 blocks
+==16745==    indirectly lost: 0 bytes in 0 blocks
+==16745==      possibly lost: 0 bytes in 0 blocks
+==16745==    still reachable: 0 bytes in 0 blocks
+==16745==         suppressed: 232,914 bytes in 238 blocks
+==16745==
+==16745== For lists of detected and suppressed errors, rerun with: -s
+==16745== ERROR SUMMARY: 2 errors from 2 contexts (suppressed: 0 from 0)
+[DEBUG] Freeing env list...
+[DEBUG] Done freeing env list.
+mini-shell  ➤
+
+
+ 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/////////////RISOLTO IN DATA 5/8
+vhacman@e3r1p4:~/Desktop$ exit "hello world"
+exit
+bash: exit: hello world: numeric argument required
+e3r1p4% 
+
+vhacman@e3r1p4:~/Desktop$ exit \n
+exit
+bash: exit: n: numeric argument required
+e3r1p4% 
+
+vhacman@e3r1p4:~/Desktop$ exit +
+exit
+bash: exit: +: numeric argument required
+e3r1p4% 
+
+vhacman@e3r1p4:~/Desktop$ exit " "
+exit
+bash: exit:  : numeric argument required
+e3r1p4% 
+
+
+
+e3r1p4% bash
+vhacman@e3r1p4:~/Desktop$ exit !@#
+bash: !@#: event not found
+vhacman@e3r1p4:~/Desktop$ 
+
+vhacman@e3r1p4:~/Desktop$ exit $PATH
+exit
+bash: exit: /nfs/homes/vhacman/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/snap/bin:/nfs/homes/vhacman/.dotnet/tools: numeric argument required
+e3r1p4% 
+
+
+
+exit 999999999999999999999 --> errore
+
+ come dovrebbe essere:
+ $ exit 999999999999999999999999999999999
+exit
+bash: exit: 999999999999999999999999999999999: numeric argument required
+vhacman@viorica-gabriela-hacman-Modern-15-A11MU:~/Desktop/PROGETTI_42/mini-shell$
