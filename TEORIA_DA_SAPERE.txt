@@ -30,3 +30,7 @@
 
 Le variabili d’ambiente seguono una sintassi rigida:
 il nome può contenere solo lettere (A–Z, a–z), cifre (0–9) e underscore (_), ma non può iniziare con una cifra.
+
+
+
+
