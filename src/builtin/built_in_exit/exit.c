@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exit.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vhacman <vhacman@student.42roma.it>        +#+  +:+       +#+        */
+/*   By: vhacman <vhacman@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/29 14:03:40 by vhacman           #+#    #+#             */
-/*   Updated: 2025/08/05 17:55:48 by vhacman          ###   ########.fr       */
+/*   Updated: 2025/08/05 19:24:38 by vhacman          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,37 +43,13 @@ int	exit_too_many_args(t_shell *shell)
 	return (1);
 }
 
-/*
-** Returns 1 if the string is not a valid numeric value or overflows a long.
-** Accepts optional leading '+' or '-' sign.
-*/
-int	check_numeric_overflow(char *str)
+int	handle_exit_argc_two(t_shell *shell, char **args)
 {
-	int			i;
-	int			sign;
-	unsigned long	result;
-
-	i = 0;
-	sign = 1;
-	result = 0;
-	if (str[i] == '-' || str[i] == '+')
+	if (!is_numeric(args[1]) || check_numeric_overflow(args[1]))
 	{
-		if (str[i] == '-')
-			sign = -1;
-		i++;
+		exit_non_numeric(shell, args[1]);
+		return (2);
 	}
-	if (str[i] == '\0')
-		return (1);
-	while (str[i])
-	{
-		if (str[i] < '0' || str[i] > '9')
-			return (1);
-		result = result * 10 + (str[i] - '0');
-		if (sign == 1 && result > LONG_MAX)
-			return (1);
-		if (sign == -1 && result > (unsigned long)LONG_MAX + 1)
-			return (1);
-		i++;
-	}
+	exit_with_code(shell, args, args[1]);
 	return (0);
 }

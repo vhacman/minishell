@@ -3,16 +3,15 @@
 /*                                                        :::      ::::::::   */
 /*   sort_export.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vhacman <vhacman@student.42roma.it>        +#+  +:+       +#+        */
+/*   By: vhacman <vhacman@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/16 15:24:20 by vhacman           #+#    #+#             */
-/*   Updated: 2025/07/16 15:27:12 by vhacman          ###   ########.fr       */
+/*   Updated: 2025/08/05 19:25:09 by vhacman          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../../../include/minishell.h"
 
-// Funzione per trovare il minimo nell'array
 int	find_min_index(t_env **arr, int size, int start)
 {
 	int	min_idx;
@@ -29,7 +28,6 @@ int	find_min_index(t_env **arr, int size, int start)
 	return (min_idx);
 }
 
-// Funzione per scambiare due elementi
 void	swap_env(t_env **arr, int i, int j)
 {
 	t_env	*temp;
@@ -39,7 +37,6 @@ void	swap_env(t_env **arr, int i, int j)
 	arr[j] = temp;
 }
 
-// Selection sort implementato con while
 void	selection_sort_env(t_env **arr, int size)
 {
 	int	i;
@@ -55,7 +52,6 @@ void	selection_sort_env(t_env **arr, int size)
 	}
 }
 
-// Funzione per stampare ricorsivamente
 void	print_exported_recursive(t_env **arr, int size, int index)
 {
 	t_env	*node;
