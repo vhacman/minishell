@@ -6,76 +6,75 @@
 /*   By: vhacman <vhacman@student.42roma.it>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/27 13:21:19 by vhacman           #+#    #+#             */
-/*   Updated: 2025/07/21 13:34:47 by vhacman          ###   ########.fr       */
+/*   Updated: 2025/08/05 18:03:47 by vhacman          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-
-void	free_cmd_list(t_cmd *cmds)
+void	free_cmd(t_cmd *cmd)
 {
-	t_cmd	*temp;
+	int	i;
 
-	while (cmds)
+	if (!cmd)
+		return;
+	if (cmd->args)
 	{
-		temp = cmds;
-		cmds = cmds->next;
-		free_split(temp->args);
-		free(temp->path);
-		free(temp);
+		i = 0;
+		while (cmd->args[i])
+			free(cmd->args[i++]);
+		free(cmd->args);
 	}
+	if (cmd->path)
+		free(cmd->path);
+	free(cmd);
 }
 
-/*
-**	Frees linked list of environment variables.
-**
-**	How it works		Iterates through env list, frees key, value, and node.
-**	Params:				env	- pointer to head of env list
-*/
-static void	free_env_list(t_env *env)
+void free_cmd_list(t_cmd **cmds)
+{
+	t_cmd *current = *cmds;
+	t_cmd *next;
+
+	while (current)
+	{
+		next = current->next;
+		free_cmd(current);
+		current = next;
+	}
+	*cmds = NULL;
+}
+
+void	free_env_list(t_env *env)
 {
 	t_env	*tmp;
 
 	while (env)
 	{
-		tmp = env;
-		env = env->next;
-		free(tmp->key);
-		free(tmp->value);
-		free(tmp);
+		tmp = env->next;
+		if (env->key)
+			free(env->key);
+		if (env->value)
+			free(env->value);
+		free(env);
+		env = tmp;
 	}
 }
 
-/*
-**	Frees linked list of tokens and their values.
-**
-**	How it works		Iterates through token list,
-**						frees token->value if non-null, then node.
-**	Params:				token	- pointer to head of token list
-*/
-void	free_token_list(t_token *token)
+void free_token_list(t_token **token)
 {
-	t_token	*tmp;
+	t_token *tmp;
 
-	while (token)
+	while (*token)
 	{
-		tmp = token;
-		token = token->next;
-		if (tmp->value)
-			free(tmp->value);
-		free(tmp);
+
+		tmp = (*token)->next;
+		free((*token)->value);
+		free(*token);
+		*token = tmp;
 	}
 }
 
-/*
-**	Frees an array of strings and the array itself.
-**
-**	How it works		Iterates over array until NULL,
-*						frees each string, then frees the array pointer.
-**	Params:		array	- NULL‑terminated array of malloc’d strings
-*/
-void	free_split(char **array)
+void	free_args_array(char **array)
 {
 	int	i;
 
@@ -90,36 +89,61 @@ void	free_split(char **array)
 	free(array);
 }
 
-/*
-**	Frees three allocated strings.
-**
-**	How it works	Calls free on each pointer a, b, and c.
-**	Params:		a	- first string to free
-**				b	- second string to free
-**				c	- third string to free
-*/
 void	free_parts(char *a, char *b, char *c)
 {
-	free(a);
-	free(b);
-	free(c);
+	if (a)
+		free(a);
+	if (b)
+		free(b);
+	if (c)
+		free(c);
 }
 
-/*
-**	Cleans up shell resources.
-**
-**	How it works		Calls free_env_list on shell->env, frees shell->line,
-**						free_token_list on shell->tokens,
-**						and frees shell->program_name if set.
-**	Params:		shell	- shell context with allocated fields
-*/
-void	cleanup(t_shell *shell)
+void	free_env_node(t_env *node)
 {
-	free_env_list(shell->env);
+	if (!node)
+		return ;
+	free_parts(node->key, node->value, NULL);
+	free(node);
+}
+
+void cleanup(t_shell *shell, int full_cleanup)
+{
+	if (!shell)
+		return;
 	if (shell->line)
+	{
 		free(shell->line);
+		shell->line = NULL;
+	}
 	if (shell->tokens)
-		free_token_list(shell->tokens);
-	if (shell->program_name)
-		free (shell->program_name);
+	{
+		free_token_list(&shell->tokens);
+		shell->tokens = NULL;
+	}
+	if (shell->cmds)
+	{
+		free_cmd_list(&shell->cmds);
+		shell->cmds = NULL;
+	}
+	if (full_cleanup)
+	{
+		if (shell->env)
+		{
+			free_env_list(shell->env);
+			shell->env = NULL;
+		}
+		if (shell->program_name)
+		{
+			free(shell->program_name);
+			shell->program_name = NULL;
+		}
+	}
+}
+
+void	cleanup_and_exit(t_shell *shell, char **args, int exit_code)
+{
+	(void)args;
+	cleanup(shell, 1);
+	exit(exit_code);
 }

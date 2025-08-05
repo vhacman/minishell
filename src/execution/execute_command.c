@@ -6,20 +6,12 @@
 /*   By: vhacman <vhacman@student.42roma.it>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/28 13:41:04 by begiovan          #+#    #+#             */
-/*   Updated: 2025/07/22 12:37:36 by vhacman          ###   ########.fr       */
+/*   Updated: 2025/08/05 18:03:17 by vhacman          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/minishell.h"
 
-/*
-** count_word_tokens - Counts TK_WORD tokens in the list.
-** @tokens: Pointer to the head of the token list.
-** - Iterates through the token list.
-** - Increments a counter for each token of type TK_WORD.
-** Used to determine the number of arguments needed for allocation
-** in convert_tokens_to_args().
-*/
 int	count_word_tokens(t_token *tokens)
 {
 	int		count;
@@ -36,14 +28,6 @@ int	count_word_tokens(t_token *tokens)
 	return (count);
 }
 
-/*
-** convert_tokens_to_args - Builds an argument array from TK_WORD tokens.
-** - Counts TK_WORD tokens using count_word_tokens().
-** - Allocates a NULL-terminated array of strings of size (count + 1).
-** - Iterates through the token list:
-**     - For each TK_WORD token, duplicates its value and stores in args.
-** - Sets the last element to NULL.
-*/
 char	**convert_tokens_to_args(t_token *tokens)
 {
 	int		count;
@@ -53,7 +37,7 @@ char	**convert_tokens_to_args(t_token *tokens)
 
 	i = 0;
 	count = count_word_tokens(tokens);
-	args = malloc(sizeof(char *) * (count + 1));
+	args = calloc(sizeof(char *), (count + 1));
 	if (!args)
 		return (NULL);
 	curr = tokens;
@@ -67,53 +51,64 @@ char	**convert_tokens_to_args(t_token *tokens)
 	return (args);
 }
 
-/*DA SISTEMARE*/
-int	execute_command(t_token *tokens, t_shell *shell)
+int execute_command(t_token *tokens, t_shell *shell)
 {
-	char	**args;
-	int		status;
-	t_cmd	*cmd_list;
+	char    **args;
+	int     status;
 
 	if (!tokens)
 	{
-		ft_putstr_fd("minishell: ", 2);
-		ft_putstr_fd(": command not found\n", 2);
+		ft_putstr_fd("minishell: : command not found\n", 2);
 		shell->exit_status = 127;
 		return (127);
 	}
 	if (check_for_pipes(tokens))
 	{
-		cmd_list = convert_tokens_to_cmd_list(tokens);
-		if (!cmd_list)
+		shell->cmds = convert_tokens_to_cmd_list(tokens, shell);
+		if (!shell->cmds)
 			return (-1);
-		status = execute_pipeline(cmd_list, shell);
-		free_cmd_list(cmd_list);
+		status = execute_pipeline(shell->cmds, shell);
+		shell->exit_status = status;
 		return (status);
+	}
+	args = convert_tokens_to_args(tokens);
+	if (!args || !args[0])
+	{
+		free_args_array(args);
+		ft_putstr_fd("minishell: : command not found\n", 2);
+		shell->exit_status = 127;
+		return (127);
+	}
+	if (is_builtin(args[0]))
+	{
+		if (ft_strcmp(args[0], "exit") == 0)
+		{
+			status = handle_exit(shell, args);
+			free_args_array(args);
+			cleanup(shell, 1);
+			if (status == 0)
+				exit(shell->exit_status);
+			else
+			{
+				shell->exit_status = status;
+				return (status);
+			}
+		}
+		else
+		{
+			status = handle_builtin(args, shell);
+		}
 	}
 	else
 	{
-		args = convert_tokens_to_args(tokens);		
-		if (!args || !args[0])
-		{
-			free_split(args);
-			return (-1);
-		}
 		status = execute_command_type(args, shell);
-		free_split(args);
-		return (status);
 	}
+	free_args_array(args);
+	cleanup(shell, 1);
+	shell->exit_status = status;
+	return (status);
 }
 
-/*
-** execute_command_type - Determines and executes command type.
-** This function determines whether the command is builtin or external.
-**
-** Behavior:
-** - If builtin, dispatches to handle_builtin().
-** - Otherwise, resolves the executable path via find_command_path().
-** - If not found, prints error and returns -1.
-** - If found, runs it using execute_external_command().
-*/
 int	execute_command_type(char **args, t_shell *shell)
 {
 	char	*command_path;

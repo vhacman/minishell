@@ -3,20 +3,15 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vhacman <vhacman@student.42.fr>            +#+  +:+       +#+        */
+/*   By: vhacman <vhacman@student.42roma.it>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/26 14:35:01 by vhacman           #+#    #+#             */
-/*   Updated: 2025/07/16 21:49:01 by vhacman          ###   ########.fr       */
+/*   Updated: 2025/08/05 18:08:59 by vhacman          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/minishell.h"
 
-/*
-** Entry point for the minishell program.
-** Initializes shell state, sets up signal handlers, and starts prompt.
-** Cleans up resources before exiting with the final status.
-*/
 int	main(void)
 {
 	t_shell	shell;
@@ -27,6 +22,6 @@ int	main(void)
 	signal(SIGINT, handle_prompt_signal);
 	signal(SIGQUIT, SIG_IGN);
 	start_colored_prompt(&shell);
-	cleanup(&shell);
+	cleanup(&shell, 1);
 	return (0);
 }

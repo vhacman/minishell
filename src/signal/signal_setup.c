@@ -6,7 +6,7 @@
 /*   By: vhacman <vhacman@student.42roma.it>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/28 13:41:21 by begiovan          #+#    #+#             */
-/*   Updated: 2025/07/22 12:13:24 by vhacman          ###   ########.fr       */
+/*   Updated: 2025/08/05 17:59:53 by vhacman          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,32 +57,12 @@ void	setup_signals_executing(void)
 	setup_signal_action(SIGQUIT, SIG_IGN, SA_RESTART);
 }
 
-/*
-** setup_signals_child - Resets signals to default in a child process.
-** This is used after fork() and before execve() to restore the default
-** behavior for signals, which is typically necessary to ensure that
-** the child process receives signals like SIGINT or SIGQUIT directly.
-** - SIGINT  → default behavior (terminate process).
-** - SIGQUIT → default behavior (terminate and core dump).
-*/
 void	setup_signals_child(void)
 {
 	signal(SIGINT, SIG_DFL);
 	signal(SIGQUIT, SIG_DFL);
 }
 
-/*
-** handle_signal_exit_status - Sets shell exit status based on signal info.
-**
-** @status: Raw status from waitpid().
-** - If process was terminated by a signal (WIFSIGNALED):
-**     - Sets exit_status = 128 + signal number.
-**     - SIGINT (2) → 130, SIGQUIT (3) → 131.
-** - If process exited normally (WIFEXITED):
-**     - Sets exit_status = actual exit code.
-** - Otherwise:
-**     - Sets exit_status = 1 (generic failure).
-*/
 int	handle_signal_exit_status(int status, t_shell *shell)
 {
 	int	sig;

@@ -3,20 +3,15 @@
 /*                                                        :::      ::::::::   */
 /*   init.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vhacman <vhacman@student.42.fr>            +#+  +:+       +#+        */
+/*   By: vhacman <vhacman@student.42roma.it>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/16 15:02:46 by vhacman           #+#    #+#             */
-/*   Updated: 2025/07/16 21:49:32 by vhacman          ###   ########.fr       */
+/*   Updated: 2025/08/05 18:08:55 by vhacman          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/minishell.h"
 
-/*
-** Initialize the token context with given parameters.
-** Assign input string, current index, token list, and shell pointer.
-** Set had_whitespace flag to true for initial parsing state.
-*/
 void	init_token_context(t_token_context *context, t_init_params *params)
 {
 	context->input = params->str;
@@ -26,11 +21,6 @@ void	init_token_context(t_token_context *context, t_init_params *params)
 	context->had_whitespace = 1;
 }
 
-/*
-** Initialize all shell structure fields to default values.
-** Copy environment variables from extern environ into shell->env.
-** Reset argument, command, and program name pointers to NULL.
-*/
 void	init_shell(t_shell *shell)
 {
 	extern char	**environ;

@@ -6,31 +6,12 @@
 /*   By: vhacman <vhacman@student.42roma.it>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/28 13:41:19 by begiovan          #+#    #+#             */
-/*   Updated: 2025/07/21 14:18:15 by vhacman          ###   ########.fr       */
+/*   Updated: 2025/08/05 17:08:28 by vhacman          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/minishell.h"
 
-/*
-** create_colored_prompt - Builds a dynamic prompt with color and state.
-**
-** @shell: Pointer to the shell structure for status context.
-**
-** Format:
-**   - <blue>dir_name</blue> <green/red>➤</reset>
-**
-** Behavior:
-** - Gets the current directory name u*create_colored_prompt
-**   (t_shell *shellsing get_current_directory().
-** - Allocates a buffer to hold the colored prompt string.
-** - Appends components using ft_strlcpy/ft_strlcat to avoid overflows.
-** - Uses GREEN if shell->exit_status == 0, otherwise RED.
-**
-** Memory:
-** - Returns a dynamically allocated string.
-** - Returns "minishell$ " on allocation failure.
-*/
 static char	*create_colored_prompt(t_shell *shell)
 {
 	char	*dir;
@@ -39,7 +20,7 @@ static char	*create_colored_prompt(t_shell *shell)
 
 	dir = get_current_directory();
 	total_len = ft_strlen(dir) + 40;
-	prompt = malloc(total_len);
+	prompt = calloc(1, total_len);
 	if (!prompt)
 	{
 		free(dir);
@@ -61,6 +42,7 @@ int	start_colored_prompt(t_shell *shell)
 {
 	char	*input;
 	char	*prompt_str;
+	int		special;
 
 	setup_signals_interactive();
 	while (1)
@@ -71,10 +53,17 @@ int	start_colored_prompt(t_shell *shell)
 		if (!input)
 		{
 			ft_printf("exit\n");
+			cleanup(shell, 1);
+			break ;
+		}
+		special = handle_special_cases(input, shell);
+		if (special < 0)
+		{
+			free(input);
 			break ;
 		}
 		handle_input(input, shell);
-		free(input);
+		cleanup(shell, 1);
 	}
 	return (shell->exit_status);
 }

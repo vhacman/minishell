@@ -3,23 +3,15 @@
 /*                                                        :::      ::::::::   */
 /*   prompt_helper.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vhacman <vhacman@student.42.fr>            +#+  +:+       +#+        */
+/*   By: vhacman <vhacman@student.42roma.it>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/26 15:49:58 by vhacman           #+#    #+#             */
-/*   Updated: 2025/07/16 21:52:10 by vhacman          ###   ########.fr       */
+/*   Updated: 2025/08/05 18:01:45 by vhacman          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/minishell.h"
 
-/*
-** Signal handler for SIGINT at the prompt.
-** This function handles Ctrl+C (SIGINT)
-** - Calls rl_on_new_line() to inform readline that a new prompt is needed.
-** - Uses rl_replace_line("", 0) to clear the current input line.
-** - Calls rl_redisplay() to draw a fresh prompt with an empty buffer.
-** Redisplays the prompt for a fresh input line.
-*/
 void	handle_prompt_signal(int sig)
 {
 	(void)sig;
@@ -29,15 +21,6 @@ void	handle_prompt_signal(int sig)
 	rl_redisplay();
 }
 
-/*
-** Allocate buffer for current directory using getcwd(NULL,0).
-** If allocation fails, return default "minishell " string.
-** Retrieve HOME from environment; if cwd exactly equals HOME,
-** free cwd and return "~ " to denote the home directory.
-** Locate last '/' in cwd; if there is a name after it, prefix it
-** and append a space to form "dirname ". Otherwise, use "root ".
-** Always free the cwd buffer before returning the result string.
-*/
 char	*get_current_directory(void)
 {
 	char	*cwd;

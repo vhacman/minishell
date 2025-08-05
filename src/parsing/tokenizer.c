@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   tokenizer.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vhacman <vhacman@student.42.fr>            +#+  +:+       +#+        */
+/*   By: vhacman <vhacman@student.42roma.it>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/16 15:51:43 by vhacman           #+#    #+#             */
-/*   Updated: 2025/07/16 22:46:59 by vhacman          ###   ########.fr       */
+/*   Updated: 2025/08/04 18:42:33 by vhacman          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,10 +26,11 @@
 **			context->tokens	- pointer to head of the token list
 **	Returns:	1 on success, 0 if quoted handling fails
 */
-static int	process_next_token(t_token_context *context)
+static int process_next_token(t_token_context *context)
 {
-	char	c;
-	int		i;
+	char    c;
+	char    *token_str;
+	int     i;
 
 	i = *(context->i);
 	c = context->input[i];
@@ -39,8 +40,10 @@ static int	process_next_token(t_token_context *context)
 		handle_redirection_token(context->input, context->i, context->tokens);
 	else if (c == '|')
 	{
+		token_str = ft_strdup("|");
 		add_token_to_list(context->tokens,
-			create_token(ft_strdup("|"), TK_PIPE));
+			create_token(token_str, TK_PIPE));
+		free(token_str);
 		(*(context->i))++;
 	}
 	else
@@ -79,7 +82,7 @@ t_token	*parse_line_to_tokens(const char *str, t_shell *shell)
 	{
 		context.had_whitespace = had_whitespace;
 		if (!process_next_token(&context))
-			return (free_token_list(tokens), NULL);
+			return (free_token_list(&tokens), NULL);
 		had_whitespace = 0;
 	}
 	return (tokens);

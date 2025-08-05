@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   clean.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vhacman <vhacman@student.42.fr>            +#+  +:+       +#+        */
+/*   By: vhacman <vhacman@student.42roma.it>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/16 16:38:20 by vhacman           #+#    #+#             */
-/*   Updated: 2025/07/16 21:11:07 by vhacman          ###   ########.fr       */
+/*   Updated: 2025/08/05 14:20:02 by vhacman          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,9 +18,13 @@
 /* =============================== */
 /*       CLEANUP FUNCTIONS         */
 /* =============================== */
-void		cleanup(t_shell *shell);
-void		free_token_list(t_token *token);
-void		free_split(char **array);
+void        cleanup(t_shell *shell, int full_cleanup);
+void		free_args_array(char **array);
 void		free_parts(char *a, char *b, char *c);
+void	    free_env_node(t_env *node);
+void	    free_token_list(t_token **token);
+void	    free_env_list(t_env *env);
+void		free_cmd_list(t_cmd **cmds);
+void	    cleanup_and_exit(t_shell *shell, char **args, int exit_code);
 
 #endif

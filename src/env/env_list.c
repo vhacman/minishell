@@ -3,24 +3,20 @@
 /*                                                        :::      ::::::::   */
 /*   env_list.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vhacman <vhacman@student.42.fr>            +#+  +:+       +#+        */
+/*   By: vhacman <vhacman@student.42roma.it>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/29 09:45:20 by vhacman           #+#    #+#             */
-/*   Updated: 2025/07/16 21:38:32 by vhacman          ###   ########.fr       */
+/*   Updated: 2025/08/05 18:08:13 by vhacman          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/minishell.h"
 
-/*
-** create_env_node - Create new environment node
-** Returns pointer to new node on success, NULL on failure
-*/
 t_env	*create_env_node(char *key, char *value, int exported)
 {
 	t_env	*new_node;
 
-	new_node = malloc(sizeof(t_env));
+	new_node = calloc(1, sizeof(t_env));
 	if (!new_node)
 		return (NULL);
 	new_node->key = ft_strdup(key);
@@ -68,7 +64,7 @@ t_env	*copy_env_entries(char **env_entries)
 	{
 		new = process_env_entry(*env_entries);
 		if (!new)
-			return (NULL);
+			return (free_env_list(head), NULL);
 		if (!head)
 			head = new;
 		else

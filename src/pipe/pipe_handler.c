@@ -6,7 +6,7 @@
 /*   By: vhacman <vhacman@student.42roma.it>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/21 15:34:36 by vhacman           #+#    #+#             */
-/*   Updated: 2025/07/22 13:53:00 by vhacman          ###   ########.fr       */
+/*   Updated: 2025/08/04 18:05:09 by vhacman          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,12 +38,15 @@ int	execute_cmd_in_pipe(t_cmd *cmd, t_shell *shell)
 	int		status;
 
 	if (!cmd || !cmd->args || !cmd->args[0])
-		ft_error_exit("minishell: ", "command structure error", 1);
+	{
+		print_error("minishell: command structure error");
+		return (1);
+	}
 	if (is_builtin(cmd->args[0]))
-		exit(handle_builtin(cmd->args, shell));
+		return (handle_builtin(cmd->args, shell));
 	cmd_path = find_command_path(cmd->args[0]);
 	if (!cmd_path)
-		ft_error_exit(cmd->args[0], "command not found", 127);
+		return (print_error(cmd->args[0]), 127);
 	status = execute_external_command(cmd_path, cmd->args, shell);
 	free(cmd_path);
 	exit(status);

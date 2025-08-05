@@ -6,7 +6,7 @@
 /*   By: vhacman <vhacman@student.42roma.it>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/16 16:12:25 by vhacman           #+#    #+#             */
-/*   Updated: 2025/07/21 13:19:52 by vhacman          ###   ########.fr       */
+/*   Updated: 2025/08/05 16:38:16 by vhacman          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,6 +32,7 @@ typedef struct s_cmd
 	int				fd_out;
 	struct s_cmd	*next;
 	int				type;
+	int				is_builtin;
 }	t_cmd;
 
 /*
@@ -148,6 +149,5 @@ typedef enum e_token_type
 	TK_HEREDOC,		// Heredoc <<
 	TK_EOF,			// Fine input
 }	t_token_type;
-
 
 #endif

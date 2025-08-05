@@ -6,7 +6,7 @@
 /*   By: vhacman <vhacman@student.42roma.it>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/30 22:28:44 by vhacman           #+#    #+#             */
-/*   Updated: 2025/03/23 11:30:45 by vhacman          ###   ########.fr       */
+/*   Updated: 2025/08/05 16:52:38 by vhacman          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,7 +59,7 @@ char	**ft_split(char const *s, char c)
 	return (array);
 }
 
-void	ft_free_split(char **array)
+void	ft_free_args_array(char **array)
 {
 	int	i;
 
