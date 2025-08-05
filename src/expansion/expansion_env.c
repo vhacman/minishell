@@ -6,7 +6,7 @@
 /*   By: vhacman <vhacman@student.42roma.it>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/28 13:41:07 by begiovan          #+#    #+#             */
-/*   Updated: 2025/07/15 16:31:09 by vhacman          ###   ########.fr       */
+/*   Updated: 2025/08/05 18:02:40 by vhacman          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,14 +34,6 @@ char	*expand_environment_variable(char *str, int start, int end,
 	return (result);
 }
 
-/*
-** process_dollar_sign - Expands a single $-prefixed variable.
-** - If '$?' is found, replaces it with shell->exit_status.
-** - If a valid variable name follows ($VAR), finds its bounds and
-**   replaces it with the corresponding environment value.
-** - In both cases, frees the original string and returns a new one.
-** - If no valid expansion, returns the original string.
-*/
 static char	*process_dollar_sign(char *input, int pos, t_shell *shell)
 {
 	char	*expanded;
@@ -65,15 +57,6 @@ static char	*process_dollar_sign(char *input, int pos, t_shell *shell)
 	return (input);
 }
 
-/*
-** expand_variables - Expands all variables in an input string.
-** - Duplicates the input to avoid in-place modification.
-** - Iterates over the string to find '$' characters.
-** - Calls process_dollar_sign() to expand variables.
-**   - If expansion modifies the string, updates the result and
-**     restarts scanning at the same index.
-** - Handles both environment variables and special variable '$?'.
-*/
 char	*expand_variables(char *input, t_shell *shell)
 {
 	char	*result;
@@ -100,26 +83,4 @@ char	*expand_variables(char *input, t_shell *shell)
 		i++;
 	}
 	return (result);
-}
-
-/*
-** expand_and_split - Expands variables and splits the result.
-** Combines variable expansion and splitting in one step.
-** - Calls expand_variables() to replace all variable references.
-** - Passes the expanded string to ft_split() to tokenize it by spaces.
-** - Frees the intermediate expanded string.
-*/
-char	**expand_and_split(char *input, t_shell *shell)
-{
-	char	*expanded;
-	char	**args;
-
-	if (!input)
-		return (NULL);
-	expanded = expand_variables(input, shell);
-	if (!expanded)
-		return (NULL);
-	args = ft_split(expanded, ' ');
-	free(expanded);
-	return (args);
 }

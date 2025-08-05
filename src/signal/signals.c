@@ -6,7 +6,7 @@
 /*   By: vhacman <vhacman@student.42roma.it>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/28 13:41:24 by begiovan          #+#    #+#             */
-/*   Updated: 2025/07/15 10:25:23 by vhacman          ###   ########.fr       */
+/*   Updated: 2025/08/05 17:59:38 by vhacman          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,20 +23,6 @@
 */
 volatile sig_atomic_t	g_signal = 0;
 
-/*
-** signal_handler_interactive - Handles signals while reading prompt input.
-** @sig: The received signal number.
-** - On SIGINT (Ctrl+C):
-**     - Sets g_signal to SIGINT for async detection.
-**     - Prints newline to flush current line.
-**     - Resets readline buffer via rl_replace_line().
-**     - Refreshes prompt with rl_redisplay().
-**
-** - On SIGQUIT: ignored, does not update g_signal or terminal state.
-**
-** This handler ensures user input is gracefully interrupted without
-** breaking the readline interface or leaving garbage in the terminal.
-*/
 void	signal_handler_interactive(int sig)
 {
 	if (sig == SIGINT)
@@ -49,19 +35,6 @@ void	signal_handler_interactive(int sig)
 	}
 }
 
-/*
-** signal_handler_executing - Handles signals during command execution.
-**
-** @sig: The received signal number.
-**
-** - On SIGINT (Ctrl+C):
-**     - Sets g_signal to SIGINT.
-**     - Prints newline to reflect interruption.
-**
-** - On SIGQUIT (Ctrl+\):
-**     - Sets g_signal to SIGQUIT.
-**     - Prints "Quit: 3" to indicate forced termination.
-*/
 void	signal_handler_executing(int sig)
 {
 	if (sig == SIGINT)
@@ -76,19 +49,6 @@ void	signal_handler_executing(int sig)
 	}
 }
 
-/*
-** setup_signal_action - Sets a handler for a specific signal.
-**
-
-** @flags:   Flags passed to sigaction (e.g., SA_RESTART).
-**
-** This utility function encapsulates sigaction setup with:
-** - Empty signal mask (no blocked signals during handler).
-** - Specified handler and flags.
-**
-** Used by all setup_signals_* functions to manage signal behavior
-** across interactive, executing, and child states.
-*/
 void	setup_signal_action(int signal, void (*handler)(int), int flags)
 {
 	struct sigaction	sa;

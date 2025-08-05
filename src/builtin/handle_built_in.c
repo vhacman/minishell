@@ -6,7 +6,7 @@
 /*   By: vhacman <vhacman@student.42roma.it>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/28 18:48:12 by vhacman           #+#    #+#             */
-/*   Updated: 2025/07/16 16:28:21 by vhacman          ###   ########.fr       */
+/*   Updated: 2025/07/28 11:26:30 by vhacman          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,8 +56,8 @@ int	handle_builtin(char **args, t_shell *shell)
 		result = handle_export(&shell->env, args);
 	else if (ft_strcmp(args[0], "env") == 0)
 		result = handle_env(shell, args);
-	/* else if(ft_strcmp(args[0], "unset") == 0)
-			result = handle_unset(args[0], args); */
+	else if(ft_strcmp(args[0], "unset") == 0)
+			result = handle_unset(&shell->env, args);
 	else if (ft_strcmp(args[0], "echo") == 0)
 		result = handle_echo(shell, args);
 	shell->exit_status = result;
@@ -82,6 +82,8 @@ int	is_builtin(char *command)
 	if (ft_strcmp(command, "echo") == 0)
 		return (1);
 	if (ft_strcmp(command, "export") == 0)
+		return (1);
+	if (ft_strcmp(command, "unset") == 0)
 		return (1);
 	return (0);
 }

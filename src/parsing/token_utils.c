@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   token_utils.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vhacman <vhacman@student.42.fr>            +#+  +:+       +#+        */
+/*   By: vhacman <vhacman@student.42roma.it>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/03 13:31:33 by vhacman           #+#    #+#             */
-/*   Updated: 2025/07/16 22:43:27 by vhacman          ###   ########.fr       */
+/*   Updated: 2025/08/05 17:58:29 by vhacman          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 /*
 **	Creates a new token with given value and type, initializing next to NULL.
 **
-**	How it works	Allocates memory for t_token; if malloc succeeds,
+**	How it works	Allocates memory for t_token; if calloc succeeds,
 **					assigns value and type, sets next to NULL.
 **	Params:			value	- string for token value (ownership transferred)
 **					type	- integer constant representing token type
@@ -25,12 +25,18 @@ t_token	*create_token(char *value, int type)
 {
 	t_token	*token;
 
-	token = malloc(sizeof(t_token));
+	token = calloc(1, sizeof(t_token));
 	if (!token)
 		return (NULL);
-	token->value = value;
 	token->type = type;
+	token->value = ft_strdup(value);
+	if (!token->value)
+	{
+		free (token);
+		return NULL;
+	}
 	token->next = NULL;
+
 	return (token);
 }
 

@@ -6,7 +6,7 @@
 /*   By: vhacman <vhacman@student.42roma.it>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/28 13:41:09 by begiovan          #+#    #+#             */
-/*   Updated: 2025/07/16 15:38:09 by vhacman          ###   ########.fr       */
+/*   Updated: 2025/08/05 18:02:25 by vhacman          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,14 +29,6 @@ char	*expand_program_name(char *input, int pos, t_shell *shell)
 	return (result);
 }
 
-/*
-** create_expanded_string - Merges prefix, value, and suffix into one string.
-**
-** - Concatenates `before` + `value` into a temporary string.
-** - Appends `after` to the temporary string.
-** - Frees the temporary intermediate result before returning.
-**
-*/
 char	*create_expanded_string(char *before, char *value, char *after)
 {
 	char	*temp;
@@ -50,14 +42,6 @@ char	*create_expanded_string(char *before, char *value, char *after)
 	return (result);
 }
 
-/*
-** expand_exit_status - Expands `$?` to the last command's exit code.
-**
-** - Extracts the prefix (before `$?`) and suffix (after `$?`).
-** - Converts `shell->exit_status` to string via ft_itoa().
-** - Assembles the final result by merging the parts.
-** - Frees all intermediate allocations.
-*/
 char	*expand_exit_status(char *str, int start, t_shell *shell)
 {
 	char	*before;
@@ -85,11 +69,6 @@ char	*expand_exit_status(char *str, int start, t_shell *shell)
 	return (result);
 }
 
-/*
-** find_variable_end - Identifies the end of a variable name.
-** - If `$?` is found, returns the index after `?`.
-** - Otherwise, iterates while characters are alphanumeric or `_`.
-*/
 int	find_variable_end(char *str, int start)
 {
 	int	i;
@@ -102,9 +81,6 @@ int	find_variable_end(char *str, int start)
 	return (i);
 }
 
-/*
-** get_variable_value
-*/
 char	*get_variable_value(char *str, int start, int end, t_shell *shell)
 {
 	char	*var_name;

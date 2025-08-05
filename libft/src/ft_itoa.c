@@ -28,7 +28,7 @@ static int	ft_length(int n, int base)
 /*converte un numero intero in una stringa (char *)
 La funzione ft_itoa lavora in base 10, il che 
 significa che ogni cifra del numero può essere estratta con l'operazione 
-di modulo (% 10).La funzione utilizza malloc per allocare la memoria 
+di modulo (% 10).La funzione utilizza calloc per allocare la memoria 
 necessaria per contenere la stringa, per sapere quanta memoria 
 e' necessaria si usa ft_length. Il numero viene convertito dalla 
 cifra meno significativa alla più significativa.

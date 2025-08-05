@@ -6,66 +6,74 @@
 /*   By: vhacman <vhacman@student.42roma.it>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/29 14:03:40 by vhacman           #+#    #+#             */
-/*   Updated: 2025/07/15 17:12:17 by vhacman          ###   ########.fr       */
+/*   Updated: 2025/08/05 17:55:48 by vhacman          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../../include/minishell.h"
 
-/*
-** exit_non_numeric - Handles `exit` with a non-numeric argument.
-** - Prints error message: "minishell: exit: <arg>: numeric argument required".
-** - Frees the argument vector and shell memory.
-** - Exits the shell immediately with exit code 255.
-*/
-void	exit_non_numeric(t_shell *shell, char *arg, char **args)
+int	exit_non_numeric(t_shell *shell, char *arg)
 {
 	ft_putstr_fd("minishell: exit: ", STDERR_FILENO);
 	ft_putstr_fd(arg, STDERR_FILENO);
 	ft_putstr_fd(": numeric argument required\n", STDERR_FILENO);
-	free_split(args);
-	cleanup(shell);
-	exit(2);
+	shell->exit_status = 2;
+	return (2);
 }
 
-/*
-** exit_with_code - Handles `exit <numeric_code>` case.
-** - Converts arg to long using ft_atol().
-** - Frees argument vector and shell memory.
-** - Exits the shell using the numeric code (cast to unsigned char).
-** Ensures the exit code is constrained to 0–255.
-*/
-void	exit_with_code(t_shell *shell, char *arg, char **args)
+void	exit_with_code(t_shell *shell, char **args, char *code_str)
 {
 	long	code;
 
-	code = ft_atol(arg);
-	free_split(args);
-	cleanup(shell);
-	exit((unsigned char)code);
+	code = ft_atol(code_str) % 256;
+	free_args_array(args);
+	cleanup_and_exit(shell, args, code);
 }
 
-/*
-** exit_default - Handles `exit` with no arguments.
-** - Frees arguments and shell memory.
-** - Exits using the shell's last stored exit_status.
-*/
 void	exit_default(t_shell *shell, char **args)
 {
-	free_split(args);
-	cleanup(shell);
-	exit(shell->exit_status);
+	free_args_array(args);
+	cleanup_and_exit(shell, args, shell->exit_status);
 }
 
-/*
-** exit_too_many_args - Handles `exit` with more than one argument.
-** - Prints error: "minishell: exit: too many arguments".
-** - Does not terminate the shell.
-** - Sets shell->exit_status to 1 to reflect failure.
-*/
 int	exit_too_many_args(t_shell *shell)
 {
 	ft_putstr_fd("minishell: exit: too many arguments\n", STDERR_FILENO);
 	shell->exit_status = 1;
 	return (1);
+}
+
+/*
+** Returns 1 if the string is not a valid numeric value or overflows a long.
+** Accepts optional leading '+' or '-' sign.
+*/
+int	check_numeric_overflow(char *str)
+{
+	int			i;
+	int			sign;
+	unsigned long	result;
+
+	i = 0;
+	sign = 1;
+	result = 0;
+	if (str[i] == '-' || str[i] == '+')
+	{
+		if (str[i] == '-')
+			sign = -1;
+		i++;
+	}
+	if (str[i] == '\0')
+		return (1);
+	while (str[i])
+	{
+		if (str[i] < '0' || str[i] > '9')
+			return (1);
+		result = result * 10 + (str[i] - '0');
+		if (sign == 1 && result > LONG_MAX)
+			return (1);
+		if (sign == -1 && result > (unsigned long)LONG_MAX + 1)
+			return (1);
+		i++;
+	}
+	return (0);
 }

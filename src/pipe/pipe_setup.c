@@ -6,7 +6,7 @@
 /*   By: vhacman <vhacman@student.42roma.it>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/21 15:35:19 by vhacman           #+#    #+#             */
-/*   Updated: 2025/07/22 12:52:19 by vhacman          ###   ########.fr       */
+/*   Updated: 2025/08/05 18:00:15 by vhacman          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,13 +28,11 @@ int	setup_command_execution(t_cmd *curr, int prev_fd, int *pipe_fd, pid_t *pid)
 	return (0);
 }
 
-/*Configura gli FD nel processo figlio per l'uso con la pipe,  oi esegue il comando. 
-Se prev_fd e' valido (!= -1) reindirizza input standard da prev_fd poi lo chiude
-se iul comando ha un next, chiude l'estremita' di lettura della nuova pipe, reindirizza
-l'output standard sulla scrittura della pipe e poi chiude anche quella.
-alla fine chiama execute_cmd_in_pipe per eseguire il comando.*/
-int	handle_child_process(t_cmd *curr, int prev_fd, int *pipe_fd, t_shell *shell)
+void	execute_child_process(t_cmd *curr, int prev_fd, int *pipe_fd, t_shell *shell)
 {
+	extern char	**environ;
+	int			status;
+
 	if (prev_fd != -1)
 	{
 		dup2(prev_fd, STDIN_FILENO);
@@ -46,8 +44,28 @@ int	handle_child_process(t_cmd *curr, int prev_fd, int *pipe_fd, t_shell *shell)
 		dup2(pipe_fd[1], STDOUT_FILENO);
 		close(pipe_fd[1]);
 	}
-	execute_cmd_in_pipe(curr, shell);
-	exit(1);
+	setup_signals_child();
+	if (curr->is_builtin)
+	{
+		status = handle_builtin(curr->args, shell);
+		cleanup(shell, 1);
+		exit(status);
+	}
+	else
+	{
+		if (!curr->path)
+		{
+			ft_printf("minishell: %s: command not found\n", 
+					  curr->args[0] ? curr->args[0] : "");
+			cleanup(shell, 1);
+			exit(127);
+		}
+		if (execve(curr->path, curr->args, environ) == -1)
+		{
+			cleanup(shell, 1);
+			exit_with_error("execve", NULL, 0, 1);
+		}
+	}
 }
 
 /*Esegue un singolo comando all'interno di una pipeline . chiama setup_command_execution
@@ -64,10 +82,11 @@ int	execute_single_command(t_cmd *curr, int prev_fd, int *pipe_fd,
 	if (setup_command_execution(curr, prev_fd, pipe_fd, &pid) == 1)
 		return (1);
 	if (pid == 0)
-		handle_child_process(curr, prev_fd, pipe_fd, shell);
+		execute_child_process(curr, prev_fd, pipe_fd, shell);
 	if (prev_fd != -1)
 		close(prev_fd);
 	if (curr->next)
 		close(pipe_fd[1]);
 	return (0);
 }
+

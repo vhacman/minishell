@@ -6,7 +6,7 @@
 /*   By: vhacman <vhacman@student.42roma.it>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/21 15:34:54 by vhacman           #+#    #+#             */
-/*   Updated: 2025/07/22 12:12:33 by vhacman          ###   ########.fr       */
+/*   Updated: 2025/08/05 16:55:26 by vhacman          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,7 @@ t_cmd	*create_new_cmd(void)
 {
 	t_cmd	*new_cmd;
 
-	new_cmd = malloc(sizeof(t_cmd));
+	new_cmd = calloc(1, sizeof(t_cmd));
 	if (!new_cmd)
 		return (NULL);
 	new_cmd->args = NULL;

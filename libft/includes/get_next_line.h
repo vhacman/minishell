@@ -14,7 +14,7 @@
 1 -> for printf, BUFFER_SIZE
 2 -> for size_t, sizeof()
 3 -> for open(), read()
-4 -> for malloc(), free()
+4 -> for calloc(), free()
 5 -> for ssize_t
 6 -> for O_RDONLY
 */

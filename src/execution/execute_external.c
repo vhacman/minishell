@@ -6,38 +6,24 @@
 /*   By: vhacman <vhacman@student.42roma.it>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/28 13:41:01 by begiovan          #+#    #+#             */
-/*   Updated: 2025/07/15 10:35:04 by vhacman          ###   ########.fr       */
+/*   Updated: 2025/08/05 18:02:52 by vhacman          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/minishell.h"
 
-/*
-** setup_child_process - Prepares and executes the child process.
-** This function is called in the child process after fork().
-** It sets up signal behavior specific to child execution and
-** attempts to execute the binary using execve().
-** - Replaces current process with the executable.
-** - If execve() fails, exits the process via exit_with_error().
-**
-** Uses the global `environ` as the environment for execve().
-*/
-static void	setup_child_process(char *command_path, char **args)
+void	execute_child_process_from_args(char *cmd_path, char **args, t_shell *shell)
 {
-	extern char	**environ;
+	t_cmd	temp;
 
-	setup_signals_child();
-	if (execve(command_path, args, environ) == -1)
-		exit_with_error("execve", NULL, 0, 1);
+	temp.path = cmd_path;
+	temp.args = args;
+	temp.next = NULL;
+	temp.is_builtin = 0;
+
+	execute_child_process(&temp, -1, NULL, shell);
 }
 
-/*
-** print_signal_message - Displays appropriate message for signal termination.
-** @signal_number: The signal number that caused termination.
-** @status: The status returned by waitpid().
-** - Prints human-readable message based on signal type.
-** - Includes core dump information when available.
-*/
 static void	print_signal_message(int signal_number, int status)
 {
 	if (signal_number == SIGQUIT)
@@ -65,17 +51,6 @@ static void	print_signal_message(int signal_number, int status)
 	}
 }
 
-/*
-** handle_parent_process - Handles the parent process after fork().
-** @pid: Process ID of the child process.
-** @shell: Pointer to the shell structure.
-** - Waits for the child process to complete using waitpid().
-** - Handles different exit conditions:
-**   - Signal interruption (SIGINT)
-**   - Signal termination (prints message and sets exit status)
-**   - Normal exit (sets exit status)
-** - Restores interactive signal handling after execution.
-*/
 static void	handle_parent_process(pid_t pid, t_shell *shell)
 {
 	int	status;
@@ -97,20 +72,9 @@ static void	handle_parent_process(pid_t pid, t_shell *shell)
 		handle_signal_exit_status(status, shell);
 	}
 	setup_signals_interactive();
+	cleanup(shell, 1);
 }
 
-/*
-** execute_external_command - Launches a non-builtin command.
-** This function runs an external command via fork() and execve().
-** - Sets execution-mode signals.
-** - Forks the current process.
-**   - In child: calls setup_child_process().
-**   - In parent: waits and handles child exit with handle_parent_process().
-** - On fork failure, restores signals and exits via exit_with_error().
-**
-** Return:
-** - The exit status assigned to shell->exit_status.
-*/
 int	execute_external_command(char *cmd_path, char **args, t_shell *shell)
 {
 	pid_t	pid;
@@ -123,7 +87,10 @@ int	execute_external_command(char *cmd_path, char **args, t_shell *shell)
 		exit_with_error("fork", shell, 1, 1);
 	}
 	else if (pid == 0)
-		setup_child_process(cmd_path, args);
+	{
+		execute_child_process_from_args(cmd_path, args, shell);
+		// setup_child_process(cmd_path, args, shell);
+	}
 	else
 		handle_parent_process(pid, shell);
 	return (shell->exit_status);

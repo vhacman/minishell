@@ -6,7 +6,7 @@
 /*   By: vhacman <vhacman@student.42roma.it>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/15 11:33:27 by vhacman           #+#    #+#             */
-/*   Updated: 2025/07/16 16:26:43 by vhacman          ###   ########.fr       */
+/*   Updated: 2025/08/05 16:53:20 by vhacman          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@ static t_env	**env_list_to_array(t_env *env, int size)
 	t_env	**array;
 	int		i;
 
-	array = malloc(sizeof(t_env *) * size);
+	array = calloc(sizeof(t_env *), size);
 	i = 0;
 	while (env && i < size)
 	{
