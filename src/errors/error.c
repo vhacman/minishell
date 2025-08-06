@@ -6,7 +6,7 @@
 /*   By: vhacman <vhacman@student.42roma.it>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/26 14:31:51 by vhacman           #+#    #+#             */
-/*   Updated: 2025/08/05 18:03:30 by vhacman          ###   ########.fr       */
+/*   Updated: 2025/08/06 17:23:04 by vhacman          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ void	exit_with_error(char *msg, void *context, int flag, int use_errno)
 	else
 		ft_putstr_fd(msg, 2);
 	if (flag && context)
-		cleanup((t_shell *)context, 1);
+		cleanup_per_command((t_shell *)context);
 	exit(EXIT_FAILURE);
 }
 

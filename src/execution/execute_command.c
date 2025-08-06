@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execute_command.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: begiovan <begiovan@student.42.fr>          +#+  +:+       +#+        */
+/*   By: vhacman <vhacman@student.42roma.it>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/28 13:41:04 by begiovan          #+#    #+#             */
-/*   Updated: 2025/08/06 15:39:32 by begiovan         ###   ########.fr       */
+/*   Updated: 2025/08/06 17:51:27 by vhacman          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,7 +74,7 @@ int execute_command(t_token *tokens, t_shell *shell)
 	args = convert_tokens_to_args(tokens);
 	if (!args)
 	{
-		cleanup(shell, 1);
+		cleanup_per_command(shell);
 		ft_putstr_fd("minishell: : command not found\n", 2);
 		shell->exit_status = 127;
 		return (127);
@@ -82,7 +82,7 @@ int execute_command(t_token *tokens, t_shell *shell)
 	if (!args[0])
 	{
 		free_args_array(args);
-		cleanup(shell, 1);
+		cleanup_per_command(shell);
 		ft_putstr_fd("minishell: : command not found\n", 2);
 		shell->exit_status = 127;
 		return (127);
@@ -90,7 +90,7 @@ int execute_command(t_token *tokens, t_shell *shell)
 	if (handle_redirection_with_tokens(tokens, shell) == -1)
     {
         free_args_array(args);
-        cleanup(shell, 1);
+        cleanup_per_command(shell);
         shell->exit_status = 1;
         return 1;
     }
@@ -102,24 +102,30 @@ int execute_command(t_token *tokens, t_shell *shell)
 			if (status == 0)
 			{
 				free_args_array(args);
-				cleanup(shell, 1);
+				destroy_shell(shell);
 				exit(shell->exit_status);
 			}
 			else
 			{
 				shell->exit_status = status;
 				free_args_array(args);
-				cleanup(shell, 1);
+				cleanup_per_command(shell);
 				return (status);
 			}
 		}
 		else
+		{
 			status = handle_builtin(args, shell);
+			cleanup_per_command(shell);
+		}
 	}
 	else
+	{
 		status = execute_command_type(args, shell);
+		cleanup_per_command(shell);
+	}
 	free_args_array(args);
-	cleanup(shell, 1);
+	cleanup_per_command(shell);
 	shell->exit_status = status;
 	return (status);
 }

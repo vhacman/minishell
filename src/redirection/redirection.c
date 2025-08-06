@@ -1,4 +1,19 @@
 #include "../../include/minishell.h"
+
+
+
+
+
+// Ripristina i file descriptor originali
+void restore_redirection(t_shell *shell)
+{
+    if ((shell->redirect_type == TK_OUT || shell->redirect_type == TK_APPEND) && shell->saved_stdout != -1)
+    {
+        dup2(shell->saved_stdout, 1);
+        close(shell->saved_stdout);
+        shell->saved_stdout = -1;
+    }
+}
 /* =============================== */
 /*      RICERCA TOKEN REDIREZIONE  */
 /* =============================== */
@@ -195,18 +210,8 @@ int handle_redirection_with_tokens(t_token *tokens, t_shell *shell)
         close(file_fd);
         shell->saved_stdout = saved_fd;
     }
-
+    
+    restore_redirection(shell);
     return 0;
 }
 
-
-// Ripristina i file descriptor originali
-void restore_redirection(t_shell *shell)
-{
-    if ((shell->redirect_type == TK_OUT || shell->redirect_type == TK_APPEND) && shell->saved_stdout != -1)
-    {
-        dup2(shell->saved_stdout, 1);
-        close(shell->saved_stdout);
-        shell->saved_stdout = -1;
-    }
-}

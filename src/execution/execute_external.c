@@ -6,7 +6,7 @@
 /*   By: vhacman <vhacman@student.42roma.it>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/28 13:41:01 by begiovan          #+#    #+#             */
-/*   Updated: 2025/08/05 18:02:52 by vhacman          ###   ########.fr       */
+/*   Updated: 2025/08/06 17:24:06 by vhacman          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,7 +72,7 @@ static void	handle_parent_process(pid_t pid, t_shell *shell)
 		handle_signal_exit_status(status, shell);
 	}
 	setup_signals_interactive();
-	cleanup(shell, 1);
+	cleanup_per_command(shell);
 }
 
 int	execute_external_command(char *cmd_path, char **args, t_shell *shell)

@@ -6,7 +6,7 @@
 /*   By: vhacman <vhacman@student.42roma.it>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/16 15:56:21 by vhacman           #+#    #+#             */
-/*   Updated: 2025/08/05 18:01:39 by vhacman          ###   ########.fr       */
+/*   Updated: 2025/08/06 16:10:54 by vhacman          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,7 +63,7 @@ int	handle_quoted_token(t_token_context *context)
 	return (1);
 }
 
-static int	get_redir_type_and_length(char first, char second, int *length)
+int	get_redir_type_and_length(char first, char second, int *length)
 {
 	if (first == '<' && second == '<')
 		return (*length = 2, TK_HEREDOC);
@@ -75,7 +75,7 @@ static int	get_redir_type_and_length(char first, char second, int *length)
 		return (*length = 1, TK_IN);
 }
 
-static void get_redir(const char *input, int *curr_pos, int *type,
+void get_redir(const char *input, int *curr_pos, int *type,
 					  char **token_str)
 {
 	char	first;

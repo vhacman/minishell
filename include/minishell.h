@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: begiovan <begiovan@student.42.fr>          +#+  +:+       +#+        */
+/*   By: vhacman <vhacman@student.42roma.it>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/29 12:00:00 by vhacman           #+#    #+#             */
-/*   Updated: 2025/08/06 15:47:48 by begiovan         ###   ########.fr       */
+/*   Updated: 2025/08/06 16:15:18 by vhacman          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -106,15 +106,12 @@ t_cmd		*convert_tokens_to_cmd_list(t_token *tokens, t_shell *shell);
 int			check_syntax_pipes(t_token *tokens);
 int			execute_cmd_in_pipe(t_cmd *cmd, t_shell *shell);
 int			setup_command_execution(t_cmd *curr, int prev_fd, int *pipe_fd, pid_t *pid);
-// int			handle_child_process(t_cmd *curr, int prev_fd, int *pipe_fd, t_shell *shell);
 int			execute_single_command(t_cmd *curr, int prev_fd, int *pipe_fd, t_shell *shell);
 int			fork_second_child(t_cmd *cmd2, t_shell *shell, int pipe_fd[2], pid_t pid1);
 int			fork_first_child(t_cmd *cmd1, t_shell *shell, int pipe_fd[2]);
 int			setup_child_pipe(int pipe_fd[2], int is_left);
 int			create_pipe_and_setup(int pipe_fd[2]);
 int			handle_special_cases(char *input, t_shell *shell);
-
-
 void		execute_child_process(t_cmd *curr, int prev_fd, int *pipe_fd, t_shell *shell);
 
 
@@ -127,4 +124,11 @@ int 		open_file_with_type(char *filename, int redirect_type);
 char 		*get_filename_from_next_token(t_token *redirect_token);
 t_token 	*find_redirection_token(t_token *tokens, int *redirect_type);
 
+
+
+///funzioni gia' present
+void get_redir(const char *input, int *curr_pos, int *type,
+					  char **token_str);
+int	get_redir_type_and_length(char first, char second, int *length);
+				  
 #endif

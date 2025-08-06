@@ -6,7 +6,7 @@
 /*   By: vhacman <vhacman@student.42roma.it>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/21 15:35:19 by vhacman           #+#    #+#             */
-/*   Updated: 2025/08/05 18:00:15 by vhacman          ###   ########.fr       */
+/*   Updated: 2025/08/06 17:46:35 by vhacman          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,11 +28,8 @@ int	setup_command_execution(t_cmd *curr, int prev_fd, int *pipe_fd, pid_t *pid)
 	return (0);
 }
 
-void	execute_child_process(t_cmd *curr, int prev_fd, int *pipe_fd, t_shell *shell)
+static void	setup_child_io_and_signals(t_cmd *curr, int prev_fd, int *pipe_fd)
 {
-	extern char	**environ;
-	int			status;
-
 	if (prev_fd != -1)
 	{
 		dup2(prev_fd, STDIN_FILENO);
@@ -45,28 +42,37 @@ void	execute_child_process(t_cmd *curr, int prev_fd, int *pipe_fd, t_shell *shel
 		close(pipe_fd[1]);
 	}
 	setup_signals_child();
+}
+
+void	execute_child_process(t_cmd *curr, int prev_fd, int *pipe_fd, t_shell *shell)
+{
+	extern char	**environ;
+	int			status;
+
+	setup_child_io_and_signals(curr, prev_fd, pipe_fd);
 	if (curr->is_builtin)
 	{
 		status = handle_builtin(curr->args, shell);
-		cleanup(shell, 1);
+		// cleanup_per_command(shell);
+		destroy_shell(shell);
 		exit(status);
 	}
-	else
+	if (!curr->path)
 	{
-		if (!curr->path)
-		{
-			ft_printf("minishell: %s: command not found\n", 
-					  curr->args[0] ? curr->args[0] : "");
-			cleanup(shell, 1);
-			exit(127);
-		}
-		if (execve(curr->path, curr->args, environ) == -1)
-		{
-			cleanup(shell, 1);
-			exit_with_error("execve", NULL, 0, 1);
-		}
+		ft_printf("minishell: %s: command not found\n", 
+				  curr->args[0] ? curr->args[0] : "");
+		// cleanup_per_command(shell);
+		destroy_shell(shell);
+		exit(127);
+	}
+	if (execve(curr->path, curr->args, environ) == -1)
+	{
+		// cleanup_per_command(shell);
+		destroy_shell(shell);
+		exit_with_error("execve", NULL, 0, 1);
 	}
 }
+
 
 /*Esegue un singolo comando all'interno di una pipeline . chiama setup_command_execution
 pre creare la pipe e il processo figlio. 
