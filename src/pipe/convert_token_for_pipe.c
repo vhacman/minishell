@@ -6,21 +6,7 @@
 /*   By: vhacman <vhacman@student.42roma.it>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/21 15:37:03 by vhacman           #+#    #+#             */
-/*   Updated: 2025/08/05 18:00:51 by vhacman          ###   ########.fr       */
-/*                                                                            */
-/* ************************************************************************** */
-
-#include "../../include/minishell.h"
-
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   convert_token_for_pipe.c                           :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: vhacman <vhacman@student.42roma.it>        +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/07/21 15:37:03 by vhacman           #+#    #+#             */
-/*   Updated: 2025/08/05 16:54:48 by vhacman          ###   ########.fr       */
+/*   Updated: 2025/08/06 12:45:38 by vhacman          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,8 +49,8 @@ static t_cmd *create_and_populate_cmd(t_token *start, t_shell *shell)
 		{
 			while (--i >= 0)
 				free(new_cmd->args[i]);
-			free(new_cmd->args);
-			free(new_cmd);
+			// free(new_cmd->args);
+			// free(new_cmd);
 			cleanup(shell, 1);
 			return (NULL);
 		}

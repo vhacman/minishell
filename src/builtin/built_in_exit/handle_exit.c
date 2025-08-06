@@ -6,7 +6,7 @@
 /*   By: vhacman <vhacman@student.42roma.it>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/29 14:10:58 by vhacman           #+#    #+#             */
-/*   Updated: 2025/08/05 17:52:52 by vhacman          ###   ########.fr       */
+/*   Updated: 2025/08/06 15:02:13 by vhacman          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,34 +19,32 @@ int	handle_exit(t_shell *shell, char **args)
 	argc = 0;
 	while (args[argc])
 		argc++;
-	
 	ft_putstr_fd("exit\n", STDOUT_FILENO);
 	if (argc == 1)
 	{
-		exit_default(shell, args);
+		shell->exit_status = 0;
 		return (0);
 	}
 	else if (argc == 2)
 	{
-		if (!is_numeric(args[1]))
+		if (!is_numeric(args[1]) || check_numeric_overflow(args[1]))
 		{
-			exit_non_numeric(shell, args[1]);
-			return (2);
-		}
-		else if (check_numeric_overflow(args[1]))
-		{
-			exit_non_numeric(shell, args[1]);
-			return (2);
+			ft_putstr_fd("minishell: exit: ", STDERR_FILENO);
+			ft_putstr_fd(args[1], STDERR_FILENO);
+			ft_putendl_fd(": numeric argument required", STDERR_FILENO);
+			shell->exit_status = 255;
+			return (255);
 		}
 		else
 		{
-			exit_with_code(shell, args, args[1]);
+			shell->exit_status = ft_atoi(args[1]);
 			return (0);
 		}
 	}
 	else
 	{
-		exit_too_many_args(shell);
+		ft_putendl_fd("minishell: exit: too many arguments", STDERR_FILENO);
+		shell->exit_status = 1;
 		return (1);
 	}
 }

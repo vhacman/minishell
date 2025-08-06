@@ -6,7 +6,7 @@
 /*   By: vhacman <vhacman@student.42roma.it>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/16 16:11:29 by vhacman           #+#    #+#             */
-/*   Updated: 2025/08/05 14:34:32 by vhacman          ###   ########.fr       */
+/*   Updated: 2025/08/06 15:03:22 by vhacman          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,10 +65,6 @@ void		selection_sort_env(t_env **arr, int size);
 /* =============================== */
 int			handle_exit(t_shell *shell, char **args);
 int			is_numeric(char *str);
-int         exit_non_numeric(t_shell *shell, char *arg);
-void	    exit_with_code(t_shell *shell, char **args, char *code_str);
-int			exit_too_many_args(t_shell *shell);
-void    	exit_default(t_shell *shell, char **args);
 int	        check_numeric_overflow(char *str);
 /* =============================== */
 /*       UNSET FUNCTIONS           */

@@ -6,7 +6,7 @@
 /*   By: vhacman <vhacman@student.42roma.it>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/28 18:48:12 by vhacman           #+#    #+#             */
-/*   Updated: 2025/07/28 11:26:30 by vhacman          ###   ########.fr       */
+/*   Updated: 2025/08/06 12:30:57 by vhacman          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,6 @@
 ** - "export" → handle_export()
 ** - "env"    → handle_env()
 ** - "unset"  → handle_unset()
-** - "clear"  → handle_clear()
 ** - "echo"   → handle_echo()
 **
 ** Behavior:
