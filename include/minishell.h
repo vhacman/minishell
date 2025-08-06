@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vhacman <vhacman@student.42roma.it>        +#+  +:+       +#+        */
+/*   By: begiovan <begiovan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/29 12:00:00 by vhacman           #+#    #+#             */
-/*   Updated: 2025/08/05 16:35:54 by vhacman          ###   ########.fr       */
+/*   Updated: 2025/08/06 12:11:51 by begiovan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,8 @@
 # include <sys/wait.h>
 # include <readline/readline.h>
 # include <readline/history.h>
+# include <errno.h>
+# include <limits.h>
 
 /* =============================== */
 /*         PROJECT INCLUDES        */
@@ -36,8 +38,7 @@
 # include "clean.h"
 # include "signals.h"
 # include "parser.h"
-# include <errno.h>
-# include <limits.h>
+
 
 /* =============================== */
 /*            CONSTANTS            */
@@ -115,5 +116,10 @@ int			handle_special_cases(char *input, t_shell *shell);
 
 
 void		execute_child_process(t_cmd *curr, int prev_fd, int *pipe_fd, t_shell *shell);
+
+
+
+// redirect 
+
 
 #endif

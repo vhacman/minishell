@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   tokenizer.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vhacman <vhacman@student.42roma.it>        +#+  +:+       +#+        */
+/*   By: begiovan <begiovan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/16 15:51:43 by vhacman           #+#    #+#             */
-/*   Updated: 2025/08/04 18:42:33 by vhacman          ###   ########.fr       */
+/*   Updated: 2025/08/06 14:41:00 by begiovan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@
 **
 **	How it works	Reads character at context->input[*context->i];
 **				if quote, calls handle_quoted_token;
-**				if '<' or '>', calls handle_redirection_token;
+**				if '<' or '>', calls 	ction_token;
 **				if '|', creates TK_PIPE token and advances index;
 **				else calls handle_word_token.
 **	Params:		context->input	- full command string to parse
