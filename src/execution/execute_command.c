@@ -6,7 +6,7 @@
 /*   By: begiovan <begiovan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/28 13:41:04 by begiovan          #+#    #+#             */
-/*   Updated: 2025/08/06 15:28:05 by begiovan         ###   ########.fr       */
+/*   Updated: 2025/08/06 15:39:32 by begiovan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,6 +87,13 @@ int execute_command(t_token *tokens, t_shell *shell)
 		shell->exit_status = 127;
 		return (127);
 	}
+	if (handle_redirection_with_tokens(tokens, shell) == -1)
+    {
+        free_args_array(args);
+        cleanup(shell, 1);
+        shell->exit_status = 1;
+        return 1;
+    }
 	if (is_builtin(args[0]))
 	{
 		if (ft_strcmp(args[0], "exit") == 0)

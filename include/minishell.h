@@ -6,7 +6,7 @@
 /*   By: begiovan <begiovan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/29 12:00:00 by vhacman           #+#    #+#             */
-/*   Updated: 2025/08/06 12:11:51 by begiovan         ###   ########.fr       */
+/*   Updated: 2025/08/06 15:47:48 by begiovan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -120,6 +120,11 @@ void		execute_child_process(t_cmd *curr, int prev_fd, int *pipe_fd, t_shell *she
 
 
 // redirect 
-
+void 		restore_redirection(t_shell *shell);
+int 		handle_redirection_with_tokens(t_token *tokens, t_shell *shell);
+char 		**create_args_without_redirection(t_token *tokens);
+int 		open_file_with_type(char *filename, int redirect_type);
+char 		*get_filename_from_next_token(t_token *redirect_token);
+t_token 	*find_redirection_token(t_token *tokens, int *redirect_type);
 
 #endif

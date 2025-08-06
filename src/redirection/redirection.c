@@ -128,51 +128,55 @@ char **create_args_without_redirection(t_token *tokens)
 // Funzione principale che gestisce redirezioni con token
 int handle_redirection_with_tokens(t_token *tokens, t_shell *shell)
 {
-    t_token *curr = tokens;
-    t_token *next_token;
-    char *filename = NULL;
-    int file_fd = -1;
-    int saved_fd = -1;
+    t_token *curr;
+    char *filename;
+    int file_fd;
+    int saved_fd;
+    int flags;
+    int new_fd;
 
-    while (curr)
+    curr = tokens;
+    file_fd = -1;
+    while (curr != NULL)
     {
         if (curr->type == TK_OUT || curr->type == TK_APPEND)
         {
-            if (!curr->next || curr->next->type != TK_WORD)
+            if (curr->next == NULL || curr->next->type != TK_WORD)
             {
                 ft_putstr_fd("minishell: syntax error near redirection\n", 2);
-                if (file_fd != -1) close(file_fd);
+                if (file_fd != -1)
+                    close(file_fd);
                 return -1;
             }
 
             filename = curr->next->value;
 
-            // Apri file con flags corretti
-            int flags = (curr->type == TK_OUT) ?
-                (O_WRONLY | O_CREAT | O_TRUNC) :
-                (O_WRONLY | O_CREAT | O_APPEND);
+            if (curr->type == TK_OUT)
+                flags = O_WRONLY | O_CREAT | O_TRUNC;
+            else
+                flags = O_WRONLY | O_CREAT | O_APPEND;
 
-            int new_fd = open(filename, flags, 0644);
+            new_fd = open(filename, flags, 0644);
             if (new_fd == -1)
             {
                 perror("minishell");
-                if (file_fd != -1) close(file_fd);
+                if (file_fd != -1)
+                    close(file_fd);
                 return -1;
             }
 
-            // Chiudi fd precedente (solo se non è il primo)
             if (file_fd != -1)
                 close(file_fd);
 
             file_fd = new_fd;
-            shell->redirect_type = curr->type; // Salva ultimo tipo
+            shell->redirect_type = curr->type;
         }
         curr = curr->next;
     }
 
     if (file_fd != -1)
     {
-        saved_fd = dup(1); // salva stdout originale
+        saved_fd = dup(1);
         if (saved_fd == -1)
         {
             perror("minishell");
@@ -196,11 +200,10 @@ int handle_redirection_with_tokens(t_token *tokens, t_shell *shell)
 }
 
 
-    // Ripristina i file descriptor originali
+// Ripristina i file descriptor originali
 void restore_redirection(t_shell *shell)
 {
-    if ((shell->redirect_type == TK_OUT || shell->redirect_type == TK_APPEND) &&
-        shell->saved_stdout != -1)
+    if ((shell->redirect_type == TK_OUT || shell->redirect_type == TK_APPEND) && shell->saved_stdout != -1)
     {
         dup2(shell->saved_stdout, 1);
         close(shell->saved_stdout);
