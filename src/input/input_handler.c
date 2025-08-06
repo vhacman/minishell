@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   input_handler.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vhacman <vhacman@student.42roma.it>        +#+  +:+       +#+        */
+/*   By: vhacman <vhacman@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/14 17:04:00 by vhacman           #+#    #+#             */
-/*   Updated: 2025/08/05 18:10:00 by vhacman          ###   ########.fr       */
+/*   Updated: 2025/08/05 19:33:20 by vhacman          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,6 +50,17 @@ int  handle_special_cases(char *input, t_shell *shell)
     return (ret);
 }
 
+void print_tokens(t_token *tokens)
+{
+    t_token *curr = tokens;
+    while (curr)
+    {
+        printf("TOKEN: [%s] (type: %d)\n", curr->value, curr->type);
+        curr = curr->next;
+    }
+}
+
+
 static void	process_tokens(t_token *tokens, t_shell *shell)
 {
 	int	exit_status;
@@ -72,6 +83,8 @@ static void	process_tokens(t_token *tokens, t_shell *shell)
 			return ;
 		}
 	}
+	print_tokens(tokens);
+
 	exit_status = execute_command(tokens, shell);
 	shell->exit_status = exit_status;
 }
