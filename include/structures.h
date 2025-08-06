@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   structures.h                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vhacman <vhacman@student.42roma.it>        +#+  +:+       +#+        */
+/*   By: begiovan <begiovan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/16 16:12:25 by vhacman           #+#    #+#             */
-/*   Updated: 2025/08/05 16:38:16 by vhacman          ###   ########.fr       */
+/*   Updated: 2025/08/06 15:33:02 by begiovan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,6 +81,8 @@ typedef struct s_shell
 	int			exit_status;
 	char		**args;
 	char		*program_name;
+	int			saved_stdout;
+	int 		redirect_type;
 }	t_shell;
 
 /* =============================== */

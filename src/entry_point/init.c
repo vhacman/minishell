@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   init.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vhacman <vhacman@student.42roma.it>        +#+  +:+       +#+        */
+/*   By: begiovan <begiovan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/16 15:02:46 by vhacman           #+#    #+#             */
-/*   Updated: 2025/08/05 18:08:55 by vhacman          ###   ########.fr       */
+/*   Updated: 2025/08/06 15:33:31 by begiovan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,4 +33,7 @@ void	init_shell(t_shell *shell)
 	shell->env = copy_env_entries(environ);
 	shell->args = NULL;
 	shell->program_name = NULL;
+	shell->saved_stdout = -1;
+	shell->redirect_type = 0;
+
 }
