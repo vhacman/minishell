@@ -6,7 +6,7 @@
 /*   By: begiovan <begiovan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/28 13:41:04 by begiovan          #+#    #+#             */
-/*   Updated: 2025/08/06 12:16:13 by begiovan         ###   ########.fr       */
+/*   Updated: 2025/08/06 15:23:06 by begiovan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,8 +53,8 @@ char	**convert_tokens_to_args(t_token *tokens)
 
 int execute_command(t_token *tokens, t_shell *shell)
 {
-	char    **args;
-	int     status;
+	char	**args;
+	int		status;
 
 	if (!tokens)
 	{
@@ -72,9 +72,17 @@ int execute_command(t_token *tokens, t_shell *shell)
 		return (status);
 	}
 	args = convert_tokens_to_args(tokens);
-	if (!args || !args[0])
+	if (!args)
+	{
+		cleanup(shell, 1);
+		ft_putstr_fd("minishell: : command not found\n", 2);
+		shell->exit_status = 127;
+		return (127);
+	}
+	if (!args[0])
 	{
 		free_args_array(args);
+		cleanup(shell, 1);
 		ft_putstr_fd("minishell: : command not found\n", 2);
 		shell->exit_status = 127;
 		return (127);
@@ -84,25 +92,25 @@ int execute_command(t_token *tokens, t_shell *shell)
 		if (ft_strcmp(args[0], "exit") == 0)
 		{
 			status = handle_exit(shell, args);
-			free_args_array(args);
-			cleanup(shell, 1);
 			if (status == 0)
+			{
+				free_args_array(args);
+				cleanup(shell, 1);
 				exit(shell->exit_status);
+			}
 			else
 			{
 				shell->exit_status = status;
+				free_args_array(args);
+				cleanup(shell, 1);
 				return (status);
 			}
 		}
 		else
-		{
 			status = handle_builtin(args, shell);
-		}
 	}
 	else
-	{
 		status = execute_command_type(args, shell);
-	}
 	free_args_array(args);
 	cleanup(shell, 1);
 	shell->exit_status = status;
