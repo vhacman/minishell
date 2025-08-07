@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   execute_external.c                                 :+:      :+:    :+:   */
+/*   process_handler.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vhacman <vhacman@student.42roma.it>        +#+  +:+       +#+        */
+/*   By: vhacman <vhacman@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/28 13:41:01 by begiovan          #+#    #+#             */
-/*   Updated: 2025/08/05 18:02:52 by vhacman          ###   ########.fr       */
+/*   Updated: 2025/08/06 19:26:19 by vhacman          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,33 +22,6 @@ void	execute_child_process_from_args(char *cmd_path, char **args, t_shell *shell
 	temp.is_builtin = 0;
 
 	execute_child_process(&temp, -1, NULL, shell);
-}
-
-static void	print_signal_message(int signal_number, int status)
-{
-	if (signal_number == SIGQUIT)
-	{
-		if (WCOREDUMP(status))
-			ft_printf("Quit (core dumped)\n");
-		else
-			ft_printf("Quit\n");
-	}
-	else if (signal_number == SIGTERM)
-	{
-		if (WCOREDUMP(status))
-			ft_printf("Terminated (core dumped)\n");
-		else
-			ft_printf("Terminated\n");
-	}
-	else if (signal_number == SIGKILL)
-		ft_printf("Killed\n");
-	else if (signal_number == SIGSEGV)
-	{
-		if (WCOREDUMP(status))
-			ft_printf("Segmentation fault (core dumped)\n");
-		else
-			ft_printf("Segmentation fault\n");
-	}
 }
 
 static void	handle_parent_process(pid_t pid, t_shell *shell)
@@ -72,7 +45,7 @@ static void	handle_parent_process(pid_t pid, t_shell *shell)
 		handle_signal_exit_status(status, shell);
 	}
 	setup_signals_interactive();
-	cleanup(shell, 1);
+	cleanup_per_command(shell);
 }
 
 int	execute_external_command(char *cmd_path, char **args, t_shell *shell)
@@ -87,10 +60,7 @@ int	execute_external_command(char *cmd_path, char **args, t_shell *shell)
 		exit_with_error("fork", shell, 1, 1);
 	}
 	else if (pid == 0)
-	{
 		execute_child_process_from_args(cmd_path, args, shell);
-		// setup_child_process(cmd_path, args, shell);
-	}
 	else
 		handle_parent_process(pid, shell);
 	return (shell->exit_status);

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   init.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: begiovan <begiovan@student.42.fr>          +#+  +:+       +#+        */
+/*   By: vhacman <vhacman@student.42roma.it>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/16 15:02:46 by vhacman           #+#    #+#             */
-/*   Updated: 2025/08/06 15:33:31 by begiovan         ###   ########.fr       */
+/*   Updated: 2025/08/06 16:16:47 by vhacman          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,5 +35,4 @@ void	init_shell(t_shell *shell)
 	shell->program_name = NULL;
 	shell->saved_stdout = -1;
 	shell->redirect_type = 0;
-
 }

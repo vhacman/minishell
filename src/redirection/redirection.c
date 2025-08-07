@@ -187,7 +187,8 @@ int handle_redirection_with_tokens(t_token *tokens, t_shell *shell)
         close(file_fd);
         shell->saved_stdout = saved_fd;
     }
-
+    
+    restore_redirection(shell);
     return 0;
 }
 

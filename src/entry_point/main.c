@@ -6,7 +6,7 @@
 /*   By: vhacman <vhacman@student.42roma.it>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/26 14:35:01 by vhacman           #+#    #+#             */
-/*   Updated: 2025/08/05 18:08:59 by vhacman          ###   ########.fr       */
+/*   Updated: 2025/08/06 17:33:49 by vhacman          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,6 @@ int	main(void)
 	signal(SIGINT, handle_prompt_signal);
 	signal(SIGQUIT, SIG_IGN);
 	start_colored_prompt(&shell);
-	cleanup(&shell, 1);
+	destroy_shell(&shell);
 	return (0);
 }

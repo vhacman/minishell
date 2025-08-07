@@ -6,7 +6,7 @@
 /*   By: vhacman <vhacman@student.42roma.it>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/28 13:41:19 by begiovan          #+#    #+#             */
-/*   Updated: 2025/08/05 17:08:28 by vhacman          ###   ########.fr       */
+/*   Updated: 2025/08/06 17:25:06 by vhacman          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,7 +53,7 @@ int	start_colored_prompt(t_shell *shell)
 		if (!input)
 		{
 			ft_printf("exit\n");
-			cleanup(shell, 1);
+			cleanup_per_command(shell);
 			break ;
 		}
 		special = handle_special_cases(input, shell);
@@ -63,7 +63,7 @@ int	start_colored_prompt(t_shell *shell)
 			break ;
 		}
 		handle_input(input, shell);
-		cleanup(shell, 1);
+		cleanup_per_command(shell);
 	}
 	return (shell->exit_status);
 }

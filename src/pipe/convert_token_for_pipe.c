@@ -6,7 +6,7 @@
 /*   By: vhacman <vhacman@student.42roma.it>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/21 15:37:03 by vhacman           #+#    #+#             */
-/*   Updated: 2025/08/06 12:45:38 by vhacman          ###   ########.fr       */
+/*   Updated: 2025/08/06 17:25:50 by vhacman          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,13 +31,13 @@ static t_cmd *create_and_populate_cmd(t_token *start, t_shell *shell)
 	}
 	if (count == 0)
 	{
-		cleanup(shell, 1);
+		free_cmd(new_cmd);
 		return (NULL);
 	}
 	new_cmd->args = calloc((count + 1), sizeof(char *));
 	if (!new_cmd->args)
 	{
-		cleanup(shell, 1);
+		cleanup_per_command(shell);
 		return (NULL);
 	}
 	tmp = start;
@@ -49,9 +49,7 @@ static t_cmd *create_and_populate_cmd(t_token *start, t_shell *shell)
 		{
 			while (--i >= 0)
 				free(new_cmd->args[i]);
-			// free(new_cmd->args);
-			// free(new_cmd);
-			cleanup(shell, 1);
+			cleanup_per_command(shell);
 			return (NULL);
 		}
 		i++;
@@ -71,7 +69,7 @@ static t_cmd *create_and_populate_cmd(t_token *start, t_shell *shell)
 			new_cmd->path = find_command_path(new_cmd->args[0]);
 			if (!new_cmd->path)
 			{
-				cleanup(shell, 1);
+				cleanup_per_command(shell);
 				new_cmd->path = NULL;
 			}
 		}
@@ -93,7 +91,7 @@ t_cmd *convert_tokens_to_cmd_list(t_token *tokens, t_shell *shell)
 		new_cmd = create_and_populate_cmd(cursor, shell);
 		if (!new_cmd)
 		{
-			cleanup(shell, 1);
+			cleanup_per_command(shell);
 			return (NULL);
 		}
 		if (!cmd_list)

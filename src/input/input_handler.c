@@ -6,7 +6,7 @@
 /*   By: vhacman <vhacman@student.42roma.it>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/14 17:04:00 by vhacman           #+#    #+#             */
-/*   Updated: 2025/08/05 18:10:00 by vhacman          ###   ########.fr       */
+/*   Updated: 2025/08/06 17:24:13 by vhacman          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -96,5 +96,5 @@ void	handle_input(char *input, t_shell *shell)
 		return ;
 	}
 	process_tokens(shell->tokens, shell);
-	cleanup(shell, 0);
+	cleanup_per_command(shell);
 }

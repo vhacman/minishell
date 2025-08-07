@@ -6,7 +6,7 @@
 /*   By: vhacman <vhacman@student.42roma.it>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/27 13:21:19 by vhacman           #+#    #+#             */
-/*   Updated: 2025/08/06 12:36:04 by vhacman          ###   ########.fr       */
+/*   Updated: 2025/08/06 17:36:23 by vhacman          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,7 +66,6 @@ void free_token_list(t_token **token)
 
 	while (*token)
 	{
-
 		tmp = (*token)->next;
 		free((*token)->value);
 		free(*token);
@@ -108,43 +107,78 @@ void	free_env_node(t_env *node)
 	free(node);
 }
 
-void cleanup(t_shell *shell, int full_cleanup)
+// void cleanup(t_shell *shell, int full_cleanup)
+// {
+// 	if (!shell)
+// 		return;
+// 	if (shell->line)
+// 	{
+// 		free(shell->line);
+// 		shell->line = NULL;
+// 	}
+// 	if (shell->tokens)
+// 	{
+// 		free_token_list(&shell->tokens);
+// 		shell->tokens = NULL;
+// 	}
+// 	if (shell->cmds)
+// 	{
+// 		free_cmd_list(&shell->cmds);
+// 		shell->cmds = NULL;
+// 	}
+// 	if (full_cleanup)
+// 	{
+// 		if (shell->env)
+// 		{
+// 			free_env_list(shell->env);
+// 			shell->env = NULL;
+// 		}
+// 		if (shell->program_name)
+// 		{
+// 			free(shell->program_name);
+// 			shell->program_name = NULL;
+// 		}
+// 	}
+// }
+
+
+// pulisce solo linea, tokens e comandi, ma lascia intatto shell->env
+void cleanup_per_command(t_shell *shell)
 {
-	if (!shell)
-		return;
-	if (shell->line)
-	{
-		free(shell->line);
-		shell->line = NULL;
-	}
-	if (shell->tokens)
-	{
-		free_token_list(&shell->tokens);
-		shell->tokens = NULL;
-	}
-	if (shell->cmds)
-	{
-		free_cmd_list(&shell->cmds);
-		shell->cmds = NULL;
-	}
-	if (full_cleanup)
-	{
-		if (shell->env)
-		{
-			free_env_list(shell->env);
-			shell->env = NULL;
-		}
-		if (shell->program_name)
-		{
-			free(shell->program_name);
-			shell->program_name = NULL;
-		}
-	}
+    if (!shell) return;
+    if (shell->line)
+    {
+        free(shell->line);
+        shell->line = NULL;
+    }
+    if (shell->tokens)
+    {
+        free_token_list(&shell->tokens);
+        shell->tokens = NULL;
+    }
+    if (shell->cmds)
+    {
+        free_cmd_list(&shell->cmds);
+        shell->cmds = NULL;
+    }
 }
 
-void	cleanup_and_exit(t_shell *shell, char **args, int exit_code)
+// distrugge completamente la shell, compreso env e program_name
+void destroy_shell(t_shell *shell)
 {
-	(void)args;
-	cleanup(shell, 1);
-	exit(exit_code);
+    if (!shell) return;
+    // prima libera lo stato temporaneo
+    cleanup_per_command(shell);
+    // poi free env e program_name
+    if (shell->env)
+    {
+        free_env_list(shell->env);
+        shell->env = NULL;
+    }
+    if (shell->program_name)
+    {
+        free(shell->program_name);
+        shell->program_name = NULL;
+    }
+    // free(shell);
 }

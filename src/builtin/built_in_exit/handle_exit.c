@@ -6,7 +6,7 @@
 /*   By: vhacman <vhacman@student.42roma.it>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/29 14:10:58 by vhacman           #+#    #+#             */
-/*   Updated: 2025/08/06 15:02:13 by vhacman          ###   ########.fr       */
+/*   Updated: 2025/08/06 17:50:56 by vhacman          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,10 @@ int	handle_exit(t_shell *shell, char **args)
 			ft_putstr_fd(args[1], STDERR_FILENO);
 			ft_putendl_fd(": numeric argument required", STDERR_FILENO);
 			shell->exit_status = 255;
-			return (255);
+			free_args_array(args);
+			// cleanup_per_command(shell);
+			destroy_shell(shell);
+			exit (255);
 		}
 		else
 		{
