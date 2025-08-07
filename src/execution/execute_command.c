@@ -71,7 +71,7 @@ int execute_command(t_token *tokens, t_shell *shell)
 		shell->exit_status = status;
 		return (status);
 	}
-	args = convert_tokens_to_args(tokens);
+	args = create_args_without_redirection(tokens);
 	if (!args)
 	{
 		cleanup(shell, 1);
@@ -102,6 +102,7 @@ int execute_command(t_token *tokens, t_shell *shell)
 			if (status == 0)
 			{
 				free_args_array(args);
+				restore_redirection(shell);
 				cleanup(shell, 1);
 				exit(shell->exit_status);
 			}
@@ -109,6 +110,7 @@ int execute_command(t_token *tokens, t_shell *shell)
 			{
 				shell->exit_status = status;
 				free_args_array(args);
+				restore_redirection(shell);
 				cleanup(shell, 1);
 				return (status);
 			}
@@ -118,6 +120,8 @@ int execute_command(t_token *tokens, t_shell *shell)
 	}
 	else
 		status = execute_command_type(args, shell);
+	
+	restore_redirection(shell);
 	free_args_array(args);
 	cleanup(shell, 1);
 	shell->exit_status = status;

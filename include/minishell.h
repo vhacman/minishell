@@ -120,11 +120,8 @@ void		execute_child_process(t_cmd *curr, int prev_fd, int *pipe_fd, t_shell *she
 
 
 // redirect 
-void 		restore_redirection(t_shell *shell);
-int 		handle_redirection_with_tokens(t_token *tokens, t_shell *shell);
-char 		**create_args_without_redirection(t_token *tokens);
-int 		open_file_with_type(char *filename, int redirect_type);
-char 		*get_filename_from_next_token(t_token *redirect_token);
-t_token 	*find_redirection_token(t_token *tokens, int *redirect_type);
+void		restore_redirection(t_shell *shell);
+int			handle_redirection_with_tokens(t_token *tokens, t_shell *shell);
+char		**create_args_without_redirection(t_token *tokens);
 
 #endif
