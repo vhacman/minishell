@@ -1,0 +1,186 @@
+
+X BEN
+----------------------------
+
+INPUT
+ --> echo "input per cat " > input.txt
+ --> cat < input.txt
+
+--> echo "test" > input.txt
+--> cat < input.txt > output.txt
+---------------------------
+HEREDOC
+
+cat << EOF
+Ciao
+Questo è un test
+EOF
+
+deve stampare:
+Ciao
+Questo è un test
+
+
+grep ciao << END
+ciao mondo
+hello world
+END
+
+deve stampare:
+ciao mondo
+
+
+PER CONFRONTARE CON BASH
+echo 'echo test > file.txt' | bash
+echo 'echo test > file.txt' | ./minishell
+diff <(cat file.txt) <(cat file.txt)
+
+
+-----------------------------
+
+X GABRIELA
+-----------------------
+$> cd -
+
+minishell  ➤ cd -
+cd: OLDPWD not set
+minishell  ➤
+
+KO
+
+come sistemare:
+Ogni volta che fai un cd, dovresti:
+Salvare l’attuale working directory in OLDPWD
+Poi aggiornare PWD alla nuova directory
+
+----------------------------
+
+cd ~/Desktop
+
+
+minishell  ➤ cd ~/Desktop
+cd: No such file or directory
+minishell  ➤ /bin/pwd
+/home/vhacman/Desktop/minishell
+minishell  ➤
+
+
+KO
+
+
+--------------------------
+
+-------------------------------------------------------
+$> /usr/bin/env
+
+
+minishell  ➤ /usr/bin/env
+LANGUAGE=en_US
+USER=vhacman
+XDG_SESSION_TYPE=wayland
+GIT_ASKPASS=/usr/share/code/resources/app/extensions/git/dist/askpass.sh
+SHLVL=2
+LD_LIBRARY_PATH=/usr/lib/debug
+HOME=/home/vhacman
+CHROME_DESKTOP=code.desktop
+TERM_PROGRAM_VERSION=1.102.2
+DESKTOP_SESSION=ubuntu
+GNOME_SHELL_SESSION_MODE=ubuntu
+GTK_MODULES=gail:atk-bridge
+VSCODE_GIT_ASKPASS_MAIN=/usr/share/code/resources/app/extensions/git/dist/askpass-main.js
+VSCODE_GIT_ASKPASS_NODE=/usr/share/code/code
+DBUS_STARTER_BUS_TYPE=session
+SYSTEMD_EXEC_PID=2835
+GSM_SKIP_SSH_AGENT_WORKAROUND=true
+DBUS_SESSION_BUS_ADDRESS=unix:path=/run/user/1000/bus,guid=6fe8efd6ddb09262402a8f5b6895c176
+COLORTERM=truecolor
+DEBUGINFOD_URLS=https://debuginfod.ubuntu.com
+IM_CONFIG_PHASE=1
+WAYLAND_DISPLAY=wayland-0
+LOGNAME=vhacman
+_=/usr/bin/valgrind
+MEMORY_PRESSURE_WATCH=/sys/fs/cgroup/user.slice/user-1000.slice/user@1000.service/app.slice/app-gnome\x2dsession\x2dmanager.slice/gnome-session-manager@ubuntu.service/memory.pressure
+XDG_SESSION_CLASS=user
+USERNAME=vhacman
+TERM=xterm-256color
+GNOME_DESKTOP_SESSION_ID=this-is-deprecated
+PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/snap/bin:/snap/bin:/home/vhacman/.local/bin:/home/vhacman/.local/bin:/home/vhacman/.local/bin
+SESSION_MANAGER=local/viorica-gabriela-hacman-Modern-15-A11MU:@/tmp/.ICE-unix/2835,unix/viorica-gabriela-hacman-Modern-15-A11MU:/tmp/.ICE-unix/2835
+XDG_MENU_PREFIX=gnome-
+GNOME_TERMINAL_SCREEN=/org/gnome/Terminal/screen/fa843637_45ca_4435_8305_c4924dd250dd
+GNOME_SETUP_DISPLAY=:1
+XDG_RUNTIME_DIR=/run/user/1000
+GDK_BACKEND=x11
+GLIBCPP_FORCE_NEW=1
+DISPLAY=:0
+LANG=en_US.UTF-8
+XDG_CURRENT_DESKTOP=Unity
+XMODIFIERS=@im=ibus
+XDG_SESSION_DESKTOP=ubuntu
+XAUTHORITY=/run/user/1000/.mutter-Xwaylandauth.QXH6A3
+VSCODE_GIT_IPC_HANDLE=/run/user/1000/vscode-git-1e5739cc29.sock
+GNOME_TERMINAL_SERVICE=:1.100
+TERM_PROGRAM=vscode
+SSH_AUTH_SOCK=/run/user/1000/keyring/ssh
+ORIGINAL_XDG_CURRENT_DESKTOP=ubuntu:GNOME
+SHELL=/bin/bash
+QT_ACCESSIBILITY=1
+GDMSESSION=ubuntu
+VSCODE_GIT_ASKPASS_EXTRA_ARGS=
+QT_IM_MODULE=ibus
+PWD=/home/vhacman/Desktop/minishell
+XDG_CONFIG_DIRS=/etc/xdg/xdg-ubuntu:/etc/xdg
+DBUS_STARTER_ADDRESS=unix:path=/run/user/1000/bus,guid=6fe8efd6ddb09262402a8f5b6895c176
+XDG_DATA_DIRS=/usr/share/ubuntu:/usr/share/gnome:/usr/local/share/:/usr/share/:/var/lib/snapd/desktop
+MEMORY_PRESSURE_WRITE=c29tZSAyMDAwMDAgMjAwMDAwMAA=
+VTE_VERSION=7600
+GLIBCXX_FORCE_NEW=1
+LD_PRELOAD=
+LINES=12
+COLUMNS=142
+minishell  ➤
+
+
+KO
+
+DOPO AVER FATTO EXPORT FOO=bar
+
+
+Il comando /usr/bin/env non mostra FOO=bar, quindi significa che:
+la variabile FOO è presente nel tuo ambiente interno (come confermato da env)
+ma non viene passata ai processi figli (cioè non viene inclusa nel envp[] di execve())
+
+
+ Come risolverlo:
+Quando esegui un comando esterno (es. ls, env, ecc.), devi:
+Costruire un array di stringhe envp (tipo char **envp)
+Popolarlo con tutte le variabili esportate (export FOO=bar)
+Passarlo come terzo parametro a execve(path, argv, envp)
+Se invece stai passando envp = NULL o un array incompleto, il binario non vede FOO.
+------------------------------------------
+
+$> unset PATH
+
+
+minishell  ➤ unset PATH
+minishell  ➤ ls
+DONE.txt  include  libft  Makefile  minishell  obj  src  supp.supp  TEORIA_DA_SAPERE.txt  TODO
+minishell  ➤
+
+KO
+
+minishell doveva fallire l’esecuzione di ls, perché:
+senza PATH, non dovrebbe sapere dove cercare ls (a meno che non sia chiamato con path assoluto, tipo /bin/ls),
+invece l’ha eseguito lo stesso.
+
+vhacman@viorica-gabriela-hacman-Modern-15-A11MU:~/Desktop/minishell$ unset PATH
+vhacman@viorica-gabriela-hacman-Modern-15-A11MU:~/Desktop/minishell$ ls
+bash: sed: No such file or directory
+bash: ls: No such file or directory
+vhacman@viorica-gabriela-hacman-Modern-15-A11MU:~/Desktop/minishell$
+
+
+Quando esegui un comando senza slash (/), devi cercarlo solo nei path indicati in $PATH.
+Se PATH è unset o vuoto, non devi cercare affatto → stampa errore tipo "command not found".
+
+-----------------------------------------

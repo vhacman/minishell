@@ -1,0 +1,915 @@
+
+
+ESECUZIONE COMANDI BASE
+
+$> foo
+
+minishell  ➤ foo
+foo command not found
+
+OK
+---------------------------
+/bin/ls
+
+minishell  ➤ /bin/ls
+DONE.txt  include  libft  Makefile  minishell  obj  src  supp.supp  TEORIA_DA_SAPERE.txt  TODO
+minishell
+
+OK
+----------------------------
+/bin/ls -laF
+
+minishell  ➤ /bin/ls -laF
+total 108
+drwxr-xr-x  7 vhacman viorica-gabriela-hacman  4096 Aug  8 11:59 ./
+drwxr-xr-x  8 vhacman viorica-gabriela-hacman  4096 Aug  8 11:53 ../
+-rw-r--r--  1 vhacman viorica-gabriela-hacman   251 Aug  8 12:03 DONE.txt
+drwxr-xr-x  8 vhacman viorica-gabriela-hacman  4096 Aug  8 11:44 .git/
+drwxr-xr-x  2 vhacman viorica-gabriela-hacman  4096 Aug  8 11:44 include/
+drwxr-xr-x  5 vhacman viorica-gabriela-hacman  4096 Aug  8 11:59 libft/
+-rw-r--r--  1 vhacman viorica-gabriela-hacman  3286 Aug  6 18:43 Makefile
+-rwxr-xr-x  1 vhacman viorica-gabriela-hacman 59400 Aug  8 11:59 minishell*
+drwxr-xr-x 13 vhacman viorica-gabriela-hacman  4096 Aug  8 11:59 obj/
+drwxr-xr-x 13 vhacman viorica-gabriela-hacman  4096 Aug  6 19:23 src/
+-rw-r--r--  1 vhacman viorica-gabriela-hacman    87 Aug  6 18:43 supp.supp
+-rw-r--r--  1 vhacman viorica-gabriela-hacman  1479 Aug  6 18:43 TEORIA_DA_SAPERE.txt
+-rw-r--r--  1 vhacman viorica-gabriela-hacman   589 Aug  8 12:02 TODO
+minishell  ➤
+
+OK
+---------------------------------------
+/bin/ls -l -a -F
+
+minishell  ➤ /bin/ls -l -a -F
+total 108
+drwxr-xr-x  7 vhacman viorica-gabriela-hacman  4096 Aug  8 11:59 ./
+drwxr-xr-x  8 vhacman viorica-gabriela-hacman  4096 Aug  8 11:53 ../
+-rw-r--r--  1 vhacman viorica-gabriela-hacman  1313 Aug  8 12:04 DONE.txt
+drwxr-xr-x  8 vhacman viorica-gabriela-hacman  4096 Aug  8 11:44 .git/
+drwxr-xr-x  2 vhacman viorica-gabriela-hacman  4096 Aug  8 11:44 include/
+drwxr-xr-x  5 vhacman viorica-gabriela-hacman  4096 Aug  8 11:59 libft/
+-rw-r--r--  1 vhacman viorica-gabriela-hacman  3286 Aug  6 18:43 Makefile
+-rwxr-xr-x  1 vhacman viorica-gabriela-hacman 59400 Aug  8 11:59 minishell*
+drwxr-xr-x 13 vhacman viorica-gabriela-hacman  4096 Aug  8 11:59 obj/
+drwxr-xr-x 13 vhacman viorica-gabriela-hacman  4096 Aug  6 19:23 src/
+-rw-r--r--  1 vhacman viorica-gabriela-hacman    87 Aug  6 18:43 supp.supp
+-rw-r--r--  1 vhacman viorica-gabriela-hacman  1479 Aug  6 18:43 TEORIA_DA_SAPERE.txt
+-rw-r--r--  1 vhacman viorica-gabriela-hacman   589 Aug  8 12:02 TODO
+minishell  ➤
+
+OK------------------------------
+Sezione 1: "Esecuzione comandi base" → COMPLETATA CON SUCCESSO
+
+
+
+BUILT IN -
+
+
+
+$> exit
+
+minishell  ➤ exit
+exit
+==22726==
+==22726== HEAP SUMMARY:
+==22726==     in use at exit: 233,616 bytes in 290 blocks
+==22726==   total heap usage: 1,123 allocs, 833 frees, 324,999 bytes allocated
+==22726==
+==22726== LEAK SUMMARY:
+==22726==    definitely lost: 0 bytes in 0 blocks
+==22726==    indirectly lost: 0 bytes in 0 blocks
+==22726==      possibly lost: 0 bytes in 0 blocks
+==22726==    still reachable: 0 bytes in 0 blocks
+==22726==         suppressed: 233,616 bytes in 290 blocks
+==22726==
+==22726== For lists of detected and suppressed errors, rerun with: -s
+==22726== ERROR SUMMARY: 0 errors from 0 contexts (suppressed: 1 from 1)
+vhacman@viorica-gabriela-hacman-Modern-15-A11MU:~/Desktop/minishell$
+
+OK
+----------------------------------------------------------------
+$> echo " it works"
+
+
+minishell  ➤ echo "It works"
+It works
+minishell  ➤
+
+
+OK
+----------------------------------------------------------------
+
+$> echo it works
+
+minishell  ➤ echo it works
+it works
+minishell  ➤
+
+OK
+----------------------------------------------------------------
+
+$> cd /tmp
+$> /bin/pwd
+
+minishell  ➤ cd /tmp
+tmp  ➤ /bin/pwd
+/tmp
+tmp  ➤
+
+OK
+-------------------------------------------------------------
+
+$> cd src
+$> /bin/pwd
+
+minishell  ➤ cd src
+src  ➤ /bin/pwd
+/home/vhacman/Desktop/minishell/src
+src  ➤
+
+OK
+---------------------------------------------------------------
+
+CD SENZA ARGOMENTI
+$> cd
+
+src  ➤ cd
+~  ➤ /bin/pwd
+/home/vhacman
+~  ➤
+
+OK
+-------------------------------------------------------------
+
+$> cd -
+
+minishell  ➤ cd -
+cd: OLDPWD not set
+minishell  ➤
+
+KO
+
+------------------------------------------------
+
+
+cd ~/Desktop
+
+
+minishell  ➤ cd ~/Desktop
+cd: No such file or directory
+minishell  ➤ /bin/pwd
+/home/vhacman/Desktop/minishell
+minishell  ➤
+
+
+KO
+
+---------------------------------------------
+| Test              | Stato                          |
+| ----------------- | ------------------------------ |
+| `exit`            | ✅ Passato                     |
+| `echo` (quote)    | ✅ Passato                     |
+| `echo` (no quote) | ✅ Passato                     |
+| `cd` assoluto     | ✅ Passato                     |
+| `cd` relativo     | ✅ Passato                     |
+| `cd`              | ✅ Passato                     |
+| `cd -`            | ❌ Fallito (OLDPWD non gestito)|
+| `cd ~`            | ❌ Fallito (HOME non espansa)  |
+
+
+
+SEZIONE 3
+Gestione dell’ambiente (env, setenv, unsetenv)
+
+
+env
+
+minishell  ➤ env
+LANGUAGE=en_US
+USER=vhacman
+XDG_SESSION_TYPE=wayland
+GIT_ASKPASS=/usr/share/code/resources/app/extensions/git/dist/askpass.sh
+SHLVL=2
+LD_LIBRARY_PATH=/usr/lib/debug
+HOME=/home/vhacman
+CHROME_DESKTOP=code.desktop
+TERM_PROGRAM_VERSION=1.102.2
+DESKTOP_SESSION=ubuntu
+GNOME_SHELL_SESSION_MODE=ubuntu
+GTK_MODULES=gail:atk-bridge
+VSCODE_GIT_ASKPASS_MAIN=/usr/share/code/resources/app/extensions/git/dist/askpass-main.js
+VSCODE_GIT_ASKPASS_NODE=/usr/share/code/code
+DBUS_STARTER_BUS_TYPE=session
+SYSTEMD_EXEC_PID=2835
+GSM_SKIP_SSH_AGENT_WORKAROUND=true
+DBUS_SESSION_BUS_ADDRESS=unix:path=/run/user/1000/bus,guid=6fe8efd6ddb09262402a8f5b6895c176
+COLORTERM=truecolor
+DEBUGINFOD_URLS=https://debuginfod.ubuntu.com
+IM_CONFIG_PHASE=1
+WAYLAND_DISPLAY=wayland-0
+LOGNAME=vhacman
+_=/usr/bin/valgrind
+MEMORY_PRESSURE_WATCH=/sys/fs/cgroup/user.slice/user-1000.slice/user@1000.service/app.slice/app-gnome\x2dsession\x2dmanager.slice/gnome-session-manager@ubuntu.service/memory.pressure
+XDG_SESSION_CLASS=user
+USERNAME=vhacman
+TERM=xterm-256color
+GNOME_DESKTOP_SESSION_ID=this-is-deprecated
+PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/snap/bin:/snap/bin:/home/vhacman/.local/bin:/home/vhacman/.local/bin:/home/vhacman/.local/bin
+SESSION_MANAGER=local/viorica-gabriela-hacman-Modern-15-A11MU:@/tmp/.ICE-unix/2835,unix/viorica-gabriela-hacman-Modern-15-A11MU:/tmp/.ICE-unix/2835
+XDG_MENU_PREFIX=gnome-
+GNOME_TERMINAL_SCREEN=/org/gnome/Terminal/screen/fa843637_45ca_4435_8305_c4924dd250dd
+GNOME_SETUP_DISPLAY=:1
+XDG_RUNTIME_DIR=/run/user/1000
+GDK_BACKEND=x11
+GLIBCPP_FORCE_NEW=1
+DISPLAY=:0
+LANG=en_US.UTF-8
+XDG_CURRENT_DESKTOP=Unity
+XMODIFIERS=@im=ibus
+XDG_SESSION_DESKTOP=ubuntu
+XAUTHORITY=/run/user/1000/.mutter-Xwaylandauth.QXH6A3
+VSCODE_GIT_IPC_HANDLE=/run/user/1000/vscode-git-1e5739cc29.sock
+GNOME_TERMINAL_SERVICE=:1.100
+TERM_PROGRAM=vscode
+SSH_AUTH_SOCK=/run/user/1000/keyring/ssh
+ORIGINAL_XDG_CURRENT_DESKTOP=ubuntu:GNOME
+SHELL=/bin/bash
+QT_ACCESSIBILITY=1
+GDMSESSION=ubuntu
+VSCODE_GIT_ASKPASS_EXTRA_ARGS=
+QT_IM_MODULE=ibus
+PWD=/home/vhacman/Desktop/minishell
+XDG_CONFIG_DIRS=/etc/xdg/xdg-ubuntu:/etc/xdg
+DBUS_STARTER_ADDRESS=unix:path=/run/user/1000/bus,guid=6fe8efd6ddb09262402a8f5b6895c176
+XDG_DATA_DIRS=/usr/share/ubuntu:/usr/share/gnome:/usr/local/share/:/usr/share/:/var/lib/snapd/desktop
+MEMORY_PRESSURE_WRITE=c29tZSAyMDAwMDAgMjAwMDAwMAA=
+VTE_VERSION=7600
+GLIBCXX_FORCE_NEW=1
+LD_PRELOAD=/usr/libexec/valgrind/vgpreload_core-amd64-linux.so:/usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so
+minishell  ➤
+
+OK
+
+-------------------------------
+
+$> export FOO=bar
+$> env
+
+minishell  ➤ export FOO=bar
+minishell  ➤ env
+LANGUAGE=en_US
+USER=vhacman
+XDG_SESSION_TYPE=wayland
+GIT_ASKPASS=/usr/share/code/resources/app/extensions/git/dist/askpass.sh
+SHLVL=2
+LD_LIBRARY_PATH=/usr/lib/debug
+HOME=/home/vhacman
+CHROME_DESKTOP=code.desktop
+TERM_PROGRAM_VERSION=1.102.2
+DESKTOP_SESSION=ubuntu
+GNOME_SHELL_SESSION_MODE=ubuntu
+GTK_MODULES=gail:atk-bridge
+VSCODE_GIT_ASKPASS_MAIN=/usr/share/code/resources/app/extensions/git/dist/askpass-main.js
+VSCODE_GIT_ASKPASS_NODE=/usr/share/code/code
+DBUS_STARTER_BUS_TYPE=session
+SYSTEMD_EXEC_PID=2835
+GSM_SKIP_SSH_AGENT_WORKAROUND=true
+DBUS_SESSION_BUS_ADDRESS=unix:path=/run/user/1000/bus,guid=6fe8efd6ddb09262402a8f5b6895c176
+COLORTERM=truecolor
+DEBUGINFOD_URLS=https://debuginfod.ubuntu.com
+IM_CONFIG_PHASE=1
+WAYLAND_DISPLAY=wayland-0
+LOGNAME=vhacman
+_=/usr/bin/valgrind
+MEMORY_PRESSURE_WATCH=/sys/fs/cgroup/user.slice/user-1000.slice/user@1000.service/app.slice/app-gnome\x2dsession\x2dmanager.slice/gnome-session-manager@ubuntu.service/memory.pressure
+XDG_SESSION_CLASS=user
+USERNAME=vhacman
+TERM=xterm-256color
+GNOME_DESKTOP_SESSION_ID=this-is-deprecated
+PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/snap/bin:/snap/bin:/home/vhacman/.local/bin:/home/vhacman/.local/bin:/home/vhacman/.local/bin
+SESSION_MANAGER=local/viorica-gabriela-hacman-Modern-15-A11MU:@/tmp/.ICE-unix/2835,unix/viorica-gabriela-hacman-Modern-15-A11MU:/tmp/.ICE-unix/2835
+XDG_MENU_PREFIX=gnome-
+GNOME_TERMINAL_SCREEN=/org/gnome/Terminal/screen/fa843637_45ca_4435_8305_c4924dd250dd
+GNOME_SETUP_DISPLAY=:1
+XDG_RUNTIME_DIR=/run/user/1000
+GDK_BACKEND=x11
+GLIBCPP_FORCE_NEW=1
+DISPLAY=:0
+LANG=en_US.UTF-8
+XDG_CURRENT_DESKTOP=Unity
+XMODIFIERS=@im=ibus
+XDG_SESSION_DESKTOP=ubuntu
+XAUTHORITY=/run/user/1000/.mutter-Xwaylandauth.QXH6A3
+VSCODE_GIT_IPC_HANDLE=/run/user/1000/vscode-git-1e5739cc29.sock
+GNOME_TERMINAL_SERVICE=:1.100
+TERM_PROGRAM=vscode
+SSH_AUTH_SOCK=/run/user/1000/keyring/ssh
+ORIGINAL_XDG_CURRENT_DESKTOP=ubuntu:GNOME
+SHELL=/bin/bash
+QT_ACCESSIBILITY=1
+GDMSESSION=ubuntu
+VSCODE_GIT_ASKPASS_EXTRA_ARGS=
+QT_IM_MODULE=ibus
+PWD=/home/vhacman/Desktop/minishell
+XDG_CONFIG_DIRS=/etc/xdg/xdg-ubuntu:/etc/xdg
+DBUS_STARTER_ADDRESS=unix:path=/run/user/1000/bus,guid=6fe8efd6ddb09262402a8f5b6895c176
+XDG_DATA_DIRS=/usr/share/ubuntu:/usr/share/gnome:/usr/local/share/:/usr/share/:/var/lib/snapd/desktop
+MEMORY_PRESSURE_WRITE=c29tZSAyMDAwMDAgMjAwMDAwMAA=
+VTE_VERSION=7600
+GLIBCXX_FORCE_NEW=1
+LD_PRELOAD=/usr/libexec/valgrind/vgpreload_core-amd64-linux.so:/usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so
+FOO=bar
+minishell  ➤
+
+
+OK
+------------------------------------------------------
+
+$> echo $FOO
+
+
+
+minishell  ➤ echo $FOO
+bar
+minishell  ➤
+
+OK
+
+-------------------------------------------------------
+$> /usr/bin/env
+
+
+minishell  ➤ /usr/bin/env
+LANGUAGE=en_US
+USER=vhacman
+XDG_SESSION_TYPE=wayland
+GIT_ASKPASS=/usr/share/code/resources/app/extensions/git/dist/askpass.sh
+SHLVL=2
+LD_LIBRARY_PATH=/usr/lib/debug
+HOME=/home/vhacman
+CHROME_DESKTOP=code.desktop
+TERM_PROGRAM_VERSION=1.102.2
+DESKTOP_SESSION=ubuntu
+GNOME_SHELL_SESSION_MODE=ubuntu
+GTK_MODULES=gail:atk-bridge
+VSCODE_GIT_ASKPASS_MAIN=/usr/share/code/resources/app/extensions/git/dist/askpass-main.js
+VSCODE_GIT_ASKPASS_NODE=/usr/share/code/code
+DBUS_STARTER_BUS_TYPE=session
+SYSTEMD_EXEC_PID=2835
+GSM_SKIP_SSH_AGENT_WORKAROUND=true
+DBUS_SESSION_BUS_ADDRESS=unix:path=/run/user/1000/bus,guid=6fe8efd6ddb09262402a8f5b6895c176
+COLORTERM=truecolor
+DEBUGINFOD_URLS=https://debuginfod.ubuntu.com
+IM_CONFIG_PHASE=1
+WAYLAND_DISPLAY=wayland-0
+LOGNAME=vhacman
+_=/usr/bin/valgrind
+MEMORY_PRESSURE_WATCH=/sys/fs/cgroup/user.slice/user-1000.slice/user@1000.service/app.slice/app-gnome\x2dsession\x2dmanager.slice/gnome-session-manager@ubuntu.service/memory.pressure
+XDG_SESSION_CLASS=user
+USERNAME=vhacman
+TERM=xterm-256color
+GNOME_DESKTOP_SESSION_ID=this-is-deprecated
+PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/snap/bin:/snap/bin:/home/vhacman/.local/bin:/home/vhacman/.local/bin:/home/vhacman/.local/bin
+SESSION_MANAGER=local/viorica-gabriela-hacman-Modern-15-A11MU:@/tmp/.ICE-unix/2835,unix/viorica-gabriela-hacman-Modern-15-A11MU:/tmp/.ICE-unix/2835
+XDG_MENU_PREFIX=gnome-
+GNOME_TERMINAL_SCREEN=/org/gnome/Terminal/screen/fa843637_45ca_4435_8305_c4924dd250dd
+GNOME_SETUP_DISPLAY=:1
+XDG_RUNTIME_DIR=/run/user/1000
+GDK_BACKEND=x11
+GLIBCPP_FORCE_NEW=1
+DISPLAY=:0
+LANG=en_US.UTF-8
+XDG_CURRENT_DESKTOP=Unity
+XMODIFIERS=@im=ibus
+XDG_SESSION_DESKTOP=ubuntu
+XAUTHORITY=/run/user/1000/.mutter-Xwaylandauth.QXH6A3
+VSCODE_GIT_IPC_HANDLE=/run/user/1000/vscode-git-1e5739cc29.sock
+GNOME_TERMINAL_SERVICE=:1.100
+TERM_PROGRAM=vscode
+SSH_AUTH_SOCK=/run/user/1000/keyring/ssh
+ORIGINAL_XDG_CURRENT_DESKTOP=ubuntu:GNOME
+SHELL=/bin/bash
+QT_ACCESSIBILITY=1
+GDMSESSION=ubuntu
+VSCODE_GIT_ASKPASS_EXTRA_ARGS=
+QT_IM_MODULE=ibus
+PWD=/home/vhacman/Desktop/minishell
+XDG_CONFIG_DIRS=/etc/xdg/xdg-ubuntu:/etc/xdg
+DBUS_STARTER_ADDRESS=unix:path=/run/user/1000/bus,guid=6fe8efd6ddb09262402a8f5b6895c176
+XDG_DATA_DIRS=/usr/share/ubuntu:/usr/share/gnome:/usr/local/share/:/usr/share/:/var/lib/snapd/desktop
+MEMORY_PRESSURE_WRITE=c29tZSAyMDAwMDAgMjAwMDAwMAA=
+VTE_VERSION=7600
+GLIBCXX_FORCE_NEW=1
+LD_PRELOAD=
+LINES=12
+COLUMNS=142
+minishell  ➤
+
+
+KO
+
+
+---------------------------------------
+
+$> unset FOO
+
+
+minishell  ➤ unset FOO
+minishell  ➤ env
+LANGUAGE=en_US
+USER=vhacman
+XDG_SESSION_TYPE=wayland
+GIT_ASKPASS=/usr/share/code/resources/app/extensions/git/dist/askpass.sh
+SHLVL=2
+LD_LIBRARY_PATH=/usr/lib/debug
+HOME=/home/vhacman
+CHROME_DESKTOP=code.desktop
+TERM_PROGRAM_VERSION=1.102.2
+DESKTOP_SESSION=ubuntu
+GNOME_SHELL_SESSION_MODE=ubuntu
+GTK_MODULES=gail:atk-bridge
+VSCODE_GIT_ASKPASS_MAIN=/usr/share/code/resources/app/extensions/git/dist/askpass-main.js
+VSCODE_GIT_ASKPASS_NODE=/usr/share/code/code
+DBUS_STARTER_BUS_TYPE=session
+SYSTEMD_EXEC_PID=2835
+GSM_SKIP_SSH_AGENT_WORKAROUND=true
+DBUS_SESSION_BUS_ADDRESS=unix:path=/run/user/1000/bus,guid=6fe8efd6ddb09262402a8f5b6895c176
+COLORTERM=truecolor
+DEBUGINFOD_URLS=https://debuginfod.ubuntu.com
+IM_CONFIG_PHASE=1
+WAYLAND_DISPLAY=wayland-0
+LOGNAME=vhacman
+_=/usr/bin/valgrind
+MEMORY_PRESSURE_WATCH=/sys/fs/cgroup/user.slice/user-1000.slice/user@1000.service/app.slice/app-gnome\x2dsession\x2dmanager.slice/gnome-session-manager@ubuntu.service/memory.pressure
+XDG_SESSION_CLASS=user
+USERNAME=vhacman
+TERM=xterm-256color
+GNOME_DESKTOP_SESSION_ID=this-is-deprecated
+PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/snap/bin:/snap/bin:/home/vhacman/.local/bin:/home/vhacman/.local/bin:/home/vhacman/.local/bin
+SESSION_MANAGER=local/viorica-gabriela-hacman-Modern-15-A11MU:@/tmp/.ICE-unix/2835,unix/viorica-gabriela-hacman-Modern-15-A11MU:/tmp/.ICE-unix/2835
+XDG_MENU_PREFIX=gnome-
+GNOME_TERMINAL_SCREEN=/org/gnome/Terminal/screen/fa843637_45ca_4435_8305_c4924dd250dd
+GNOME_SETUP_DISPLAY=:1
+XDG_RUNTIME_DIR=/run/user/1000
+GDK_BACKEND=x11
+GLIBCPP_FORCE_NEW=1
+DISPLAY=:0
+LANG=en_US.UTF-8
+XDG_CURRENT_DESKTOP=Unity
+XMODIFIERS=@im=ibus
+XDG_SESSION_DESKTOP=ubuntu
+XAUTHORITY=/run/user/1000/.mutter-Xwaylandauth.QXH6A3
+VSCODE_GIT_IPC_HANDLE=/run/user/1000/vscode-git-1e5739cc29.sock
+GNOME_TERMINAL_SERVICE=:1.100
+TERM_PROGRAM=vscode
+SSH_AUTH_SOCK=/run/user/1000/keyring/ssh
+ORIGINAL_XDG_CURRENT_DESKTOP=ubuntu:GNOME
+SHELL=/bin/bash
+QT_ACCESSIBILITY=1
+GDMSESSION=ubuntu
+VSCODE_GIT_ASKPASS_EXTRA_ARGS=
+QT_IM_MODULE=ibus
+PWD=/home/vhacman/Desktop/minishell
+XDG_CONFIG_DIRS=/etc/xdg/xdg-ubuntu:/etc/xdg
+DBUS_STARTER_ADDRESS=unix:path=/run/user/1000/bus,guid=6fe8efd6ddb09262402a8f5b6895c176
+XDG_DATA_DIRS=/usr/share/ubuntu:/usr/share/gnome:/usr/local/share/:/usr/share/:/var/lib/snapd/desktop
+MEMORY_PRESSURE_WRITE=c29tZSAyMDAwMDAgMjAwMDAwMAA=
+VTE_VERSION=7600
+GLIBCXX_FORCE_NEW=1
+LD_PRELOAD=/usr/libexec/valgrind/vgpreload_core-amd64-linux.so:/usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so
+minishell  ➤
+
+
+
+eseguito nuovamente su variabile gia assente --> OK
+OK
+------------------------------------------------------------
+
+
+| Test                        | Stato    |  Note                                |
+| --------------------------- | -------  | ------------------------------------ |
+| `env`                       | ✅       | OK                                   |
+| `export FOO=bar`            | ✅       | OK (sintassi alternativa supportata) |
+| `echo $FOO`                 | ✅       | OK                                   |
+| `/usr/bin/env` (con `FOO`)  | ❌       | `envp` non aggiornato in `execve()`  |
+| `unset FOO`                 | ✅       | OK                                   |
+| `unset FOO` (seconda volta) | ✅       | Nessun effetto, corretto             |
+| `/usr/bin/env` (dopo unset) | ❌ (N/A) | Non testabile senza fix di sopra     |
+
+-----------------------------------------
+
+ Sezione 4 — Gestione del PATH
+
+
+$> export PATH="/bin:/usr/bin"
+$> ls
+
+
+ minishell  ➤ export PATH="/bin:/usr/bin"
+minishell  ➤ ls
+DONE.txt  include  libft  Makefile  minishell  obj  src  supp.supp  TEORIA_DA_SAPERE.txt  TODO
+minishell  ➤
+
+
+OK
+-----------------------
+$> unset PATH
+
+
+minishell  ➤ unset PATH
+minishell  ➤ ls
+DONE.txt  include  libft  Makefile  minishell  obj  src  supp.supp  TEORIA_DA_SAPERE.txt  TODO
+minishell  ➤
+
+KO
+
+-----------------------------------
+$> /bin/ls
+
+
+minishell  ➤ /bin/ls
+DONE.txt  include  libft  Makefile  minishell  obj  src  supp.supp  TEORIA_DA_SAPERE.txt  TODO
+minishell  ➤
+
+OK
+
+--------------------------------------
+$> /usr/bin/wc Makefile
+
+
+minishell  ➤ /usr/bin/wc Makefile
+ 130  326 3286 Makefile
+minishell  ➤
+
+OK
+
+-------------------------------
+
+
+| Test                  | Stato  | Note                                 |
+| --------------------- | -----  | ------------------------------------ |
+| `export PATH` + `ls`  | ✅     | Ricerca in PATH funziona             |
+| Binario in `/usr/bin` | ✅     | Comando `wc` eseguito correttamente  |
+| `unset PATH` + `ls`   | ❌     | PATH non rimosso realmente           |
+| `/usr/bin/env`        | 🟨     | Funziona, ma non testabile del tutto |
+| `/bin/ls`             | ✅     | Path assoluto funziona               |
+| `/usr/bin/wc`         | ✅     | Path assoluto funziona               |
+
+-------------------------------------------------------------------------
+
+Gestione della linea di comando (spazi, input vuoto, ecc.)
+
+[minishell] ➤ [premi Invio senza scrivere nulla]
+
+OK
+
+-------------------------
+
+$>  echo       ciao        mondo
+
+
+minishell  ➤ echo       ciao        mondo
+ciao mondo
+minishell  ➤
+
+OK
+----------------------------------------
+
+
+$>  echo "ciao                    mondo"
+
+
+minishell  ➤ echo "ciao                    mondo"
+ciao                    mondo
+minishell  ➤
+
+OK
+-----------------------------------
+$>  echo 'ciao mondo'
+
+minishell  ➤ echo 'ciao mondo'
+ciao mondo
+minishell  ➤
+
+OK
+-------------------------------
+
+minishell  ➤ echo -n ciao
+ciaominishell  ➤ echo -n
+minishell  ➤ echo -n -n ciao
+ciaominishell  ➤ echo -n -n -n ciao
+ciaominishell  ➤ echo -nnnnnnnnnnnnnnnnnnnnnnnnnn ciao
+ciaominishell  ➤ echo -nnnnnnnnnnnnnnnnnnnnnnnnnn
+minishell  ➤ echo -n -e ciao
+-e ciaominishell  ➤ echo -n -x ciao
+-x ciaominishell  ➤
+
+OK
+
+------------------------------
+
+
+$> export VAR="42 Roma"
+$> echo "$VAR"
+
+
+minishell  ➤ export VAR="42 Roma"
+minishell  ➤ echo "$VAR"
+42 Roma
+minishell  ➤
+
+
+OK
+--------------------------
+
+minishell  ➤ echo $NONEXIESTENT
+
+minishell  ➤
+
+OK
+-----------------------------
+minishell  ➤ echo '$NONEXISTENT'
+$NONEXISTENT
+minishell  ➤
+
+
+OK
+
+---------------------------
+
+minishell  ➤ echo "ciao\nmondo"
+ciao\nmondo
+minishell  ➤ echo -e "ciao\nmondo"
+-e ciao\nmondo
+minishell  ➤ echo 'ciao\nmondo'
+ciao\nmondo
+minishell  ➤
+
+🔸 echo "ciao\nmondo"
+Output: ciao\nmondo
+
+✔️ Corretto. Le virgolette doppie preservano il backslash, e la tua minishell non interpreta \n come newline (giusto: non è obbligatorio farlo).
+
+🔸 echo -e "ciao\nmondo"
+Output: -e ciao\nmondo
+
+✔️ Corretto. La tua minishell non tratta -e come opzione speciale, quindi lo stampa come semplice stringa. Anche questo è conforme, dato che il comportamento di -e non è standardizzato in POSIX (è una "estensione" comune di Bash, ma non obbligatoria).
+
+🔸 echo 'ciao\nmondo'
+Output: ciao\nmondo
+
+✔️ Corretto. Le virgolette singole impediscono qualsiasi espansione o interpretazione di caratteri speciali.
+
+-----------------------------------------------------------------
+
+ redirezione semplice dell’output
+
+$>echo hello > test_output.txt
+
+
+ minishell  ➤ echo hello > test_output.txt
+minishell  ➤ cat test_output.txt
+hello
+minishell  ➤
+
+OK
+----------------------------------
+
+minishell  ➤ echo world >> test_output.txt
+minishell  ➤ cat test_output.txt
+hello
+world
+minishell  ➤
+
+OK
+------------------------------
+
+TEST INPUT - DA FARE
+
+TEST  HEREDOC DA FARE
+
+------------------------------
+$>  ls | cat
+
+
+minishell  ➤ ls | cat
+DONE.txt
+include
+libft
+Makefile
+minishell
+obj
+src
+supp.supp
+TEORIA_DA_SAPERE.txt
+test_output.txt
+TODO
+minishell  ➤
+
+OK
+----------------------------
+
+minishell  ➤ cat Makefile | grep minishell
+NAME            = minishell
+        @echo "$(GREEN)compiling minishell$(RESET)"
+minishell  ➤
+
+
+OK
+
+--------------------------
+
+minishell  ➤ ls -l | wc -l
+12
+minishell  ➤
+
+ok
+------------------------------
+
+minishell  ➤ echo hello | wc -c
+==36512==
+==36512== HEAP SUMMARY:
+==36512==     in use at exit: 238,983 bytes in 645 blocks
+==36512==   total heap usage: 4,313 allocs, 3,668 frees, 1,378,360 bytes allocated
+==36512==
+==36512== LEAK SUMMARY:
+==36512==    definitely lost: 0 bytes in 0 blocks
+==36512==    indirectly lost: 0 bytes in 0 blocks
+==36512==      possibly lost: 0 bytes in 0 blocks
+==36512==    still reachable: 0 bytes in 0 blocks
+==36512==         suppressed: 238,983 bytes in 645 blocks
+==36512==
+==36512== For lists of detected and suppressed errors, rerun with: -s
+==36512== ERROR SUMMARY: 0 errors from 0 contexts (suppressed: 1 from 1)
+6
+minishell  ➤
+
+OK
+------------------------------------
+
+minishell  ➤ cat < test_output.txt | grep hello
+cat: '<': No such file or directory
+hello
+minishell  ➤
+
+
+ANCORA NON IMPLEMENTATO
+
+--------------------------
+
+
+EXIT
+
+
+minishell  ➤ exit 42
+exit
+==37770==
+==37770== HEAP SUMMARY:
+==37770==     in use at exit: 232,904 bytes in 238 blocks
+==37770==   total heap usage: 783 allocs, 545 frees, 264,870 bytes allocated
+==37770==
+==37770== LEAK SUMMARY:
+==37770==    definitely lost: 0 bytes in 0 blocks
+==37770==    indirectly lost: 0 bytes in 0 blocks
+==37770==      possibly lost: 0 bytes in 0 blocks
+==37770==    still reachable: 0 bytes in 0 blocks
+==37770==         suppressed: 232,904 bytes in 238 blocks
+==37770==
+==37770== For lists of detected and suppressed errors, rerun with: -s
+==37770== ERROR SUMMARY: 0 errors from 0 contexts (suppressed: 0 from 0)
+vhacman@viorica-gabriela-hacman-Modern-15-A11MU:~/Desktop/minishell$ echo $?
+42
+vhacman@viorica-gabriela-hacman-Modern-15-A11MU:~/Desktop/minishell$
+
+OK
+
+---------------------
+
+minishell  ➤ exit hello
+exit
+minishell: exit: hello: numeric argument required
+==38045==
+==38045== HEAP SUMMARY:
+==38045==     in use at exit: 232,910 bytes in 238 blocks
+==38045==   total heap usage: 780 allocs, 542 frees, 264,825 bytes allocated
+==38045==
+==38045== LEAK SUMMARY:
+==38045==    definitely lost: 0 bytes in 0 blocks
+==38045==    indirectly lost: 0 bytes in 0 blocks
+==38045==      possibly lost: 0 bytes in 0 blocks
+==38045==    still reachable: 0 bytes in 0 blocks
+==38045==         suppressed: 232,910 bytes in 238 blocks
+==38045==
+==38045== For lists of detected and suppressed errors, rerun with: -s
+==38045== ERROR SUMMARY: 0 errors from 0 contexts (suppressed: 0 from 0)
+vhacman@viorica-gabriela-hacman-Modern-15-A11MU:~/Desktop/minishell$
+
+OK
+
+---------------------------------------
+
+
+minishell  ➤ exit 1 2
+exit
+minishell: exit: too many arguments
+minishell  ➤
+
+OK
+
+----------------------------------
+
+
+minishell  ➤ exit -1
+exit
+==38410==
+==38410== HEAP SUMMARY:
+==38410==     in use at exit: 232,966 bytes in 242 blocks
+==38410==   total heap usage: 815 allocs, 573 frees, 269,368 bytes allocated
+==38410==
+==38410== LEAK SUMMARY:
+==38410==    definitely lost: 0 bytes in 0 blocks
+==38410==    indirectly lost: 0 bytes in 0 blocks
+==38410==      possibly lost: 0 bytes in 0 blocks
+==38410==    still reachable: 0 bytes in 0 blocks
+==38410==         suppressed: 232,966 bytes in 242 blocks
+==38410==
+==38410== For lists of detected and suppressed errors, rerun with: -s
+==38410== ERROR SUMMARY: 0 errors from 0 contexts (suppressed: 1 from 1)
+vhacman@viorica-gabriela-hacman-Modern-15-A11MU:~/Desktop/minishell$ echo $?
+255
+vhacman@viorica-gabriela-hacman-Modern-15-A11MU:~/Desktop/minishell$
+
+OK
+
+-----------------------------------
+
+
+minishell  ➤ exit 999999999999999999999999999999999999999999999999
+exit
+minishell: exit: 999999999999999999999999999999999999999999999999: numeric argument required
+==38633==
+==38633== HEAP SUMMARY:
+==38633==     in use at exit: 232,996 bytes in 238 blocks
+==38633==   total heap usage: 782 allocs, 544 frees, 265,190 bytes allocated
+==38633==
+==38633== LEAK SUMMARY:
+==38633==    definitely lost: 0 bytes in 0 blocks
+==38633==    indirectly lost: 0 bytes in 0 blocks
+==38633==      possibly lost: 0 bytes in 0 blocks
+==38633==    still reachable: 0 bytes in 0 blocks
+==38633==         suppressed: 232,996 bytes in 238 blocks
+==38633==
+==38633== For lists of detected and suppressed errors, rerun with: -s
+==38633== ERROR SUMMARY: 0 errors from 0 contexts (suppressed: 0 from 0)
+vhacman@viorica-gabriela-hacman-Modern-15-A11MU:~/Desktop/minishell$ echo $?
+255
+vhacman@viorica-gabriela-hacman-Modern-15-A11MU:~/Desktop/minishell$
+
+OK
+
+-------------------------------
+
+minishell  ➤ exit 258
+exit
+==38792==
+==38792== HEAP SUMMARY:
+==38792==     in use at exit: 232,906 bytes in 238 blocks
+==38792==   total heap usage: 787 allocs, 549 frees, 264,945 bytes allocated
+==38792==
+==38792== LEAK SUMMARY:
+==38792==    definitely lost: 0 bytes in 0 blocks
+==38792==    indirectly lost: 0 bytes in 0 blocks
+==38792==      possibly lost: 0 bytes in 0 blocks
+==38792==    still reachable: 0 bytes in 0 blocks
+==38792==         suppressed: 232,906 bytes in 238 blocks
+==38792==
+==38792== For lists of detected and suppressed errors, rerun with: -s
+==38792== ERROR SUMMARY: 0 errors from 0 contexts (suppressed: 0 from 0)
+vhacman@viorica-gabriela-hacman-Modern-15-A11MU:~/Desktop/minishell$ echo $?
+2
+vhacman@viorica-gabriela-hacman-Modern-15-A11MU:~/Desktop/minishell$
+
+
+OK
+--------------------------------------
+| Test             | Uscita prevista     | Uscita effettiva ✅  |
+| ---------------- | ------------------- | -------------------- |
+| `exit`           | Chiude (status 0)   | OK                   |
+| `exit 42`        | Chiude (status 42)  | OK                   |
+| `exit hello`     | Msg + status 255    | OK                   |
+| `exit 1 2`       | Msg, non esce       | OK                   |
+| `exit -1`        | Chiude (status 255) | OK                   |
+| `exit 999999...` | Msg + status 255    | OK                   |
+| `exit 258`       | Chiude (status 2)   | OK (`258 % 256 = 2`) |
+
+
+--------------------------
+
+minishell  ➤ emacs
+emacs command not found
+minishell  ➤
+
+
+KO
+
+-------------------------

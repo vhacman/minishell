@@ -9,7 +9,7 @@ static int open_file_with_type(char *filename, int redirect_type)
 {
     int fd;
     int flags;
-    
+
     if (redirect_type == TK_OUT)
     {
         // > : Sovrascrivi il file
@@ -24,12 +24,12 @@ static int open_file_with_type(char *filename, int redirect_type)
     {
         return -1; // Tipo non supportato
     }
-    
+
     fd = open(filename, flags, 0644);
-    
+
     if (fd == -1)
         perror("minishell");
-    
+
     return fd;
 }
 
@@ -43,7 +43,7 @@ static int count_args_without_redirection(t_token *tokens)
     t_token *curr;
     t_token *prev;
     int word_count = 0;
-    
+
     curr = tokens;
     prev = NULL;
     while (curr)
@@ -51,7 +51,7 @@ static int count_args_without_redirection(t_token *tokens)
         if (curr->type == TK_WORD)
         {
             // Se il token precedente era una redirezione, salta questo filename
-            if (!(prev && (prev->type == TK_OUT || prev->type == TK_APPEND || 
+            if (!(prev && (prev->type == TK_OUT || prev->type == TK_APPEND ||
                           prev->type == TK_IN || prev->type == TK_HEREDOC)))
             {
                 word_count++;
@@ -60,7 +60,7 @@ static int count_args_without_redirection(t_token *tokens)
         prev = curr;
         curr = curr->next;
     }
-    
+
     return word_count;
 }
 
@@ -72,15 +72,15 @@ char **create_args_without_redirection(t_token *tokens)
     int word_count;
     char **args;
     int i = 0;
-    
+
     // 1. CONTA I TOKEN TK_WORD (escludendo redirezioni)
     word_count = count_args_without_redirection(tokens);
-    
+
     // 2. ALLOCA ARRAY
     args = calloc(sizeof(char *), word_count + 1);
     if (!args)
         return NULL;
-    
+
     // 3. COPIA GLI ARGOMENTI (escludendo filename)
     curr = tokens;
     prev = NULL;
@@ -107,7 +107,7 @@ char **create_args_without_redirection(t_token *tokens)
         prev = curr;
         curr = curr->next;
     }
-    
+
     args[i] = NULL;
     return args;
 }
@@ -128,7 +128,7 @@ int handle_redirection_with_tokens(t_token *tokens, t_shell *shell)
 
     curr = tokens;
     file_fd = -1;
-    
+
     // Scansiona tutti i token per trovare redirezioni
     while (curr != NULL)
     {
@@ -188,14 +188,14 @@ int handle_redirection_with_tokens(t_token *tokens, t_shell *shell)
         close(file_fd);
         shell->saved_stdout = saved_fd;
     }
-    
+
     return 0;
 }
 
 // Ripristina i file descriptor originali
 void restore_redirection(t_shell *shell)
 {
-    if ((shell->redirect_type == TK_OUT || shell->redirect_type == TK_APPEND) 
+    if ((shell->redirect_type == TK_OUT || shell->redirect_type == TK_APPEND)
         && shell->saved_stdout != -1)
     {
         dup2(shell->saved_stdout, STDOUT_FILENO);

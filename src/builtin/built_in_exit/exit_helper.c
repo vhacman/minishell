@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exit_helper.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vhacman <vhacman@student.42roma.it>        +#+  +:+       +#+        */
+/*   By: vhacman <vhacman@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/29 14:01:01 by vhacman           #+#    #+#             */
-/*   Updated: 2025/08/06 15:03:52 by vhacman          ###   ########.fr       */
+/*   Updated: 2025/08/08 11:42:53 by vhacman          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,31 +48,37 @@ int	check_numeric_overflow(char *str)
 	return (0);
 }
 
+static int ft_skip_whitespace(char *str)
+{
+	int	i;
 
-/*
-** is_numeric - Checks if a string represents a valid numeric format.
-** - Handles leading/trailing whitespace by skipping it
-** - Allows optional + or - sign
-** - Requires at least one digit
-** - Does NOT check for overflow (that's handled separately)
-** 
-** This matches bash behavior for format checking.
-*/
+	i = 0;
+	while(str[i] && (str[i] == ' ' || str[i] == '\t'))
+		i++;
+	return (i);
+}
+
+static int	ft_skip_prefix(char *str)
+{
+	int	i;
+
+	i = ft_skip_whitespace(str);
+	if(str[i] == '+' || str[i] == '-')
+		i++;
+	return (i);
+}
+
 int	is_numeric(char *str)
 {
 	int	i;
 	int	has_digits;
 
-	if (!str || str[0] == '\0')
+	if(!str || str[0] == '\0')
 		return (0);
-	i = 0;
-	has_digits = 0;
-	while (str[i] && (str[i] == ' ' || str[i] == '\t'))
-		i++;
-	if (str[i] == '+' || str[i] == '-')
-		i++;
+	i = ft_skip_prefix(str);
 	if (str[i] == '\0')
 		return (0);
+	has_digits = 0;
 	while (str[i])
 	{
 		if (str[i] >= '0' && str[i] <= '9')
@@ -82,8 +88,7 @@ int	is_numeric(char *str)
 		}
 		else if (str[i] == ' ' || str[i] == '\t')
 		{
-			while (str[i] && (str[i] == ' ' || str[i] == '\t'))
-				i++;
+			i = ft_skip_whitespace(str);
 			break;
 		}
 		else
