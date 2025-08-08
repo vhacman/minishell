@@ -23,7 +23,7 @@ int	execute_command_type(char **args, t_shell *shell)
 	if (!command_path)
 	{
 		ft_printf("%s command not found\n", args[0]);
-		return (-1);
+		return (127);
 	}
 	status = execute_external_command(command_path, args, shell);
 	free(command_path);
@@ -53,7 +53,7 @@ static char **prepare_cmd_args(t_token *tokens, t_shell *shell)
 {
 	char **args;
 
-	args = convert_tokens_to_args(tokens);
+	args = create_args_without_redirection(tokens);
 	if (!args)
 	{
 		cleanup_per_command(shell);
@@ -89,6 +89,7 @@ static int handle_exit_builtin(char **args, t_shell *shell)
 	int status;
 
 	status = handle_exit(shell, args);
+	restore_redirection(shell);
 	if (status == 0)
 	{
 		free_args_array(args);
@@ -110,6 +111,7 @@ static int handle_other_builtins(char **args, t_shell *shell)
 	int status;
 
 	status = handle_builtin(args, shell);
+	restore_redirection(shell);
 	cleanup_per_command(shell);
 	return (status);
 }
@@ -119,6 +121,7 @@ static int handle_external_command(char **args, t_shell *shell)
 	int status;
 
 	status = execute_command_type(args, shell);
+	restore_redirection(shell);
 	cleanup_per_command(shell);
 	return (status);
 }

@@ -117,6 +117,7 @@ char **create_args_without_redirection(t_token *tokens)
 /* =============================== */
 
 // Funzione principale che gestisce redirezioni con token
+// Funzione principale che gestisce redirezioni con token
 int handle_redirection_with_tokens(t_token *tokens, t_shell *shell)
 {
     t_token *curr;
@@ -188,7 +189,6 @@ int handle_redirection_with_tokens(t_token *tokens, t_shell *shell)
         shell->saved_stdout = saved_fd;
     }
     
-    restore_redirection(shell);
     return 0;
 }
 
