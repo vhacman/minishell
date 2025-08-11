@@ -6,7 +6,7 @@
 /*   By: vhacman <vhacman@student.42roma.it>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/16 16:11:29 by vhacman           #+#    #+#             */
-/*   Updated: 2025/08/06 15:03:22 by vhacman          ###   ########.fr       */
+/*   Updated: 2025/08/11 14:34:15 by vhacman          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,7 @@
 
 int			is_builtin(char *command);
 int			handle_builtin(char **args, t_shell *shell);
+
 
 /* =============================== */
 /*         CD FUNCTIONS            */
@@ -41,6 +42,9 @@ t_env		*copy_env_entries(char **env_entries);
 t_env		*find_env_node(t_env *env_list, char *key);
 int			update_env_node(t_env *node, char *new_value, int exported_flag);
 int			add_env_node(t_env **env_list, t_env *new_node);
+int			set_env_value(t_env **envp, const char *key, const char *value);
+char		*get_env_value (t_env *env, const char *key);
+size_t		count_env_nodes(t_env *env);
 
 /* =============================== */
 /*       ECHO FUNCTIONS            */

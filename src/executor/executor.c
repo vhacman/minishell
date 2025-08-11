@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   executor.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vhacman <vhacman@student.42.fr>            +#+  +:+       +#+        */
+/*   By: vhacman <vhacman@student.42roma.it>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/06 19:24:00 by vhacman           #+#    #+#             */
-/*   Updated: 2025/08/06 19:28:31 by vhacman          ###   ########.fr       */
+/*   Updated: 2025/08/11 13:30:52 by vhacman          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ int	execute_command_type(char **args, t_shell *shell)
 
 	if (is_builtin(args[0]))
 		return (handle_builtin(args, shell));
-	command_path = find_command_path(args[0]);
+	command_path = find_command_path(args[0], shell);
 	if (!command_path)
 	{
 		ft_printf("%s command not found\n", args[0]);

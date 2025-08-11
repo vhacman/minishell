@@ -36,7 +36,30 @@ echo 'echo test > file.txt' | ./minishell
 diff <(cat file.txt) <(cat file.txt)
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 -----------------------------
+RISOLTO
 
 X GABRIELA
 -----------------------
@@ -53,8 +76,11 @@ Ogni volta che fai un cd, dovresti:
 Salvare l’attuale working directory in OLDPWD
 Poi aggiornare PWD alla nuova directory
 
-----------------------------
+RISOLTO
 
+
+----------------------------
+RISOLTO
 cd ~/Desktop
 
 
@@ -68,9 +94,11 @@ minishell  ➤
 KO
 
 
---------------------------
-
+RISOLTO
 -------------------------------------------------------
+
+RISOLTO
+
 $> /usr/bin/env
 
 
@@ -157,7 +185,12 @@ Costruire un array di stringhe envp (tipo char **envp)
 Popolarlo con tutte le variabili esportate (export FOO=bar)
 Passarlo come terzo parametro a execve(path, argv, envp)
 Se invece stai passando envp = NULL o un array incompleto, il binario non vede FOO.
+
+RISOLTO
+
+
 ------------------------------------------
+RISOLTO
 
 $> unset PATH
 
@@ -183,4 +216,5 @@ vhacman@viorica-gabriela-hacman-Modern-15-A11MU:~/Desktop/minishell$
 Quando esegui un comando senza slash (/), devi cercarlo solo nei path indicati in $PATH.
 Se PATH è unset o vuoto, non devi cercare affatto → stampa errore tipo "command not found".
 
+RISOLTO
 -----------------------------------------

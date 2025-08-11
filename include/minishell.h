@@ -6,7 +6,7 @@
 /*   By: vhacman <vhacman@student.42roma.it>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/29 12:00:00 by vhacman           #+#    #+#             */
-/*   Updated: 2025/08/06 16:15:18 by vhacman          ###   ########.fr       */
+/*   Updated: 2025/08/11 15:01:40 by vhacman          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,7 +70,7 @@ char		*expand_program_name(char *input, int pos, t_shell *shell);
 /* =============================== */
 int			execute_command(t_token *tokens, t_shell *shell);
 int			execute_command_type(char **args, t_shell *shell);
-char		*find_command_path(char *command);
+char		*find_command_path(char *command, t_shell *shell);
 int			execute_external_command(char *cmd_path, char **args,
 				t_shell *shell);
 char		**convert_tokens_to_args(t_token *tokens);
@@ -113,8 +113,8 @@ int			setup_child_pipe(int pipe_fd[2], int is_left);
 int			create_pipe_and_setup(int pipe_fd[2]);
 int			handle_special_cases(char *input, t_shell *shell);
 void		execute_child_process(t_cmd *curr, int prev_fd, int *pipe_fd, t_shell *shell);
-
-
+int			populate_command_args(t_cmd *command, t_token *token_start);
+char		**build_envp_from_list(t_env *env);
 
 // redirect 
 void		restore_redirection(t_shell *shell);

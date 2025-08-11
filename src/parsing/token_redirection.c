@@ -1,67 +1,16 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   special_tokens.c                                   :+:      :+:    :+:   */
+/*   token_redirection.c                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: vhacman <vhacman@student.42roma.it>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/16 15:56:21 by vhacman           #+#    #+#             */
-/*   Updated: 2025/08/06 16:10:54 by vhacman          ###   ########.fr       */
+/*   Updated: 2025/08/11 16:21:15 by vhacman          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/minishell.h"
-
-static char	*process_quoted_content(const char *input, int *i, t_shell *shell)
-{
-	char	*quoted;
-	char	*expanded;
-	char	quote_type;
-
-	if (!input[*i])
-		return (NULL);
-	quote_type = input[*i];
-	quoted = extract_quoted_content(input, i, quote_type);
-	if (!quoted)
-		return (NULL);
-	if (quote_type == '"')
-	{
-		expanded = expand_variables(quoted, shell);
-		free(quoted);
-		if (!expanded)
-			return (NULL);
-		quoted = expanded;
-	}
-	return (quoted);
-}
-
-int	handle_quoted_token(t_token_context *context)
-{
-	char	*quoted;
-	t_token	*last_token;
-	char	*new_value;
-
-	quoted = process_quoted_content(context->input, context->i, context->shell);
-	if (!quoted)
-		return (0);
-	if (!context->had_whitespace)
-	{
-		last_token = get_last_token(*(context->tokens));
-		if (last_token && last_token->type == TK_WORD)
-		{
-			new_value = ft_strjoin(last_token->value, quoted);
-			free(last_token->value);
-			free(quoted);
-			if (!new_value)
-				return (0);
-			last_token->value = new_value;
-			return (1);
-		}
-	}
-	add_token_to_list(context->tokens, create_token(quoted, TK_WORD));
-	free (quoted);
-	return (1);
-}
 
 int	get_redir_type_and_length(char first, char second, int *length)
 {
@@ -75,8 +24,8 @@ int	get_redir_type_and_length(char first, char second, int *length)
 		return (*length = 1, TK_IN);
 }
 
-void get_redir(const char *input, int *curr_pos, int *type,
-					  char **token_str)
+void	get_redir(const char *input, int *curr_pos, int *type,
+					char **token_str)
 {
 	char	first;
 	char	second;
@@ -96,8 +45,8 @@ void get_redir(const char *input, int *curr_pos, int *type,
 		*token_str = ft_strdup("<");
 }
 
-void handle_redirection_token(const char *input, int *curr_pos,
-							  t_token **tokens)
+void	handle_redirection_token(const char *input, int *curr_pos,
+								t_token **tokens)
 {
 	int			type;
 	char		*token_str;

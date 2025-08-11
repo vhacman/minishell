@@ -6,11 +6,11 @@
 /*   By: vhacman <vhacman@student.42roma.it>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/29 09:46:13 by vhacman           #+#    #+#             */
-/*   Updated: 2025/07/15 10:40:49 by vhacman          ###   ########.fr       */
+/*   Updated: 2025/08/11 12:02:52 by vhacman          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../include/minishell.h"
+#include "../../../include/minishell.h"
 
 /*
 ** handle_env - Implements the builtin `env` command.

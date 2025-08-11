@@ -1,35 +1,41 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   error.c                                            :+:      :+:    :+:   */
+/*   tokenizer_utils.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: vhacman <vhacman@student.42roma.it>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/05/26 14:31:51 by vhacman           #+#    #+#             */
-/*   Updated: 2025/08/11 14:53:10 by vhacman          ###   ########.fr       */
+/*   Created: 2025/06/03 13:52:18 by vhacman           #+#    #+#             */
+/*   Updated: 2025/08/11 16:18:39 by vhacman          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/minishell.h"
 
-void	exit_with_error(char *msg, void *context, int flag, int use_errno)
+int	only_spaces(const char *str)
 {
-	if (use_errno)
+	while (*str)
 	{
-		ft_putstr_fd("minishell: ", 2);
-		perror(msg);
+		if (*str != ' ' && *str != '\t')
+			return (0);
+		str++;
 	}
-	else
-		ft_putstr_fd(msg, 2);
-	if (flag && context)
-		cleanup_per_command((t_shell *)context);
-	exit(EXIT_FAILURE);
+	return (1);
 }
 
-int	print_error(char *msg)
+int	is_separator(char c)
 {
-	ft_putstr_fd("minishell: ", 2);
-	perror(msg);
-	return (-1);
+	return (c == '|' || c == '<' || c == '>');
 }
 
+int	skip_whitespace_and_check(const char *str, int *i, int *had_whitespace)
+{
+	int	start_i;
+
+	start_i = *i;
+	while (str[*i] == ' ' || str[*i] == '\t')
+		(*i)++;
+	if (*i > start_i)
+		*had_whitespace = 1;
+	return (str[*i] != '\0');
+}

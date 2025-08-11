@@ -1,29 +1,48 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   cmd_utils.c                                        :+:      :+:    :+:   */
+/*   token_list.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vhacman <vhacman@student.42.fr>            +#+  +:+       +#+        */
+/*   By: vhacman <vhacman@student.42roma.it>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/07/21 15:34:15 by vhacman           #+#    #+#             */
-/*   Updated: 2025/08/05 10:17:15 by vhacman          ###   ########.fr       */
+/*   Created: 2025/06/03 13:31:33 by vhacman           #+#    #+#             */
+/*   Updated: 2025/08/11 16:19:28 by vhacman          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/minishell.h"
 
-//prende un token src, lo clona e lo aggiunge in fondo ad una lista
-//se la lista e' vuota (*head ==NULL), il nuovo token diventa sia inizio
-//che fine della lista, altrimenti viene collegato alla fine della lista corrente.
-//se il clone fallisce, restituisce NULL
-//Serve per costruire una lista pulita per ogni singolo comando.
-//infatti durante il parsinf dei comangi voglio costruire per ogni comando
-// la sua propria lista di token. Quindi questa funzione ci permette di accodare uno a uno i token clonati.
+void	add_token_to_list(t_token **head, t_token *new_token)
+{
+	t_token	*current;
+
+	if (!head || !new_token)
+		return ;
+	if (*head == NULL)
+	{
+		*head = new_token;
+		return ;
+	}
+	current = *head;
+	while (current->next)
+		current = current->next;
+	current->next = new_token;
+}
+
+t_token	*get_last_token(t_token *head)
+{
+	if (!head)
+		return (NULL);
+	while (head->next)
+		head = head->next;
+	return (head);
+}
+
 static t_token	*append_token(t_token **head, t_token **tail,
 									t_token *src_token)
 {
 	if (!src_token)
-		return NULL;
+		return (NULL);
 	src_token->next = NULL;
 	if (!*head)
 	{
@@ -35,16 +54,9 @@ static t_token	*append_token(t_token **head, t_token **tail,
 		(*tail)->next = src_token;
 		*tail = src_token;
 	}
-	return src_token;
+	return (src_token);
 }
 
-/*
-quando hai una lista di token per un comando tipo
-ls -l | grep txt | wc -l
-questa funzione serve per isolare ogni comando a se, quindi da ls fino alla prima |
-poi da grep alla seconda | e poi wc -l
-permette dunque di generare, senza toccare la lista originale, una sottolista indipendente
-di token per ciascun comando nella pipeline. */
 t_token	*create_token_sublist(t_token *start, t_token *end)
 {
 	t_token	*new_list;

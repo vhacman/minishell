@@ -6,24 +6,22 @@
 /*   By: vhacman <vhacman@student.42roma.it>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/29 16:20:13 by vhacman           #+#    #+#             */
-/*   Updated: 2025/07/16 15:31:23 by vhacman          ###   ########.fr       */
+/*   Updated: 2025/08/11 12:03:01 by vhacman          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../../include/minishell.h"
 
-static void	update_env_var(t_env *env, const char *key, const char *value)
+/*ritorna ptr al value nella lista env, o null se non esiste*/
+char	*get_env_value (t_env *env, const char *key)
 {
 	while (env)
 	{
 		if (ft_strcmp(env->key, key) == 0)
-		{
-			free(env->value);
-			env->value = ft_strdup(value);
-			return ;
-		}
+			return (env->value);
 		env = env->next;
 	}
+	return (NULL);
 }
 
 void	update_pwd_vars(t_shell *shell, char *old_pwd)
@@ -32,7 +30,7 @@ void	update_pwd_vars(t_shell *shell, char *old_pwd)
 
 	if (getcwd(cwd, sizeof(cwd)))
 	{
-		update_env_var(shell->env, "OLDPWD", old_pwd);
-		update_env_var(shell->env, "PWD", cwd);
+		set_env_value(&shell->env, "OLDPWD", old_pwd);
+		set_env_value(&shell->env, "PWD", cwd);
 	}
 }

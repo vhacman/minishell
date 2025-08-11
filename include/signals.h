@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   signals.h                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vhacman <vhacman@student.42.fr>            +#+  +:+       +#+        */
+/*   By: vhacman <vhacman@student.42roma.it>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/16 16:41:15 by vhacman           #+#    #+#             */
-/*   Updated: 2025/08/06 19:25:29 by vhacman          ###   ########.fr       */
+/*   Updated: 2025/08/11 15:00:14 by vhacman          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,6 +37,6 @@ int			handle_signal_exit_status(int status, t_shell *shell);
 int			check_signal_received(t_shell *shell);
 
 
-void	print_signal_message(int signal_number, int status);
+void	    print_signal_message(int signal_number, int status);
 
 #endif
