@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vhacman <vhacman@student.42roma.it>        +#+  +:+       +#+        */
+/*   By: begiovan <begiovan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/29 12:00:00 by vhacman           #+#    #+#             */
-/*   Updated: 2025/08/11 15:01:40 by vhacman          ###   ########.fr       */
+/*   Updated: 2025/08/11 17:33:24 by begiovan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -127,5 +127,6 @@ char		**create_args_without_redirection(t_token *tokens);
 void get_redir(const char *input, int *curr_pos, int *type,
 					  char **token_str);
 int	get_redir_type_and_length(char first, char second, int *length);
+
 				  
 #endif

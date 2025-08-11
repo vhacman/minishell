@@ -6,7 +6,7 @@
 /*   By: begiovan <begiovan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/16 16:12:25 by vhacman           #+#    #+#             */
-/*   Updated: 2025/08/06 15:33:02 by begiovan         ###   ########.fr       */
+/*   Updated: 2025/08/11 17:03:14 by begiovan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,19 @@
 /* =============================== */
 /*         CORE STRUCTURES         */
 /* =============================== */
+
+/*
+** t_token:
+** Linked list node representing a token produced by lexical analysis.
+** value: string content of the token (e.g., command, argument, operator)
+** type: token type as defined above (TK_WORD, TK_PIPE, etc.)
+*/
+typedef struct s_token
+{
+	char			*value;
+	int				type;
+	struct s_token	*next;
+}	t_token;
 
 /*
 ** t_cmd: Represents a single parsed command.
@@ -33,20 +46,8 @@ typedef struct s_cmd
 	struct s_cmd	*next;
 	int				type;
 	int				is_builtin;
+	t_token         *tokens;
 }	t_cmd;
-
-/*
-** t_token:
-** Linked list node representing a token produced by lexical analysis.
-** value: string content of the token (e.g., command, argument, operator)
-** type: token type as defined above (TK_WORD, TK_PIPE, etc.)
-*/
-typedef struct s_token
-{
-	char			*value;
-	int				type;
-	struct s_token	*next;
-}	t_token;
 
 /*
 ** t_env:
@@ -83,6 +84,7 @@ typedef struct s_shell
 	char		*program_name;
 	int			saved_stdout;
 	int 		redirect_type;
+	int         saved_stdin;
 }	t_shell;
 
 /* =============================== */
@@ -113,30 +115,6 @@ typedef struct s_init_params
 	t_token		**tokens;
 	t_shell		*shell;
 }	t_init_params;
-
-/*
-**	Struttura per rappresentare una redirezione.
-**	Contiene il tipo di redirezione e il nome del file target.
-*/
-typedef struct s_redirection
-{
-	int						type;		// Tipo: TK_OUT, TK_APPEND, TK_IN, TK_HEREDOC
-	char					*filename;	// Nome del file per la redirezione
-	struct s_redirection	*next;		// Puntatore alla prossima redirezione
-}	t_redirection;
-
-/*
-**	Struttura per rappresentare un comando.
-**	Contiene gli argomenti, le redirezioni e i file descriptor.
-*/
-typedef struct s_command
-{
-	char				**args;			// Array di argomenti (argv)
-	t_redirection		*redirections;	// Lista delle redirezioni
-	int					input_fd;		// File descriptor per input (se redirection)
-	int					output_fd;		// File descriptor per output (se redirection)
-	struct s_command	*next;			// Puntatore al prossimo comando (per pipeline)
-}	t_command;
 
 /*
 **	Enum per i tipi di token (già presente nel tuo codice, ma lo riporto per chiarezza)
