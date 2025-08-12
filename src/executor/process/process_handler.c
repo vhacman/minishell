@@ -6,11 +6,11 @@
 /*   By: vhacman <vhacman@student.42roma.it>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/28 13:41:01 by begiovan          #+#    #+#             */
-/*   Updated: 2025/08/12 14:30:31 by vhacman          ###   ########.fr       */
+/*   Updated: 2025/08/12 15:23:55 by vhacman          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../include/minishell.h"
+#include "../../../include/minishell.h"
 
 static void	execute_child_process_from_args(char *cmd_path, char **args,
 				t_shell *shell)

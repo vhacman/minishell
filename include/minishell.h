@@ -6,7 +6,7 @@
 /*   By: vhacman <vhacman@student.42roma.it>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/29 12:00:00 by vhacman           #+#    #+#             */
-/*   Updated: 2025/08/12 14:56:33 by vhacman          ###   ########.fr       */
+/*   Updated: 2025/08/12 15:09:15 by vhacman          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,6 @@
 /* =============================== */
 /*          SYSTEM INCLUDES        */
 /* =============================== */
-# include <limits.h>
 # include <stdio.h>
 # include <stdlib.h>
 # include <unistd.h>
@@ -38,11 +37,6 @@
 # include "parser.h"
 # include "lexer.h"
 # include "executor.h"
-
-/* =============================== */
-/*            CONSTANTS            */
-/* =============================== */
-# define PATH_MAX 4096
 
 /* =============================== */
 /*         GLOBAL VARIABLES        */

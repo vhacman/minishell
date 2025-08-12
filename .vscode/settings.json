@@ -1,0 +1,6 @@
+{
+    "files.associations": {
+        "typeinfo": "c",
+        "__stddef_max_align_t.h": "c"
+    }
+}

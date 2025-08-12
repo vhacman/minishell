@@ -6,13 +6,11 @@
 /*   By: vhacman <vhacman@student.42roma.it>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/21 15:34:54 by vhacman           #+#    #+#             */
-/*   Updated: 2025/08/12 14:27:29 by vhacman          ###   ########.fr       */
+/*   Updated: 2025/08/12 15:23:28 by vhacman          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-//HEADER CAMBIA IN BENIAMINO
-
-#include "../../include/minishell.h"
+#include "../../../include/minishell.h"
 
 int	check_for_pipes(t_token *tokens)
 {

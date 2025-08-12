@@ -1,220 +1,306 @@
+———————————— redirects
+Test   1: ✅ grep hi <./test_files/infile 
+Test   2: ✅ grep hi "<infile" <         ./test_files/infile 
+Test   3: ✅ echo hi < ./test_files/infile bye bye 
+Test   4: ✅ grep hi <./test_files/infile_big <./test_files/infile 
+Test   5: ✅ echo <"./test_files/infile" "bonjour       42" 
+Test   6: ✅ cat <"./test_files/file name with spaces" 
+Test   7: ✅ cat <./test_files/infile_big ./test_files/infile 
+Test   8: ✅ cat <"1""2""3""4""5" 
+Test   9: ✅ echo <"./test_files/infile" <missing <"./test_files/infile" 
+Test  10: ✅ echo <missing <"./test_files/infile" <missing 
+Test  11: ✅ cat <"./test_files/infile" 
+Test  12: ❌ echo <"./test_files/infile_big" | cat <"./test_files/infile" 
+mini exit code = 1
+bash exit code = 0
+mini error = ( No such file or directory)
+bash error = ()
+Test  13: ✅ echo <"./test_files/infile_big" | cat "./test_files/infile" 
+Test  14: ❌ echo <"./test_files/infile_big" | echo <"./test_files/infile" 
+mini output = (< ./test_files/infile)
+bash output = ()
+Test  15: ❌ echo hi | cat <"./test_files/infile" 
+mini exit code = 1
+bash exit code = 0
+mini error = ( No such file or directory)
+bash error = ()
+Test  16: ✅ echo hi | cat "./test_files/infile" 
+Test  17: ❌ cat <"./test_files/infile" | echo hi 
+mini exit code = 141
+bash exit code = 0
+mini error = ( No such file or directory Broken pipe)
+bash error = ( Broken pipe)
+Test  18: ✅⚠️  cat <"./test_files/infile" | grep hello 
+mini error = ( No such file or directory)
+bash error = ()
+Test  19: ❌ cat <"./test_files/infile_big" | echo hi 
+mini exit code = 141
+bash exit code = 0
+mini error = ( No such file or directory Broken pipe)
+bash error = ( Broken pipe)
+Test  20: ✅ cat <missing 
+Test  21: ✅⚠️  cat <missing | cat 
+mini error = ( No such file or directory No such file or directory)
+bash error = ( No such file or directory)
+Test  22: ❌ cat <missing | echo oi 
+mini exit code = 1
+bash exit code = 0
+mini error = ( No such file or directory No such file or directory)
+bash error = ( No such file or directory)
+Test  23: ❌ cat <missing | cat <"./test_files/infile" 
+mini exit code = 1
+bash exit code = 0
+mini error = ( No such file or directory No such file or directory No such file or directory)
+bash error = ( No such file or directory)
+Test  24: ✅⚠️  echo <123 <456 hi | echo 42 
+mini error = ()
+bash error = ( No such file or directory)
+Test  25: ✅ ls >./outfiles/outfile01 
+Test  26: ✅ ls >         ./outfiles/outfile01 
+Test  27: ✅ echo hi >         ./outfiles/outfile01 bye 
+Test  28: ✅ ls >./outfiles/outfile01 >./outfiles/outfile02 
+Test  29: ✅ ls >./outfiles/outfile01 >./test_files/invalid_permission 
+Test  30: ✅ ls >"./outfiles/outfile with spaces" 
+Test  31: ✅ ls >"./outfiles/outfile""1""2""3""4""5" 
+Test  32: ✅ ls >"./outfiles/outfile01" >./test_files/invalid_permission >"./outfiles/outfile02" 
+Test  33: ✅ ls >./test_files/invalid_permission >"./outfiles/outfile01" >./test_files/invalid_permission 
+Test  34: ✅ cat <"./test_files/infile" >"./outfiles/outfile01" 
+Test  35: ❌ echo hi >./outfiles/outfile01 | echo bye 
+Only in ./bash_outfiles: outfile01
+mini outfiles:
+cat: './mini_outfiles/*': No such file or directory
+bash outfiles:
+hi
+Test  36: ❌ echo hi >./outfiles/outfile01 >./outfiles/outfile02 | echo bye 
+Only in ./bash_outfiles: outfile01
+Only in ./bash_outfiles: outfile02
+mini outfiles:
+cat: './mini_outfiles/*': No such file or directory
+bash outfiles:
+hi
+Test  37: ❌ echo hi | echo >./outfiles/outfile01 bye 
+Only in ./bash_outfiles: outfile01
+mini outfiles:
+cat: './mini_outfiles/*': No such file or directory
+bash outfiles:
+bye
+mini output = (> ./outfiles/outfile01 bye)
+bash output = ()
+Test  38: ❌ echo hi | echo bye >./outfiles/outfile01 >./outfiles/outfile02 
+Only in ./bash_outfiles: outfile01
+Only in ./bash_outfiles: outfile02
+mini outfiles:
+cat: './mini_outfiles/*': No such file or directory
+bash outfiles:
+bye
+mini output = (bye > ./outfiles/outfile01 > ./outfiles/outfile02)
+bash output = ()
+Test  39: ❌ echo hi >./outfiles/outfile01 | echo bye >./outfiles/outfile02 
+Only in ./bash_outfiles: outfile01
+Only in ./bash_outfiles: outfile02
+mini outfiles:
+cat: './mini_outfiles/*': No such file or directory
+bash outfiles:
+hi
+bye
+mini output = (bye > ./outfiles/outfile02)
+bash output = ()
+Test  40: ❌ echo hi >./outfiles/outfile01 >./test_files/invalid_permission | echo bye 
+Only in ./bash_outfiles: outfile01
+mini outfiles:
+cat: './mini_outfiles/*': No such file or directory
+bash outfiles:
+mini error = ()
+bash error = ( Permission denied)
+Test  41: ✅⚠️  echo hi >./test_files/invalid_permission | echo bye 
+mini error = ()
+bash error = ( Permission denied)
+Test  42: ✅⚠️  echo hi >./test_files/invalid_permission >./outfiles/outfile01 | echo bye 
+mini error = ()
+bash error = ( Permission denied)
+Test  43: ❌ echo hi | echo bye >./test_files/invalid_permission 
+mini output = (bye > ./test_files/invalid_permission)
+bash output = ()
+mini exit code = 141
+bash exit code = 1
+mini error = ()
+bash error = ( Permission denied)
+Test  44: ❌ echo hi | >./outfiles/outfile01 echo bye >./test_files/invalid_permission 
+Only in ./bash_outfiles: outfile01
+mini outfiles:
+cat: './mini_outfiles/*': No such file or directory
+bash outfiles:
+mini output = (minishell: >: command not found)
+bash output = ()
+mini exit code = 127
+bash exit code = 1
+mini error = ()
+bash error = ( Permission denied)
+Test  45: ❌ echo hi | echo bye >./test_files/invalid_permission >./outfiles/outfile01 
+mini output = (bye > ./test_files/invalid_permission > ./outfiles/outfile01)
+bash output = ()
+mini exit code = 0
+bash exit code = 1
+mini error = ()
+bash error = ( Permission denied)
+Test  46: ✅ cat <"./test_files/infile" >./test_files/invalid_permission 
+Test  47: ✅ cat >./test_files/invalid_permission <"./test_files/infile" 
+Test  48: ✅ cat <missing >./outfiles/outfile01 
+Test  49: ❌ cat >./outfiles/outfile01 <missing 
+Only in ./bash_outfiles: outfile01
+mini outfiles:
+cat: './mini_outfiles/*': No such file or directory
+bash outfiles:
+Test  50: ✅ cat <missing >./test_files/invalid_permission 
+Test  51: ✅⚠️  cat >./test_files/invalid_permission <missing 
+mini error = ( No such file or directory)
+bash error = ( Permission denied)
+Test  52: ❌ cat >./outfiles/outfile01 <missing >./test_files/invalid_permission 
+Only in ./bash_outfiles: outfile01
+mini outfiles:
+cat: './mini_outfiles/*': No such file or directory
+bash outfiles:
+Test  53: ✅ ls >>./outfiles/outfile01 
+Test  54: ✅ ls >>      ./outfiles/outfile01 
+Test  55: ✅ ls >>./outfiles/outfile01 >./outfiles/outfile01 
+Test  56: ✅ ls >./outfiles/outfile01 >>./outfiles/outfile01 
+Test  57: ✅ ls >./outfiles/outfile01 >>./outfiles/outfile01 >./outfiles/outfile02 
+Test  58: ✅ ls >>./outfiles/outfile01 >>./outfiles/outfile02 
+Test  59: ✅ ls >>./test_files/invalid_permission 
+Test  60: ✅ ls >>./test_files/invalid_permission >>./outfiles/outfile01 
+Test  61: ✅ ls >>./outfiles/outfile01 >>./test_files/invalid_permission 
+Test  62: ✅ ls >./outfiles/outfile01 >>./test_files/invalid_permission >>./outfiles/outfile02 
+Test  63: ✅ ls <missing >>./test_files/invalid_permission >>./outfiles/outfile02 
+Test  64: ✅⚠️  ls >>./test_files/invalid_permission >>./outfiles/outfile02 <missing 
+mini error = ( No such file or directory)
+bash error = ( Permission denied)
+Test  65: ❌ echo hi >>./outfiles/outfile01 | echo bye 
+Only in ./bash_outfiles: outfile01
+mini outfiles:
+cat: './mini_outfiles/*': No such file or directory
+bash outfiles:
+hi
+Test  66: ❌ echo hi >>./outfiles/outfile01 >>./outfiles/outfile02 | echo bye 
+Only in ./bash_outfiles: outfile01
+Only in ./bash_outfiles: outfile02
+mini outfiles:
+cat: './mini_outfiles/*': No such file or directory
+bash outfiles:
+hi
+Test  67: ❌ echo hi | echo >>./outfiles/outfile01 bye 
+Only in ./bash_outfiles: outfile01
+mini outfiles:
+cat: './mini_outfiles/*': No such file or directory
+bash outfiles:
+bye
+mini output = (>> ./outfiles/outfile01 bye)
+bash output = ()
+Test  68: ❌ echo hi | echo bye >>./outfiles/outfile01 >>./outfiles/outfile02 
+Only in ./bash_outfiles: outfile01
+Only in ./bash_outfiles: outfile02
+mini outfiles:
+cat: './mini_outfiles/*': No such file or directory
+bash outfiles:
+bye
+mini output = (bye >> ./outfiles/outfile01 >> ./outfiles/outfile02)
+bash output = ()
+Test  69: ❌ echo hi >>./outfiles/outfile01 | echo bye >>./outfiles/outfile02 
+Only in ./bash_outfiles: outfile01
+Only in ./bash_outfiles: outfile02
+mini outfiles:
+cat: './mini_outfiles/*': No such file or directory
+bash outfiles:
+hi
+bye
+mini output = (bye >> ./outfiles/outfile02)
+bash output = ()
+Test  70: ✅⚠️  echo hi >>./test_files/invalid_permission | echo bye 
+mini error = ()
+bash error = ( Permission denied)
+Test  71: ❌ echo hi >>./test_files/invalid_permission >./outfiles/outfile01 | echo bye 
+mini exit code = 141
+bash exit code = 0
+mini error = ()
+bash error = ( Permission denied)
+Test  72: ❌ echo hi | echo bye >>./test_files/invalid_permission 
+mini output = (bye >> ./test_files/invalid_permission)
+bash output = ()
+mini exit code = 0
+bash exit code = 1
+mini error = ()
+bash error = ( Permission denied)
+Test  73: ❌ echo hi | echo >>./outfiles/outfile01 bye >./test_files/invalid_permission 
+Only in ./bash_outfiles: outfile01
+mini outfiles:
+cat: './mini_outfiles/*': No such file or directory
+bash outfiles:
+mini output = (>> ./outfiles/outfile01 bye > ./test_files/invalid_permission)
+bash output = ()
+mini exit code = 0
+bash exit code = 1
+mini error = ()
+bash error = ( Permission denied)
+Test  74: ✅ cat <minishell.h>./outfiles/outfile 
+Test  75: ✅⚠️  cat <minishell.h|ls 
+mini error = ( No such file or directory No such file or directory)
+bash error = ( No such file or directory)
+
+
+
+
+
+
+
+
+
+I token di redirezione finiscono nell’argv
+Ecco perché stampa output tipo bye > ./outfiles/outfile02.
+➜ Nel parsing del singolo comando (fino a TK_PIPE), quando incontri TK_REDIR_IN / OUT / APPEND / HEREDOC:
+
+non aggiungere né il simbolo né il filename all’argv;
+
+salva invece nei campi della t_cmd (es. infile, outfile, append, ecc.).
+Regola “last one wins”: se trovi più redirezioni uguale lato, tieni l’ultima.
+
+Le redirezioni non vengono applicate per ogni segmento della pipeline
+Test 35–39, 65–69: il file non viene creato quando la redirezione sta sul comando a sinistra del |.
+➜ Ogni child della pipeline deve applicare le proprie redirezioni prima di exec (o prima di eseguire il builtin nel child).
+Ordine in child:
+
+setup pipe (dup2 verso stdin/stdout se non primo/ultimo),
+
+poi applica redirezioni (le redirezioni devono sovrascrivere il pipe se presenti),
+
+chiudi fd inutili,
+
+esegui.
+
+Builtin in pipeline
+Se un builtin è dentro una pipeline, va eseguito in un child, non nel processo padre.
+Diversamente, non prenderà pipe/redirezioni e lascia residui nell’output.
+➜ Esegui i builtin nel padre solo quando c’è un singolo comando senza pipe (per cd, export, unset, ecc.).
+
+Redirezioni iniziali senza comando (es. > out echo bye)
+Non è “>: command not found”. Bash le associa al comando successivo.
+➜ Nel parser, accetta redirezioni prima della parola comando e agganciale alla t_cmd anche se argv è ancora vuoto.
+
+Messaggi d’errore e errno
+Vedo “No such file or directory” dove Bash dà “Permission denied”, e a volte messaggi doppi.
+➜ Quando open() fallisce, stampa una sola volta:
+
+css
+Copia codice
+minishell: <file>: <strerror(errno)>
+e exit(1) nel child. Non usare messaggi hardcoded. Non aprire in parent (tranne heredoc).
+
+Exit status della pipeline
+In diversi test hai 141 (128+SIGPIPE) o 1 dove Bash dà 0.
+➜ Lo status della pipeline deve essere quello dell’ultimo comando della pipeline.
+
+Attendi tutti i child; salva lo pid dell’ultimo; il codice finale viene dal suo waitpid.
+
+Il parent può ignorare SIGPIPE; nei child ripristinalo di default. Così non “contamina” lo status della shell quando un comando in mezzo rompe la pipe.
 
-X BEN
-----------------------------
 
-INPUT
- --> echo "input per cat " > input.txt
- --> cat < input.txt
 
---> echo "test" > input.txt
---> cat < input.txt > output.txt
----------------------------
-HEREDOC
 
-cat << EOF
-Ciao
-Questo è un test
-EOF
-
-deve stampare:
-Ciao
-Questo è un test
-
-
-grep ciao << END
-ciao mondo
-hello world
-END
-
-deve stampare:
-ciao mondo
-
-
-PER CONFRONTARE CON BASH
-echo 'echo test > file.txt' | bash
-echo 'echo test > file.txt' | ./minishell
-diff <(cat file.txt) <(cat file.txt)
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
------------------------------
-RISOLTO
-
-X GABRIELA
------------------------
-$> cd -
-
-minishell  ➤ cd -
-cd: OLDPWD not set
-minishell  ➤
-
-KO
-
-come sistemare:
-Ogni volta che fai un cd, dovresti:
-Salvare l’attuale working directory in OLDPWD
-Poi aggiornare PWD alla nuova directory
-
-RISOLTO
-
-
-----------------------------
-RISOLTO
-cd ~/Desktop
-
-
-minishell  ➤ cd ~/Desktop
-cd: No such file or directory
-minishell  ➤ /bin/pwd
-/home/vhacman/Desktop/minishell
-minishell  ➤
-
-
-KO
-
-
-RISOLTO
--------------------------------------------------------
-
-RISOLTO
-
-$> /usr/bin/env
-
-
-minishell  ➤ /usr/bin/env
-LANGUAGE=en_US
-USER=vhacman
-XDG_SESSION_TYPE=wayland
-GIT_ASKPASS=/usr/share/code/resources/app/extensions/git/dist/askpass.sh
-SHLVL=2
-LD_LIBRARY_PATH=/usr/lib/debug
-HOME=/home/vhacman
-CHROME_DESKTOP=code.desktop
-TERM_PROGRAM_VERSION=1.102.2
-DESKTOP_SESSION=ubuntu
-GNOME_SHELL_SESSION_MODE=ubuntu
-GTK_MODULES=gail:atk-bridge
-VSCODE_GIT_ASKPASS_MAIN=/usr/share/code/resources/app/extensions/git/dist/askpass-main.js
-VSCODE_GIT_ASKPASS_NODE=/usr/share/code/code
-DBUS_STARTER_BUS_TYPE=session
-SYSTEMD_EXEC_PID=2835
-GSM_SKIP_SSH_AGENT_WORKAROUND=true
-DBUS_SESSION_BUS_ADDRESS=unix:path=/run/user/1000/bus,guid=6fe8efd6ddb09262402a8f5b6895c176
-COLORTERM=truecolor
-DEBUGINFOD_URLS=https://debuginfod.ubuntu.com
-IM_CONFIG_PHASE=1
-WAYLAND_DISPLAY=wayland-0
-LOGNAME=vhacman
-_=/usr/bin/valgrind
-MEMORY_PRESSURE_WATCH=/sys/fs/cgroup/user.slice/user-1000.slice/user@1000.service/app.slice/app-gnome\x2dsession\x2dmanager.slice/gnome-session-manager@ubuntu.service/memory.pressure
-XDG_SESSION_CLASS=user
-USERNAME=vhacman
-TERM=xterm-256color
-GNOME_DESKTOP_SESSION_ID=this-is-deprecated
-PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/snap/bin:/snap/bin:/home/vhacman/.local/bin:/home/vhacman/.local/bin:/home/vhacman/.local/bin
-SESSION_MANAGER=local/viorica-gabriela-hacman-Modern-15-A11MU:@/tmp/.ICE-unix/2835,unix/viorica-gabriela-hacman-Modern-15-A11MU:/tmp/.ICE-unix/2835
-XDG_MENU_PREFIX=gnome-
-GNOME_TERMINAL_SCREEN=/org/gnome/Terminal/screen/fa843637_45ca_4435_8305_c4924dd250dd
-GNOME_SETUP_DISPLAY=:1
-XDG_RUNTIME_DIR=/run/user/1000
-GDK_BACKEND=x11
-GLIBCPP_FORCE_NEW=1
-DISPLAY=:0
-LANG=en_US.UTF-8
-XDG_CURRENT_DESKTOP=Unity
-XMODIFIERS=@im=ibus
-XDG_SESSION_DESKTOP=ubuntu
-XAUTHORITY=/run/user/1000/.mutter-Xwaylandauth.QXH6A3
-VSCODE_GIT_IPC_HANDLE=/run/user/1000/vscode-git-1e5739cc29.sock
-GNOME_TERMINAL_SERVICE=:1.100
-TERM_PROGRAM=vscode
-SSH_AUTH_SOCK=/run/user/1000/keyring/ssh
-ORIGINAL_XDG_CURRENT_DESKTOP=ubuntu:GNOME
-SHELL=/bin/bash
-QT_ACCESSIBILITY=1
-GDMSESSION=ubuntu
-VSCODE_GIT_ASKPASS_EXTRA_ARGS=
-QT_IM_MODULE=ibus
-PWD=/home/vhacman/Desktop/minishell
-XDG_CONFIG_DIRS=/etc/xdg/xdg-ubuntu:/etc/xdg
-DBUS_STARTER_ADDRESS=unix:path=/run/user/1000/bus,guid=6fe8efd6ddb09262402a8f5b6895c176
-XDG_DATA_DIRS=/usr/share/ubuntu:/usr/share/gnome:/usr/local/share/:/usr/share/:/var/lib/snapd/desktop
-MEMORY_PRESSURE_WRITE=c29tZSAyMDAwMDAgMjAwMDAwMAA=
-VTE_VERSION=7600
-GLIBCXX_FORCE_NEW=1
-LD_PRELOAD=
-LINES=12
-COLUMNS=142
-minishell  ➤
-
-
-KO
-
-DOPO AVER FATTO EXPORT FOO=bar
-
-
-Il comando /usr/bin/env non mostra FOO=bar, quindi significa che:
-la variabile FOO è presente nel tuo ambiente interno (come confermato da env)
-ma non viene passata ai processi figli (cioè non viene inclusa nel envp[] di execve())
-
-
- Come risolverlo:
-Quando esegui un comando esterno (es. ls, env, ecc.), devi:
-Costruire un array di stringhe envp (tipo char **envp)
-Popolarlo con tutte le variabili esportate (export FOO=bar)
-Passarlo come terzo parametro a execve(path, argv, envp)
-Se invece stai passando envp = NULL o un array incompleto, il binario non vede FOO.
-
-RISOLTO
-
-
-------------------------------------------
-RISOLTO
-
-$> unset PATH
-
-
-minishell  ➤ unset PATH
-minishell  ➤ ls
-DONE.txt  include  libft  Makefile  minishell  obj  src  supp.supp  TEORIA_DA_SAPERE.txt  TODO
-minishell  ➤
-
-KO
-
-minishell doveva fallire l’esecuzione di ls, perché:
-senza PATH, non dovrebbe sapere dove cercare ls (a meno che non sia chiamato con path assoluto, tipo /bin/ls),
-invece l’ha eseguito lo stesso.
-
-vhacman@viorica-gabriela-hacman-Modern-15-A11MU:~/Desktop/minishell$ unset PATH
-vhacman@viorica-gabriela-hacman-Modern-15-A11MU:~/Desktop/minishell$ ls
-bash: sed: No such file or directory
-bash: ls: No such file or directory
-vhacman@viorica-gabriela-hacman-Modern-15-A11MU:~/Desktop/minishell$
-
-
-Quando esegui un comando senza slash (/), devi cercarlo solo nei path indicati in $PATH.
-Se PATH è unset o vuoto, non devi cercare affatto → stampa errore tipo "command not found".
-
-RISOLTO
------------------------------------------

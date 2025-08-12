@@ -6,7 +6,7 @@
 /*   By: vhacman <vhacman@student.42roma.it>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/12 13:10:00 by vhacman           #+#    #+#             */
-/*   Updated: 2025/08/12 14:47:15 by vhacman          ###   ########.fr       */
+/*   Updated: 2025/08/12 17:43:32 by vhacman          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,15 +46,16 @@ int			env_list_size(t_env *env);
 char		*extract_key(char *str);
 char		*extract_value(char *str);
 int			is_valid_identifier(char *str);
-void		print_exported_recursive(t_env **arr, int size, int index);
+void		print_exported_recursive(t_env **arr, int size, int i);
 void		selection_sort_env(t_env **arr, int size);
 /* ------------------------------ exit ------------------------------------- */
 int			handle_exit(t_shell *shell, char **args);
 int			is_numeric(char *str);
 int			check_atol_conversion(char *str);
+int			skip_whitespace(const char *str);
 /* ------------------------------ unset ------------------------------------ */
 int			handle_unset(t_env **env_list, char **argv);
-int			unset_variable(t_env **env_list_ptr, char **args);
+int			unset_variable(t_env **env_list, char **args);
 int			remove_env_node(t_env **env_list_ptr, char *key);
 /* ====================== 2) COMMAND RESOLUTION (PATH) ====================== */
 char		**split_path_env(char *path_env);

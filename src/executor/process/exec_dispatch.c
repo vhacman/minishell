@@ -6,15 +6,15 @@
 /*   By: vhacman <vhacman@student.42roma.it>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/06 19:24:00 by vhacman           #+#    #+#             */
-/*   Updated: 2025/08/12 12:37:10 by vhacman          ###   ########.fr       */
+/*   Updated: 2025/08/12 15:23:49 by vhacman          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../include/minishell.h"
+#include "../../../include/minishell.h"
 
-static int handle_external_command(char **args, t_shell *shell)
+static int	handle_external_command(char **args, t_shell *shell)
 {
-	int status;
+	int	status;
 
 	status = execute_command_type(args, shell);
 	restore_redirection(shell);
@@ -40,7 +40,7 @@ int	execute_command_type(char **args, t_shell *shell)
 	return (status);
 }
 
-int execute_command(t_token *tokens, t_shell *shell)
+int	execute_command(t_token *tokens, t_shell *shell)
 {
 	char	**args;
 	int		status;

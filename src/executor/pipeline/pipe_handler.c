@@ -6,15 +6,15 @@
 /*   By: vhacman <vhacman@student.42roma.it>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/21 15:34:36 by vhacman           #+#    #+#             */
-/*   Updated: 2025/08/12 13:04:04 by vhacman          ###   ########.fr       */
+/*   Updated: 2025/08/12 15:23:17 by vhacman          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../include/minishell.h"
+#include "../../../include/minishell.h"
 
-int handle_pipeline_execution(t_token *tokens, t_shell *shell)
+int	handle_pipeline_execution(t_token *tokens, t_shell *shell)
 {
-	int status;
+	int	status;
 
 	shell->cmds = convert_tokens_to_cmd_list(tokens, shell);
 	if (!shell->cmds)

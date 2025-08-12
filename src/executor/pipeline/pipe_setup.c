@@ -6,11 +6,11 @@
 /*   By: vhacman <vhacman@student.42roma.it>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/21 15:35:19 by vhacman           #+#    #+#             */
-/*   Updated: 2025/08/12 13:05:22 by vhacman          ###   ########.fr       */
+/*   Updated: 2025/08/12 15:23:20 by vhacman          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../include/minishell.h"
+#include "../../../include/minishell.h"
 
 int	setup_command_execution(t_cmd *curr, int prev_fd, int *pipe_fd, pid_t *pid)
 {

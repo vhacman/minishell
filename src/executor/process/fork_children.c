@@ -6,11 +6,11 @@
 /*   By: vhacman <vhacman@student.42roma.it>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/21 15:35:11 by vhacman           #+#    #+#             */
-/*   Updated: 2025/08/12 13:05:28 by vhacman          ###   ########.fr       */
+/*   Updated: 2025/08/12 15:23:52 by vhacman          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../include/minishell.h"
+#include "../../../include/minishell.h"
 
 int	setup_child_pipe(int pipe_fd[2], int is_left)
 {

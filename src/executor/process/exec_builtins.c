@@ -6,15 +6,15 @@
 /*   By: vhacman <vhacman@student.42roma.it>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/06 19:24:00 by vhacman           #+#    #+#             */
-/*   Updated: 2025/08/12 12:34:49 by vhacman          ###   ########.fr       */
+/*   Updated: 2025/08/12 15:23:46 by vhacman          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../include/minishell.h"
+#include "../../../include/minishell.h"
 
-int execute_exit(char **args, t_shell *shell)
+int	execute_exit(char **args, t_shell *shell)
 {
-	int status;
+	int	status;
 
 	status = handle_exit(shell, args);
 	restore_redirection(shell);
@@ -34,9 +34,9 @@ int execute_exit(char **args, t_shell *shell)
 	return (0);
 }
 
-int handle_other_builtins(char **args, t_shell *shell)
+int	handle_other_builtins(char **args, t_shell *shell)
 {
-	int status;
+	int	status;
 
 	status = handle_builtin(args, shell);
 	restore_redirection(shell);
