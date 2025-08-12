@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   structures.h                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: begiovan <begiovan@student.42.fr>          +#+  +:+       +#+        */
+/*   By: vhacman <vhacman@student.42roma.it>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/16 16:12:25 by vhacman           #+#    #+#             */
-/*   Updated: 2025/08/11 17:03:14 by begiovan         ###   ########.fr       */
+/*   Updated: 2025/08/12 14:56:12 by vhacman          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,9 +19,10 @@
 
 /*
 ** t_token:
-** Linked list node representing a token produced by lexical analysis.
-** value: string content of the token (e.g., command, argument, operator)
-** type: token type as defined above (TK_WORD, TK_PIPE, etc.)
+** Linked list node representing a token produced by the lexer.
+** 'value' holds the token string.
+** 'type' holds one of the t_token_type values.
+** 'next' points to the next token in the list.
 */
 typedef struct s_token
 {
@@ -31,11 +32,15 @@ typedef struct s_token
 }	t_token;
 
 /*
-** t_cmd: Represents a single parsed command.
-** args: NULL-terminated array of argument strings.
-** path: full executable path resolved by the shell, or NULL for builtins
-** fd_in/out: file descriptors for input/output redirection (default 0/1)
-** next: pointer to next command in a pipeline (linked list)
+** t_cmd:
+** Represents a single parsed command in the shell.
+** 'args' is a NULL-terminated array of arguments.
+** 'path' is the resolved executable path or NULL for builtins.
+** 'fd_in' / 'fd_out' store input/output fds (default 0/1).
+** 'next' links to the next command in a pipeline.
+** 'type' can classify the command.
+** 'is_builtin' is a boolean flag.
+** 'tokens' holds the tokens that formed this command.
 */
 typedef struct s_cmd
 {
@@ -46,14 +51,15 @@ typedef struct s_cmd
 	struct s_cmd	*next;
 	int				type;
 	int				is_builtin;
-	t_token         *tokens;
+	t_token			*tokens;
 }	t_cmd;
 
 /*
 ** t_env:
-** Linked list node representing an environment variable.
-** key/value: strings for variable name and value
-** exported: boolean flag indicating if variable is exported to child processes
+** Linked list node for an environment variable.
+** 'key' is the variable name.
+** 'value' is the variable value.
+** 'exported' is 1 if visible to child processes.
 */
 typedef struct s_env
 {
@@ -66,12 +72,16 @@ typedef struct s_env
 /*
 ** t_shell: Main shell context structure holding all runtime state.
 **
-** line: current input line read from user
-** tokens: linked list of tokens from lexical analysis
-** cmds: linked list of parsed commands
-** env: linked list of environment variables
-** exit_status: last command exit code (for $? expansion)
-** args: temporary array of args for current command execution
+** line: current input line read from the user.
+** tokens: linked list of tokens produced by the lexer.
+** cmds: linked list of parsed commands ready for execution.
+** env: linked list of environment variables.
+** exit_status: exit code of the last executed command (used for $?).
+** args: temporary NULL-terminated array of arguments for execution.
+** program_name: name of the shell program (used in prompt/messages).
+** saved_stdout: copy of STDOUT file descriptor for restoring output.
+** redirect_type: last redirection type applied (e.g., >, >>, <, <<).
+** saved_stdin: copy of STDIN file descriptor for restoring input.
 */
 typedef struct s_shell
 {
@@ -83,8 +93,8 @@ typedef struct s_shell
 	char		**args;
 	char		*program_name;
 	int			saved_stdout;
-	int 		redirect_type;
-	int         saved_stdin;
+	int			redirect_type;
+	int			saved_stdin;
 }	t_shell;
 
 /* =============================== */
@@ -93,7 +103,14 @@ typedef struct s_shell
 /*
 ** t_token_context:
 ** Context structure for token parsing operations.
-** Contains all necessary information for token processing functions.
+** Holds all data needed during lexical analysis and token creation.
+**
+** input: pointer to the original command line string being parsed.
+** i: pointer to the current index position within 'input'.
+** tokens: pointer to the head pointer of the token linked list.
+** shell: pointer to the main shell context for accessing state/env.
+** had_whitespace: flag set to 1 if whitespace was found before the
+**                 current token, used to separate arguments.
 */
 typedef struct s_token_context
 {
@@ -106,7 +123,14 @@ typedef struct s_token_context
 
 /*
 ** t_init_params:
-** Parameter structure for initialization tokens functions.
+** Parameter structure for initializing token parsing functions.
+** Used to pass all required parsing data in a single object.
+**
+** str: pointer to the original command line string to process.
+** i: pointer to the current index position within 'str'.
+** tokens: pointer to the head pointer of the token linked list.
+** shell: pointer to the main shell context, used for environment
+**        access and parser state.
 */
 typedef struct s_init_params
 {
@@ -117,17 +141,26 @@ typedef struct s_init_params
 }	t_init_params;
 
 /*
-**	Enum per i tipi di token (già presente nel tuo codice, ma lo riporto per chiarezza)
+** t_token_type:
+** Enumeration of all possible token types generated by the lexer.
+**
+** TK_WORD: standard word (command, argument, filename).
+** TK_PIPE: pipe operator (|) for chaining commands.
+** TK_OUT: output redirection (>) overwriting the target file.
+** TK_APPEND: output redirection append (>>) appending to the file.
+** TK_IN: input redirection (<) reading from a file.
+** TK_HEREDOC: here-document redirection (<<) reading inline text until EOF.
+** TK_EOF: end-of-input marker (no more tokens to read).
 */
 typedef enum e_token_type
 {
-	TK_WORD,		// Parola normale
-	TK_PIPE,		// Pipe |
-	TK_OUT,			// Redirezione output >
-	TK_APPEND,		// Redirezione output append >>
-	TK_IN,			// Redirezione input <
-	TK_HEREDOC,		// Heredoc <<
-	TK_EOF,			// Fine input
+	TK_WORD,
+	TK_PIPE,
+	TK_OUT,
+	TK_APPEND,
+	TK_IN,
+	TK_HEREDOC,
+	TK_EOF,
 }	t_token_type;
 
 #endif

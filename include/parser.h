@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parser.h                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vhacman <vhacman@student.42.fr>            +#+  +:+       +#+        */
+/*   By: vhacman <vhacman@student.42roma.it>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/16 21:17:16 by vhacman           #+#    #+#             */
-/*   Updated: 2025/07/16 22:25:02 by vhacman          ###   ########.fr       */
+/*   Updated: 2025/08/12 14:45:28 by vhacman          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,22 +15,18 @@
 
 # include "structures.h"
 
-/* =============================== */
-/*       PARSING FUNCTIONS         */
-/* =============================== */
-int			is_separator(char c);
-t_token		*create_token(char *value, int type);
-void		add_token_to_list(t_token **head, t_token *new_token);
-char		*extract_quoted_content(const char *str, int *index,
-				char quote_char);
-void		handle_redirection_token(const char *input, int *i,
-				t_token **tokens);
-int			handle_quoted_token(t_token_context *context);
-void		handle_word_token(t_token_context *context);
-t_token		*parse_line_to_tokens(const char *input, t_shell *shell);
-t_token		*get_last_token(t_token *head);
-void		init_token_context(t_token_context *context, t_init_params *params);
-int			skip_whitespace_and_check(const char *str,
-				int *i, int *had_whitespace);
+/* =================== 1) TOKEN → COMMAND LIST CONVERSION =================== */
+t_cmd		*convert_tokens_to_cmd_list(t_token *token_list, t_shell *shell);
+/* ========================= 2) ARGUMENT POPULATION ========================= */
+int			populate_command_args(t_cmd *command, t_token *token_start);
+/* ================= 3) VARIABLE & ENVIRONMENT EXPANSION ==================== */
+char		*expand_program_name(char *input, int pos, t_shell *shell);
+char		*create_expanded_string(char *before, char *value, char *after);
+char		*expand_exit_status(char *str, int start, t_shell *shell);
+int			find_variable_end(char *str, int start);
+char		*get_variable_value(char *str, int start, int end, t_shell *shell);
+char		*expand_variables(char *input, t_shell *shell);
+char		*expand_environment_variable(char *str, int start, int end,
+				t_shell *shell);
 
 #endif

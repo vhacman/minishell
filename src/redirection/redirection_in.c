@@ -1,3 +1,6 @@
+//ANDRANNO AGGIUNTE AL PARSER
+
+
 #include "../../include/minishell.h"
 
 t_token *find_input_redirection_token(t_token *tokens, int *redirect_type)
