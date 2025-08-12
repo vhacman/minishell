@@ -110,5 +110,7 @@ void		print_signal_message(int signal_number, int status);
 void		restore_redirection(t_shell *shell);
 int			handle_redirection_with_tokens(t_token *tokens, t_shell *shell);
 char		**create_args_without_redirection(t_token *tokens);
+int			handle_input_redirection_with_tokens(t_token *tokens, t_shell *shell);
+void		restore_input_redirection(t_shell *shell);
 
 #endif

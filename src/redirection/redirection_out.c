@@ -1,6 +1,5 @@
 //ANDRANNO AGGIUNTE AL PARSER
 
-
 #include "../../include/minishell.h"
 /* =============================== */
 /*      RICERCA TOKEN REDIREZIONE  */
@@ -82,15 +81,16 @@ char **create_args_without_redirection(t_token *tokens)
     char **args;
     int i = 0;
     
-    // 1. CONTA I TOKEN TK_WORD (escludendo redirezioni)
+    // 1. CONTA I TOKEN TK_WORD (escludendo TUTTE le redirezioni)
     curr = tokens;
     prev = NULL;
     while (curr)
     {
         if (curr->type == TK_WORD)
         {
-            // Se il token precedente era una redirezione, salta questo filename
-            if (!(prev && (prev->type == TK_OUT || prev->type == TK_APPEND)))
+            // Se il token precedente era una redirezione (input o output), salta questo filename
+            if (!(prev && (prev->type == TK_OUT || prev->type == TK_APPEND || 
+                          prev->type == TK_IN || prev->type == TK_HEREDOC)))
             {
                 word_count++;
             }
@@ -111,8 +111,9 @@ char **create_args_without_redirection(t_token *tokens)
     {
         if (curr->type == TK_WORD)
         {
-            // Se il token precedente era una redirezione, salta questo filename
-            if (!(prev && (prev->type == TK_OUT || prev->type == TK_APPEND)))
+            // Se il token precedente era una redirezione (input o output), salta questo filename
+            if (!(prev && (prev->type == TK_OUT || prev->type == TK_APPEND || 
+                          prev->type == TK_IN || prev->type == TK_HEREDOC)))
             {
                 args[i] = ft_strdup(curr->value);
                 i++;
@@ -131,6 +132,11 @@ char **create_args_without_redirection(t_token *tokens)
 // Funzione principale che gestisce redirezioni con token
 int handle_redirection_with_tokens(t_token *tokens, t_shell *shell)
 {
+    // Prima gestisci le redirezioni di INPUT (< e <<)
+    if (handle_input_redirection_with_tokens(tokens, shell) == -1)
+        return -1;
+
+    // Poi gestisci le redirezioni di OUTPUT (> e >>)
     t_token *curr;
     char *filename;
     int file_fd;
@@ -149,6 +155,7 @@ int handle_redirection_with_tokens(t_token *tokens, t_shell *shell)
                 ft_putstr_fd("minishell: syntax error near redirection\n", 2);
                 if (file_fd != -1)
                     close(file_fd);
+                restore_input_redirection(shell);  // Ripristina input se output fallisce
                 return -1;
             }
 
@@ -165,6 +172,7 @@ int handle_redirection_with_tokens(t_token *tokens, t_shell *shell)
                 perror("minishell");
                 if (file_fd != -1)
                     close(file_fd);
+                restore_input_redirection(shell);  // Ripristina input se output fallisce
                 return -1;
             }
 
@@ -184,6 +192,7 @@ int handle_redirection_with_tokens(t_token *tokens, t_shell *shell)
         {
             perror("minishell");
             close(file_fd);
+            restore_input_redirection(shell);
             return -1;
         }
 
@@ -192,6 +201,7 @@ int handle_redirection_with_tokens(t_token *tokens, t_shell *shell)
             perror("minishell");
             close(file_fd);
             close(saved_fd);
+            restore_input_redirection(shell);
             return -1;
         }
 
@@ -211,4 +221,10 @@ void restore_redirection(t_shell *shell)
         close(shell->saved_stdout);
         shell->saved_stdout = -1;
     }
+    
+    // Ripristina anche le redirezioni di input
+    restore_input_redirection(shell);
+    
+    // Reset del tipo di redirezione
+    shell->redirect_type = 0;
 }
