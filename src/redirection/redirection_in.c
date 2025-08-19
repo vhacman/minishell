@@ -220,7 +220,7 @@ int handle_input_redirection_with_tokens(t_token *tokens, t_shell *shell)
 // Ripristina stdin originale
 void restore_input_redirection(t_shell *shell)
 {
-	if (shell->saved_stdin != -1)
+	if (shell->saved_stdin >= 0)
 	{
 		dup2(shell->saved_stdin, 0);
 		close(shell->saved_stdin);

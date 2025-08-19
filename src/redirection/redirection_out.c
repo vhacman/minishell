@@ -187,7 +187,7 @@ int handle_redirection_with_tokens(t_token *tokens, t_shell *shell)
 // Ripristina i file descriptor originali
 void restore_redirection(t_shell *shell)
 {
-	if ((shell->redirect_type == TK_OUT || shell->redirect_type == TK_APPEND) && shell->saved_stdout != -1)
+	if ((shell->redirect_type == TK_OUT || shell->redirect_type == TK_APPEND) && shell->saved_stdout >= 0)
 	{
 		dup2(shell->saved_stdout, 1);
 		close(shell->saved_stdout);

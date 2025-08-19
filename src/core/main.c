@@ -6,7 +6,7 @@
 /*   By: vhacman <vhacman@student.42roma.it>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/26 14:35:01 by vhacman           #+#    #+#             */
-/*   Updated: 2025/08/12 17:32:44 by vhacman          ###   ########.fr       */
+/*   Updated: 2025/08/19 12:39:38 by vhacman          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,6 +38,7 @@ void	init_shell(t_shell *shell)
 	shell->args = NULL;
 	shell->program_name = NULL;
 	shell->saved_stdout = -1;
+	shell->saved_stdin = -1;
 	shell->redirect_type = 0;
 }
 
