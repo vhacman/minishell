@@ -6,12 +6,39 @@
 /*   By: vhacman <vhacman@student.42roma.it>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/11 14:57:40 by vhacman           #+#    #+#             */
-/*   Updated: 2025/08/12 17:23:39 by vhacman          ###   ########.fr       */
+/*   Updated: 2025/08/19 17:00:30 by vhacman          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/minishell.h"
-
+/*
+** Estrae una sottolista di token da start fino al primo TK_PIPE (escluso)
+** o fino alla fine della lista se non ci sono pipe.
+*/
+static t_token *extract_command_tokens(t_token *start)
+{
+	t_token *cmd_tokens = NULL;
+	t_token *last_token = NULL;
+	t_token *curr = start;
+	
+	while (curr && curr->type != TK_PIPE)
+	{
+		t_token *new_token = create_token(curr->value, curr->type);
+		if (!new_token)
+		{
+			free_token_list(&cmd_tokens);
+			return (NULL);
+		}
+		
+		if (!cmd_tokens)
+			cmd_tokens = new_token;
+		else
+			last_token->next = new_token;
+		last_token = new_token;
+		curr = curr->next;
+	}
+	return (cmd_tokens);
+}
 /*
 ** Determines if the command is a built-in or an external program,
 ** and sets the appropriate execution path.
@@ -28,7 +55,7 @@
 */
 static int	setup_command_type_and_path(t_cmd *cmd, t_shell *shell)
 {
-	if (!cmd->args[0])
+	if (!cmd->args || !cmd->args[0])
 		return (1);
 	if (is_builtin(cmd->args[0]))
 	{
@@ -63,16 +90,29 @@ static int	setup_command_type_and_path(t_cmd *cmd, t_shell *shell)
 static t_cmd	*create_and_populate_cmd(t_token *token_start, t_shell *shell)
 {
 	t_cmd	*new_command;
+	t_token *cmd_tokens;
 
 	new_command = create_new_cmd();
 	if (!new_command)
 		return (NULL);
-	if (!populate_command_args(new_command, token_start))
+	// Estrae i token per questo comando (fino alla pipe o fine lista)
+	cmd_tokens = extract_command_tokens(token_start);
+	if (!cmd_tokens)
 	{
 		free_cmd(new_command);
-		cleanup_per_command(shell);
 		return (NULL);
 	}
+	// Usa le stesse funzioni dei comandi singoli per gestire redirezioni
+	new_command->args = prepare_cmd_args(cmd_tokens, shell);
+	if (!new_command->args)
+	{
+		free_token_list(&cmd_tokens);
+		free_cmd(new_command);
+		return (NULL);
+	}
+	// Gestisce le redirezioni per questo comando specifico
+	// Nota: le redirezioni vengono applicate durante l'esecuzione del child process
+	new_command->tokens = cmd_tokens; // Salva i token per dopo
 	setup_command_type_and_path(new_command, shell);
 	return (new_command);
 }
@@ -101,6 +141,7 @@ static t_cmd	*process_single_command(t_token **current_token, t_shell *shell,
 	else
 		(*last_command)->next = new_command;
 	*last_command = new_command;
+	// Avanza fino alla pipe successiva
 	while (*current_token && (*current_token)->type != TK_PIPE)
 		*current_token = (*current_token)->next;
 	if (*current_token)

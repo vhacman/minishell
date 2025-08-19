@@ -6,7 +6,7 @@
 /*   By: vhacman <vhacman@student.42roma.it>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/28 13:41:01 by begiovan          #+#    #+#             */
-/*   Updated: 2025/08/12 15:23:55 by vhacman          ###   ########.fr       */
+/*   Updated: 2025/08/19 17:14:55 by vhacman          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,10 @@ static void	execute_child_process_from_args(char *cmd_path, char **args,
 	temp.args = args;
 	temp.next = NULL;
 	temp.is_builtin = 0;
+	temp.tokens = NULL;
+	temp.fd_in = STDIN_FILENO;
+	temp.fd_out = STDOUT_FILENO;
+	temp.type = 0;
 	execute_child_process(&temp, -1, NULL, shell);
 }
 

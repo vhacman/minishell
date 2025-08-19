@@ -6,7 +6,7 @@
 /*   By: vhacman <vhacman@student.42roma.it>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/12 13:10:00 by vhacman           #+#    #+#             */
-/*   Updated: 2025/08/12 17:43:32 by vhacman          ###   ########.fr       */
+/*   Updated: 2025/08/19 17:41:55 by vhacman          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -114,4 +114,10 @@ char		**create_args_without_redirection(t_token *tokens);
 int			handle_input_redirection_with_tokens(t_token *tokens, t_shell *shell);
 void		restore_input_redirection(t_shell *shell);
 
+
+int has_input_redirection(t_token *tokens);
+int has_output_redirection(t_token *tokens);
+void setup_sigpipe_handling(void);
+void	setup_child_io_and_signals(t_cmd *curr,
+					int prev_fd, int *pipe_fd, t_shell *shell);
 #endif

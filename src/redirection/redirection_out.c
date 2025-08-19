@@ -62,53 +62,89 @@ int open_file_with_type(char *filename, int redirect_type)
 }
 
 // Crea array di argomenti escludendo i token di redirezione
+// Versione più sicura di create_args_without_redirection
 char **create_args_without_redirection(t_token *tokens)
 {
-	t_token *curr;
-	t_token *prev;
-	int word_count = 0;
-	char **args;
-	int i = 0;
-	
-	// 1. CONTA I TOKEN TK_WORD (escludendo TUTTE le redirezioni)
-	curr = tokens;
-	prev = NULL;
-	while (curr)
-	{
-		if (curr->type == TK_WORD)
-		{
-			// Se il token precedente era una redirezione (input o output), salta questo filename
-			if (!(prev && (prev->type == TK_OUT || prev->type == TK_APPEND || 
-						  prev->type == TK_IN || prev->type == TK_HEREDOC)))
-				word_count++;
-		}
-		prev = curr;
-		curr = curr->next;
-	}
-	// 2. ALLOCA ARRAY
-	args = calloc(sizeof(char *), word_count + 1);
-	if (!args)
-		return NULL;
-	// 3. COPIA GLI ARGOMENTI (escludendo filename)
-	curr = tokens;
-	prev = NULL;
-	while (curr && i < word_count)
-	{
-		if (curr->type == TK_WORD)
-		{
-			// Se il token precedente era una redirezione (input o output), salta questo filename
-			if (!(prev && (prev->type == TK_OUT || prev->type == TK_APPEND || 
-						  prev->type == TK_IN || prev->type == TK_HEREDOC)))
-			{
-				args[i] = ft_strdup(curr->value);
-				i++;
-			}
-		}
-		prev = curr;
-		curr = curr->next;
-	}
-	args[i] = NULL;
-	return (args);
+    t_token *curr;
+    int word_count = 0;
+    char **args;
+    int i = 0;
+    
+    // 1. CONTA I TOKEN TK_WORD (escludendo quelli dopo redirezioni)
+    curr = tokens;
+    while (curr)
+    {
+        if (curr->type == TK_WORD)
+        {
+            // Controlla il token precedente in modo sicuro
+            int is_redirection_file = 0;
+            
+            // Se non è il primo token, controlla il precedente
+            if (curr != tokens)
+            {
+                // Trova il token precedente in modo più sicuro
+                t_token *prev = tokens;
+                while (prev->next && prev->next != curr)
+                    prev = prev->next;
+                
+                if (prev && (prev->type == TK_OUT || prev->type == TK_APPEND || 
+                           prev->type == TK_IN || prev->type == TK_HEREDOC))
+                    is_redirection_file = 1;
+            }
+            
+            if (!is_redirection_file)
+                word_count++;
+        }
+        curr = curr->next;
+    }
+    
+    // 2. ALLOCA ARRAY con controllo di sicurezza
+    if (word_count == 0)
+        return (NULL);
+        
+    args = calloc(sizeof(char *), word_count + 1);
+    if (!args)
+        return (NULL);
+    
+    // 3. COPIA GLI ARGOMENTI
+    curr = tokens;
+    i = 0;
+    while (curr && i < word_count)
+    {
+        if (curr->type == TK_WORD)
+        {
+            // Controlla il token precedente in modo sicuro
+            int is_redirection_file = 0;
+            
+            if (curr != tokens)
+            {
+                t_token *prev = tokens;
+                while (prev->next && prev->next != curr)
+                    prev = prev->next;
+                
+                if (prev && (prev->type == TK_OUT || prev->type == TK_APPEND || 
+                           prev->type == TK_IN || prev->type == TK_HEREDOC))
+                    is_redirection_file = 1;
+            }
+            
+            if (!is_redirection_file)
+            {
+                args[i] = ft_strdup(curr->value);
+                if (!args[i])  // Controllo di sicurezza
+                {
+                    // Libera tutto quello che abbiamo allocato
+                    while (--i >= 0)
+                        free(args[i]);
+                    free(args);
+                    return (NULL);
+                }
+                i++;
+            }
+        }
+        curr = curr->next;
+    }
+    args[i] = NULL;
+    return (args);
 }
 
 // Funzione principale che gestisce redirezioni con token
