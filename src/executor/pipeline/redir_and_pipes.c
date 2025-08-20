@@ -3,7 +3,7 @@
 // Funzione per gestire SIGPIPE correttamente
 void setup_sigpipe_handling(void)
 {
-    // Ignora SIGPIPE - bash non termina i processi con SIGPIPE
+    // Ignora SIGPIPE - bash non termina i processi con SIGPIPE nelle pipeline
     signal(SIGPIPE, SIG_IGN);
 }
 

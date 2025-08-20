@@ -32,21 +32,25 @@ static void	setup_child_pipes(t_cmd *curr, int prev_fd, int *pipe_fd)
 			dup2(prev_fd, STDIN_FILENO);
 		close(prev_fd);
 	}
+	
 	// Gestisci output verso comando successivo
 	if (curr->next && pipe_fd)
 	{
 		has_output_redir = has_output_redirection(curr->tokens);
+		
+		// Chiudi sempre il lato lettura nel processo che scrive
+		close(pipe_fd[0]);
+		
 		if (!has_output_redir)
 		{
-			close(pipe_fd[0]);
+			// Se non c'è redirezione di output, usa la pipe
 			dup2(pipe_fd[1], STDOUT_FILENO);
-			close(pipe_fd[1]);
 		}
-		else
-		{
-			close(pipe_fd[0]);
-			close(pipe_fd[1]);
-		}
+		// Se c'è redirezione di output, non fare dup2 ma lascia che 
+		// la redirezione gestisca l'output
+		
+		// Chiudi sempre il lato scrittura dopo dup2 (o comunque)
+		close(pipe_fd[1]);
 	}
 }
 

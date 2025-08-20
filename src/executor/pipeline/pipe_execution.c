@@ -27,6 +27,8 @@
 **    close it to avoid leaks.
 ** 4. Return 1 if an error occurred, otherwise 0.
 */
+// Nel tuo file pipe_execution.c, sostituisci la funzione execute_commands_loop con questa:
+
 static int	execute_commands_loop(t_cmd *cmds, t_shell *shell)
 {
 	int		pipe_fd[2];
@@ -45,7 +47,14 @@ static int	execute_commands_loop(t_cmd *cmds, t_shell *shell)
 			break ;
 		}
 		if (curr->next)
-			prev_fd = pipe_fd[0];
+		{
+			// MODIFICA: Se il comando corrente ha redirezione di output,
+			// non passare la pipe al prossimo comando
+			if (has_output_redirection(curr->tokens))
+				prev_fd = -1;
+			else
+				prev_fd = pipe_fd[0];
+		}
 		else
 			prev_fd = -1;
 		curr = curr->next;
@@ -54,6 +63,7 @@ static int	execute_commands_loop(t_cmd *cmds, t_shell *shell)
 		close(prev_fd);
 	return (error_occurred);
 }
+
 
 /*
 ** Waits for all child processes to finish and updates the shell's
@@ -67,17 +77,38 @@ static int	execute_commands_loop(t_cmd *cmds, t_shell *shell)
 **    to 128 + signal number.
 ** 4. Return the final exit status stored in the shell.
 */
+// Alternativa più semplice: modifica solo wait_for_children in pipe_execution.c
+
 static int	wait_for_children(t_shell *shell)
 {
-	int	status;
+	int		status;
+	pid_t	pid;
+	int		last_exit_status = 0;
+	int		any_child_waited = 0;
 
-	while (wait(&status) > 0)
+	// Aspetta tutti i figli, ma usa l'exit status dell'ultimo che termina
+	// (spesso corrisponde all'ultimo comando della pipeline)
+	while ((pid = wait(&status)) > 0)
 	{
+		any_child_waited = 1;
+		
 		if (WIFEXITED(status))
-			shell->exit_status = WEXITSTATUS(status);
+			last_exit_status = WEXITSTATUS(status);
 		else if (WIFSIGNALED(status))
-			shell->exit_status = 128 + WTERMSIG(status);
+		{
+			int sig = WTERMSIG(status);
+			// SIGPIPE in pipeline non è considerato errore da bash
+			if (sig == SIGPIPE)
+				last_exit_status = 0;
+			else
+				last_exit_status = 128 + sig;
+		}
 	}
+	
+	// Se non abbiamo aspettato nessun figlio, mantieni l'exit status corrente
+	if (any_child_waited)
+		shell->exit_status = last_exit_status;
+		
 	return (shell->exit_status);
 }
 

@@ -148,21 +148,55 @@ char **create_args_without_redirection(t_token *tokens)
 }
 
 // Funzione principale che gestisce redirezioni con token
+// In redirection_out.c, sostituisci handle_redirection_with_tokens con:
+
 int handle_redirection_with_tokens(t_token *tokens, t_shell *shell)
 {
-	// Prima gestisci le redirezioni di INPUT (< e <<)
+	// PRIMA: Controlla se ci sono redirezioni di input e processale
+	// MA non fare ancora il dup2 - solo verifica che i file esistano
+	t_token *curr = tokens;
+	while (curr != NULL)
+	{
+		if (curr->type == TK_IN)
+		{
+			if (curr->next == NULL || curr->next->type != TK_WORD)
+			{
+				ft_putstr_fd("minishell: syntax error near redirection\n", 2);
+				return (-1);
+			}
+			// Testa se il file esiste PRIMA di creare file di output
+			int test_fd = open(curr->next->value, O_RDONLY);
+			if (test_fd == -1)
+			{
+				perror("minishell");
+				return (-1);  // Fallisce PRIMA di creare output files
+			}
+			close(test_fd);  // Chiudi subito, riapriremo dopo
+		}
+		else if (curr->type == TK_HEREDOC)
+		{
+			if (curr->next == NULL || curr->next->type != TK_WORD)
+			{
+				ft_putstr_fd("minishell: syntax error near redirection\n", 2);
+				return (-1);
+			}
+			// Per heredoc non c'è bisogno di controllare file esistenti
+		}
+		curr = curr->next;
+	}
+	
+	// SECONDO: Solo dopo aver verificato gli input, processa le input redirection
 	if (handle_input_redirection_with_tokens(tokens, shell) == -1)
 		return (-1);
-	// Poi gestisci le redirezioni di OUTPUT (> e >>)
-	t_token *curr;
+	
+	// TERZO: Processa le redirezioni di OUTPUT (il resto del codice esistente)
+	curr = tokens;
 	char *filename;
-	int file_fd;
+	int file_fd = -1;
 	int saved_fd;
 	int flags;
 	int new_fd;
 
-	curr = tokens;
-	file_fd = -1;
 	while (curr != NULL)
 	{
 		if (curr->type == TK_OUT || curr->type == TK_APPEND)
@@ -172,7 +206,7 @@ int handle_redirection_with_tokens(t_token *tokens, t_shell *shell)
 				ft_putstr_fd("minishell: syntax error near redirection\n", 2);
 				if (file_fd != -1)
 					close(file_fd);
-				restore_input_redirection(shell);  // Ripristina input se output fallisce
+				restore_input_redirection(shell);
 				return -1;
 			}
 			filename = curr->next->value;
@@ -186,7 +220,7 @@ int handle_redirection_with_tokens(t_token *tokens, t_shell *shell)
 				perror("minishell");
 				if (file_fd != -1)
 					close(file_fd);
-				restore_input_redirection(shell);  // Ripristina input se output fallisce
+				restore_input_redirection(shell);
 				return -1;
 			}
 			if (file_fd != -1)

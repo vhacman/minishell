@@ -30,11 +30,24 @@ int	execute_single_command(t_cmd *curr, int prev_fd, int *pipe_fd,
 
 	if (setup_command_execution(curr, prev_fd, pipe_fd, &pid) == 1)
 		return (1);
+		
 	if (pid == 0)
 		execute_child_process(curr, prev_fd, pipe_fd, shell);
+		
+	// Processo padre: chiudi i file descriptor appropriati
 	if (prev_fd != -1)
 		close(prev_fd);
+		
 	if (curr->next)
-		close(pipe_fd[1]);
+	{
+		close(pipe_fd[1]);  // Chiudi sempre il lato scrittura nel padre
+		
+		// Se il comando corrente ha redirezione di output,
+		// chiudi anche il lato lettura per evitare che il prossimo
+		// comando rimanga bloccato
+		if (has_output_redirection(curr->tokens))
+			close(pipe_fd[0]);
+	}
+	
 	return (0);
-}
+}	
