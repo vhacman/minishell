@@ -6,7 +6,7 @@
 /*   By: vhacman <vhacman@student.42roma.it>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/21 15:34:50 by vhacman           #+#    #+#             */
-/*   Updated: 2025/08/12 16:47:03 by vhacman          ###   ########.fr       */
+/*   Updated: 2025/08/20 14:02:08 by vhacman          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -103,8 +103,7 @@ static int	wait_for_children(t_shell *shell)
 			else
 				last_exit_status = 128 + sig;
 		}
-	}
-	
+	}	
 	// Se non abbiamo aspettato nessun figlio, mantieni l'exit status corrente
 	if (any_child_waited)
 		shell->exit_status = last_exit_status;

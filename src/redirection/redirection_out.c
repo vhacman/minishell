@@ -151,10 +151,19 @@ char **create_args_without_redirection(t_token *tokens)
 // In redirection_out.c, sostituisci handle_redirection_with_tokens con:
 
 int handle_redirection_with_tokens(t_token *tokens, t_shell *shell)
-{
+{		
+	t_token *curr = tokens;
+	char *filename;
+	int file_fd = -1;
+	int saved_fd;
+	int flags;
+	int new_fd;
+		// SECONDO: Solo dopo aver verificato gli input, processa le input redirection
+	if (handle_input_redirection_with_tokens(tokens, shell) == -1)
+		return (-1);
 	// PRIMA: Controlla se ci sono redirezioni di input e processale
 	// MA non fare ancora il dup2 - solo verifica che i file esistano
-	t_token *curr = tokens;
+
 	while (curr != NULL)
 	{
 		if (curr->type == TK_IN)
@@ -185,18 +194,8 @@ int handle_redirection_with_tokens(t_token *tokens, t_shell *shell)
 		curr = curr->next;
 	}
 	
-	// SECONDO: Solo dopo aver verificato gli input, processa le input redirection
-	if (handle_input_redirection_with_tokens(tokens, shell) == -1)
-		return (-1);
-	
 	// TERZO: Processa le redirezioni di OUTPUT (il resto del codice esistente)
 	curr = tokens;
-	char *filename;
-	int file_fd = -1;
-	int saved_fd;
-	int flags;
-	int new_fd;
-
 	while (curr != NULL)
 	{
 		if (curr->type == TK_OUT || curr->type == TK_APPEND)

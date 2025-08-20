@@ -6,7 +6,7 @@
 #    By: vhacman <vhacman@student.42roma.it>        +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/05/26 13:56:52 by vhacman           #+#    #+#              #
-#    Updated: 2025/05/29 16:18:26 by vhacman          ###   ########.fr        #
+#    Updated: 2025/08/20 12:10:13 by vhacman          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -69,7 +69,7 @@ RESET       = \033[0m
 
 
 all: $(NAME)
-	@echo "$(GREEN)compiling minishell$(RESET)"
+	@echo "$(GREEN)minishell$(RESET)"
 
 
 # =======================
