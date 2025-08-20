@@ -6,7 +6,7 @@
 /*   By: vhacman <vhacman@student.42roma.it>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/16 16:38:20 by vhacman           #+#    #+#             */
-/*   Updated: 2025/08/12 14:44:54 by vhacman          ###   ########.fr       */
+/*   Updated: 2025/08/20 18:45:11 by vhacman          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,5 +31,6 @@ void		free_cmd_list(t_cmd **cmds);
 
 void		cleanup_per_command(t_shell *shell);
 void		destroy_shell(t_shell *shell);
+void	    cleanup_and_exit(t_cmd *curr, t_shell *shell, int exit_code);
 
 #endif

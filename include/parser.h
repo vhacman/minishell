@@ -6,7 +6,7 @@
 /*   By: vhacman <vhacman@student.42roma.it>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/16 21:17:16 by vhacman           #+#    #+#             */
-/*   Updated: 2025/08/12 14:45:28 by vhacman          ###   ########.fr       */
+/*   Updated: 2025/08/20 18:00:51 by vhacman          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,5 +28,8 @@ char		*get_variable_value(char *str, int start, int end, t_shell *shell);
 char		*expand_variables(char *input, t_shell *shell);
 char		*expand_environment_variable(char *str, int start, int end,
 				t_shell *shell);
+int is_redirection_file(t_token *tokens, t_token *curr);
+char **copy_args_to_array(t_token *tokens, char **args, int word_count);
+int	validate_heredoc_redirections(t_token *tokens);
 
 #endif

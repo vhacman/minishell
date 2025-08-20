@@ -6,23 +6,11 @@
 /*   By: vhacman <vhacman@student.42roma.it>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/11 14:55:06 by vhacman           #+#    #+#             */
-/*   Updated: 2025/08/19 17:39:20 by vhacman          ###   ########.fr       */
+/*   Updated: 2025/08/20 18:45:33 by vhacman          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../../include/minishell.h"
-
-//aggiunta
-static void	cleanup_and_exit(t_cmd *curr, t_shell *shell, int exit_code)
-{
-	if (curr->tokens)
-	{
-		restore_redirection(shell);
-		free_token_list(&curr->tokens);
-	}
-	destroy_shell(shell);
-	exit(exit_code);
-}
 
 static void	execute_builtin_child(t_cmd *curr, t_shell *shell)
 {
@@ -38,7 +26,6 @@ static void	execute_builtin_child(t_cmd *curr, t_shell *shell)
 	exit(status);
 }
 
-//MODIFICATA
 static void	execute_system_command(t_cmd *curr, t_shell *shell)
 {
 	char		**envp;
