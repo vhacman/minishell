@@ -6,7 +6,7 @@
 /*   By: vhacman <vhacman@student.42roma.it>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/11 13:36:01 by vhacman           #+#    #+#             */
-/*   Updated: 2025/08/12 15:36:14 by vhacman          ###   ########.fr       */
+/*   Updated: 2025/08/20 19:17:10 by vhacman          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@
 void	free_paths_on_error(char **paths, int count)
 {
 	int	i;
-	
+
 	i = 0;
 	while (i < count)
 		free(paths[i++]);
@@ -77,4 +77,15 @@ void	free_parts(char *a, char *b, char *c)
 		free(b);
 	if (c)
 		free(c);
+}
+
+void	cleanup_and_exit(t_cmd *curr, t_shell *shell, int exit_code)
+{
+	if (curr->tokens)
+	{
+		restore_redirection(shell);
+		free_token_list(&curr->tokens);
+	}
+	destroy_shell(shell);
+	exit(exit_code);
 }

@@ -6,7 +6,7 @@
 /*   By: vhacman <vhacman@student.42roma.it>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/29 12:17:14 by vhacman           #+#    #+#             */
-/*   Updated: 2025/08/12 17:44:33 by vhacman          ###   ########.fr       */
+/*   Updated: 2025/08/20 19:08:30 by vhacman          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,11 +73,11 @@ static int	process_unset_arg(t_env **env_list_ptr, char *arg)
 ** process_unset_arg() for each variable name. Tracks if any invalid
 ** identifiers are encountered.
 */
-int handle_unset(t_env **env_list, char **args)
+int	handle_unset(t_env **env_list, char **args)
 {
 	int	arg_index;
 	int	status;
-	
+
 	if (!env_list || !args || !args[1])
 		return (0);
 	arg_index = 1;

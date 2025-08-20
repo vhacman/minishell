@@ -6,7 +6,7 @@
 /*   By: vhacman <vhacman@student.42roma.it>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/27 13:21:19 by vhacman           #+#    #+#             */
-/*   Updated: 2025/08/19 17:00:17 by vhacman          ###   ########.fr       */
+/*   Updated: 2025/08/20 19:16:48 by vhacman          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,8 +62,8 @@ void	free_cmd(t_cmd *cmd)
 	if (cmd->path)
 		free(cmd->path);
 	if (cmd->tokens)
-        free_token_list(&cmd->tokens);
-    free(cmd);
+		free_token_list(&cmd->tokens);
+	free(cmd);
 }
 
 /*

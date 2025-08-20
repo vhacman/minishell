@@ -6,7 +6,7 @@
 /*   By: vhacman <vhacman@student.42roma.it>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/12 13:10:00 by vhacman           #+#    #+#             */
-/*   Updated: 2025/08/20 16:48:08 by vhacman          ###   ########.fr       */
+/*   Updated: 2025/08/20 18:26:06 by vhacman          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -126,4 +126,17 @@ void	setup_child_io_and_signals(t_cmd *curr,
 
 int create_heredoc_pipe(char *delimiter, t_shell *shell);
 int open_file_by_type(char *filename, int token_type, t_shell *shell);
+void restore_input_redirection(t_shell *shell);
+int validate_redirect_syntax(t_token *curr);
+void update_input_fd(int *input_fd, int new_input_fd);
+int open_input_file(t_token *curr, t_shell *shell);
+int open_regular_file(char *filename, int token_type);
+int	validate_in_redirections(t_token *tokens);
+int	validate_input_redirections(t_token *tokens);
+int open_output_file(t_token *curr, char **filename);
+int setup_output_redirection(int file_fd, t_shell *shell);
+int	apply_input_redirection(int input_fd, t_shell *shell);
+int	handle_single_input_redirect(t_token *curr, t_shell *shell, int *input_fd);
+int	handle_output_redirection_token(t_token *tokens, t_shell *shell);
+
 #endif

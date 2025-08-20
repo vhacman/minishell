@@ -6,7 +6,7 @@
 /*   By: vhacman <vhacman@student.42roma.it>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/11 14:53:28 by vhacman           #+#    #+#             */
-/*   Updated: 2025/08/12 17:06:51 by vhacman          ###   ########.fr       */
+/*   Updated: 2025/08/20 19:10:37 by vhacman          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,13 +38,13 @@ static char	*create_key_value_string(t_env *env)
 
 	tmp = ft_strjoin(env->key, "=");
 	if (!tmp)
-		return NULL;
+		return (NULL);
 	if (env->value)
 	{
 		result = ft_strjoin(tmp, env->value);
 		free(tmp);
 		if (!result)
-			return NULL;
+			return (NULL);
 	}
 	else
 		result = tmp;

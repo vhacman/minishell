@@ -6,7 +6,7 @@
 /*   By: vhacman <vhacman@student.42roma.it>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/16 21:17:16 by vhacman           #+#    #+#             */
-/*   Updated: 2025/08/12 14:47:52 by vhacman          ###   ########.fr       */
+/*   Updated: 2025/08/20 17:44:35 by vhacman          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,4 +42,6 @@ t_token		*get_last_token(t_token *head);
 t_token		*create_token_sublist(t_token *start, t_token *end);
 t_token		*create_token(char *value, int type);
 
+int			count_valid_args(t_token *tokens);
+int	is_input_redir_target(t_token *tokens, t_token *curr);
 #endif

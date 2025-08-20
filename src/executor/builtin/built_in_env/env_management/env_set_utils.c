@@ -6,7 +6,7 @@
 /*   By: vhacman <vhacman@student.42roma.it>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/16 12:18:27 by vhacman           #+#    #+#             */
-/*   Updated: 2025/08/12 17:33:24 by vhacman          ###   ########.fr       */
+/*   Updated: 2025/08/20 19:08:45 by vhacman          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,8 +23,8 @@
 */
 size_t	count_env_nodes(t_env *env)
 {
-	size_t env_count;
-	
+	size_t	env_count;
+
 	env_count = 0;
 	while (env)
 	{
