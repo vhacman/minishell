@@ -6,7 +6,7 @@
 /*   By: vhacman <vhacman@student.42roma.it>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/12 13:10:00 by vhacman           #+#    #+#             */
-/*   Updated: 2025/08/20 16:30:20 by vhacman          ###   ########.fr       */
+/*   Updated: 2025/08/20 16:48:08 by vhacman          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -125,5 +125,5 @@ void	setup_child_io_and_signals(t_cmd *curr,
 
 
 int create_heredoc_pipe(char *delimiter, t_shell *shell);
-
+int open_file_by_type(char *filename, int token_type, t_shell *shell);
 #endif

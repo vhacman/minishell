@@ -1,24 +1,5 @@
 #include "../../include/minishell.h"
 
-
-t_token *find_input_redirection_token(t_token *tokens, int *redirect_type)
-{
-	t_token *curr = tokens;
-	
-	while (curr)
-	{
-		if (curr->type == TK_IN || curr->type == TK_HEREDOC)
-		{
-			*redirect_type = curr->type;
-			return curr;
-		}
-		curr = curr->next;
-	}
-	
-	*redirect_type = 0;
-	return NULL;
-}
-
 static int process_heredoc_line(int write_fd, char *line, t_shell *shell)
 {
 	char *expanded_line;
@@ -187,27 +168,9 @@ static int validate_redirect_syntax(t_token *curr)
 static int open_input_file(t_token *curr, t_shell *shell)
 {
 	char *filename;
-	int new_input_fd;
-
+	
 	filename = curr->next->value;
-	if (curr->type == TK_IN)
-	{
-		new_input_fd = open(filename, O_RDONLY);
-		if (new_input_fd == -1)
-		{
-			perror("minishell");
-			return (-1);
-		}
-	}
-	else if (curr->type == TK_HEREDOC)
-	{
-		new_input_fd = create_heredoc_pipe(filename, shell);
-		if (new_input_fd == -1)
-			return (-1);
-	}
-	else
-		return (-1);
-	return (new_input_fd);
+	return open_file_by_type(filename, curr->type, shell);
 }
 
 // 3. Funzione per aggiornare il file descriptor di input
