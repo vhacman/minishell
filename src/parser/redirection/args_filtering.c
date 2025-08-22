@@ -3,14 +3,31 @@
 /*                                                        :::      ::::::::   */
 /*   args_filtering.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vhacman <vhacman@student.42roma.it>        +#+  +:+       +#+        */
+/*   By: vhacman <vhacman@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/20 19:03:34 by vhacman           #+#    #+#             */
-/*   Updated: 2025/08/20 19:04:55 by vhacman          ###   ########.fr       */
+/*   Updated: 2025/08/22 14:12:38 by vhacman          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../../include/minishell.h"
+
+int	is_input_redir_target(t_token *tokens, t_token *curr)
+{
+	t_token	*prev;
+	t_token	*temp;
+
+	prev = NULL;
+	temp = tokens;
+	while (temp && temp != curr)
+	{
+		prev = temp;
+		temp = temp->next;
+	}
+	if (prev && (prev->type == TK_IN || prev->type == TK_HEREDOC))
+		return (1);
+	return (0);
+}
 
 int	is_redirection_file(t_token *tokens, t_token *curr)
 {

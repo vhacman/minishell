@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   pipe_execution.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vhacman <vhacman@student.42roma.it>        +#+  +:+       +#+        */
+/*   By: vhacman <vhacman@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/21 15:34:50 by vhacman           #+#    #+#             */
-/*   Updated: 2025/08/20 19:09:46 by vhacman          ###   ########.fr       */
+/*   Updated: 2025/08/22 14:17:21 by vhacman          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,13 +53,11 @@ static int	wait_for_children(t_shell *shell)
 {
 	int		status;
 	pid_t	pid;
-	int		last_exit_status;
 
-	last_exit_status = 0;
 	pid = wait(&status);
 	while (pid > 0)
 	{
-		last_exit_status = handle_signal_exit_status(status, shell);
+		shell->exit_status = handle_signal_exit_status(status, shell);
 		pid = wait(&status);
 	}
 	return (shell->exit_status);

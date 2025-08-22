@@ -3,37 +3,15 @@
 /*                                                        :::      ::::::::   */
 /*   handle_built_in.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vhacman <vhacman@student.42roma.it>        +#+  +:+       +#+        */
+/*   By: vhacman <vhacman@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/28 18:48:12 by vhacman           #+#    #+#             */
-/*   Updated: 2025/08/12 16:38:01 by vhacman          ###   ########.fr       */
+/*   Updated: 2025/08/22 12:22:15 by vhacman          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../../include/minishell.h"
 
-/*
-** Executes the corresponding built-in command based on the
-** first argument in `args`.
-** Process:
-** 1. Initialize the `result` variable to 0 to store the
-**    built-in execution status.
-** 2. Compare `args[0]` with each supported built-in command:
-**    - "pwd" → calls handle_pwd().
-**    - "cd" → calls handle_cd().
-**    - "exit" → calls handle_exit().
-**    - "export" → calls handle_export().
-**    - "env" → calls handle_env().
-**    - "unset" → calls handle_unset().
-**    - "echo" → calls handle_echo().
-** 3. The chosen built-in function sets its return value in
-**    `result`.
-** 4. Update `shell->exit_status` with `result`.
-** 5. Return the `result` value as the function’s output.
-**
-** Return:
-** - The exit status returned by the executed built-in command.
-*/
 int	handle_builtin(char **args, t_shell *shell)
 {
 	int	result;

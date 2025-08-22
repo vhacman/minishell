@@ -3,33 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   tokenizer_utils.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vhacman <vhacman@student.42roma.it>        +#+  +:+       +#+        */
+/*   By: vhacman <vhacman@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/03 13:52:18 by vhacman           #+#    #+#             */
-/*   Updated: 2025/08/20 18:59:57 by vhacman          ###   ########.fr       */
+/*   Updated: 2025/08/22 12:50:11 by vhacman          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/minishell.h"
-
-int	count_valid_args(t_token *tokens)
-{
-	t_token		*curr;
-	int			word_count;
-
-	word_count = 0;
-	curr = tokens;
-	while (curr)
-	{
-		if (curr->type == TK_WORD)
-		{
-			if (!is_input_redir_target(tokens, curr))
-				word_count++;
-		}
-		curr = curr->next;
-	}
-	return (word_count);
-}
 
 int	only_spaces(const char *str)
 {

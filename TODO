@@ -1,2 +1,40 @@
-RIVEDERE CODICE
-PROVARE A RISOLVERE PROBLEMI RIMASTI
+Riscrivere flusso programma
+
+inserire commenti fuori scope esplicativi del codice, in inglese
+
+rivedere alcune funzioni, possibili migliorie, refactoring
+
+ricontrollare norma, vedere se alcune funzioni si possono eliminare, per mancato uso ad esempio
+
+ultimi test: 70/75, numero cambia in base al tentativo. sembra che alcuni test a volte passino, altre no. irrilevante ma controllare comunque
+
+ritestare tutto da capo
+
+
+risolto in data 22/08
+
+echo "
+>
+>
+>
+no funzionava, quando facevamo echo "a, invece di andare a capo e aspettare input, scriveva direttamente. implementata per risolvere get_complete_input
+con le relative funzioni utili, come has_unclosed_quotes. vedi file parser
+escape.c
+
+quando facevamo echo "questo ha \"virgolette\" detro "
+
+invece di scrivere
+
+questo ha "virgolette" dentro
+
+scriveva
+
+questo ha \virgolette\ dentro
+Problema risolto: vedi escape.c
+
+
+quando facevamo expr 6 * 7 --> doveva dare errore, ma faceva 42
+quando facevamo expr 6 \* 7 --> dava errore, ma doveva risolvere l operazione e dare 42.
+
+aggiunte funzioni unescaped_quoted e modificata extrac_and_expand_word. vedere file  word_parser.c
+

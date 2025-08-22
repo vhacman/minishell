@@ -3,14 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   pipe_command_builder.c                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vhacman <vhacman@student.42roma.it>        +#+  +:+       +#+        */
+/*   By: vhacman <vhacman@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/11 14:57:40 by vhacman           #+#    #+#             */
-/*   Updated: 2025/08/20 19:03:03 by vhacman          ###   ########.fr       */
+/*   Updated: 2025/08/22 12:55:38 by vhacman          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../include/minishell.h"
+#include "../../../include/minishell.h"
 
 static t_token	*extract_command_tokens(t_token *start)
 {

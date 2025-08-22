@@ -1,16 +1,16 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   token_quotes.c                                     :+:      :+:    :+:   */
+/*   token_parser.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vhacman <vhacman@student.42roma.it>        +#+  +:+       +#+        */
+/*   By: vhacman <vhacman@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/16 15:56:21 by vhacman           #+#    #+#             */
-/*   Updated: 2025/08/20 18:43:17 by vhacman          ###   ########.fr       */
+/*   Updated: 2025/08/22 12:58:00 by vhacman          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../include/minishell.h"
+#include "../../../include/minishell.h"
 
 static char	*process_quoted_content(const char *input, int *i, t_shell *shell)
 {

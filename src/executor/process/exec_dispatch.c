@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec_dispatch.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vhacman <vhacman@student.42roma.it>        +#+  +:+       +#+        */
+/*   By: vhacman <vhacman@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/06 19:24:00 by vhacman           #+#    #+#             */
-/*   Updated: 2025/08/19 12:38:49 by vhacman          ###   ########.fr       */
+/*   Updated: 2025/08/22 12:33:22 by vhacman          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,7 +64,6 @@ int	execute_command(t_token *tokens, t_shell *shell)
 	else
 		status = handle_external_command(args, shell);
 	free_args_array(args);
-	cleanup_per_command(shell);
 	shell->exit_status = status;
 	return (status);
 }
