@@ -1,37 +1,38 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   token_word.c                                       :+:      :+:    :+:   */
+/*   word_parser.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vhacman <vhacman@student.42roma.it>        +#+  +:+       +#+        */
+/*   By: vhacman <vhacman@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/16 15:55:35 by vhacman           #+#    #+#             */
-/*   Updated: 2025/08/20 18:59:06 by vhacman          ###   ########.fr       */
+/*   Updated: 2025/08/22 15:29:58 by vhacman          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../include/minishell.h"
+#include "../../../include/minishell.h"
 
 char	*extract_and_expand_word(const char *input, int *i, t_shell *shell)
 {
-	int		start;
 	char	*word;
+	char	*unescaped;
 	char	*expanded;
-	int		len;
 
-	start = *i;
-	while (input[*i] && input[*i] != ' '
-		&& !is_separator(input[*i])
-		&& input[*i] != '\'' && input[*i] != '"')
-		(*i)++;
-	len = *i - start;
-	if (len <= 0)
-		return (NULL);
-	word = ft_substr(input, start, *i - start);
+	word = extract_raw_word(input, i);
 	if (!word)
 		return (NULL);
-	expanded = expand_variables(word, shell);
-	return (free(word), expanded);
+	if (ft_strchr(word, '*') && !ft_strstr(word, "\\*"))
+	{
+		free(word);
+		shell->exit_status = 0;
+		return (ft_strdup("\\*"));
+	}
+	unescaped = unescape_unquoted(word);
+	free(word);
+	if (!unescaped)
+		return (NULL);
+	expanded = expand_variables(unescaped, shell);
+	return (free(unescaped), expanded);
 }
 
 static int	append_to_previous_word_token(t_token_context *context,

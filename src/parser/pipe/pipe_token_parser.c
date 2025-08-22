@@ -3,14 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   pipe_token_parser.c                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vhacman <vhacman@student.42roma.it>        +#+  +:+       +#+        */
+/*   By: vhacman <vhacman@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/11 14:56:35 by vhacman           #+#    #+#             */
-/*   Updated: 2025/08/12 17:30:33 by vhacman          ###   ########.fr       */
+/*   Updated: 2025/08/22 12:55:47 by vhacman          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../include/minishell.h"
+#include "../../../include/minishell.h"
 
 /*
 ** Counts the number of tokens from the given start token until

@@ -3,28 +3,15 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vhacman <vhacman@student.42roma.it>        +#+  +:+       +#+        */
+/*   By: vhacman <vhacman@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/26 14:35:01 by vhacman           #+#    #+#             */
-/*   Updated: 2025/08/19 12:39:38 by vhacman          ###   ########.fr       */
+/*   Updated: 2025/08/22 11:52:04 by vhacman          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/minishell.h"
 
-/*
-** Initializes all fields of the t_shell structure
-** to prepare the shell for execution.
-** 1. Set pointers (line, tokens, cmds, env, args,
-**    program_name) to NULL to avoid undefined values.
-** 2. Set numeric fields (exit_status, saved_stdout,
-**    redirect_type) to default values.
-** 3. Copy the current environment variables from
-**    `environ` into the shell's own environment storage
-**    using `copy_env_entries`.
-** This ensures the shell starts in a clean, predictable
-** state before processing user input.
-*/
 void	init_shell(t_shell *shell)
 {
 	extern char	**environ;
@@ -42,20 +29,6 @@ void	init_shell(t_shell *shell)
 	shell->redirect_type = 0;
 }
 
-/*
-** Entry point of the minishell program.
-** Initializes the shell structure, sets default values,
-** and prepares the shell environment before starting
-** the interactive prompt loop.
-** 1. Set the initial exit status to 0.
-** 2. Initialize the shell structure with `init_shell`.
-** 3. Store the program name for later reference.
-** 4. Configure signal handlers:
-**    - SIGINT is handled to control prompt interruption.
-**    - SIGQUIT is ignored.
-** 5. Launch the interactive prompt with color support.
-** 6. Free all allocated resources before exiting.
-*/
 int	main(void)
 {
 	t_shell	shell;
