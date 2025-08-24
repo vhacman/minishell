@@ -6,12 +6,29 @@
 /*   By: vhacman <vhacman@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/28 18:48:12 by vhacman           #+#    #+#             */
-/*   Updated: 2025/08/22 12:22:15 by vhacman          ###   ########.fr       */
+/*   Updated: 2025/08/24 12:00:23 by vhacman          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../../include/minishell.h"
 
+/*
+** handle_builtin
+**
+** This function dispatches execution to the correct builtin
+** command handler based on the first argument.
+** - Compare args[0] with known builtin names:
+**     * "pwd"    → call handle_pwd().
+**     * "cd"     → call handle_cd().
+**     * "exit"   → call handle_exit().
+**     * "export" → call handle_export().
+**     * "env"    → call handle_env().
+**     * "unset"  → call handle_unset().
+**     * "echo"   → call handle_echo().
+** - The result from the builtin handler is stored in 'result'.
+** - Update shell->exit_status with the result.
+** - Return the result of the executed builtin.
+*/
 int	handle_builtin(char **args, t_shell *shell)
 {
 	int	result;

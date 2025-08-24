@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   error.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vhacman <vhacman@student.42roma.it>        +#+  +:+       +#+        */
+/*   By: vhacman <vhacman@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/26 14:31:51 by vhacman           #+#    #+#             */
-/*   Updated: 2025/08/12 16:19:54 by vhacman          ###   ########.fr       */
+/*   Updated: 2025/08/24 11:11:35 by vhacman          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,6 @@
 ** Prints an error message, optionally cleans up resources,
 ** and terminates the program.
 **
-** Steps:
 ** 1. If `use_errno` is non-zero:
 **    - Print "minishell: " to stderr.
 **    - Call `perror` with `msg` to display the system
@@ -45,7 +44,6 @@ void	exit_with_error(char *msg, void *context, int flag, int use_errno)
 /*
 ** Prints a formatted error message to stderr and returns -1.
 **
-** Steps:
 ** 1. Print "minishell: " to stderr.
 ** 2. Use `perror` with `msg` to append the system error
 **    description.
@@ -62,7 +60,6 @@ int	print_error(char *msg)
 /*
 ** Prints a syntax error message for an unexpected pipe token.
 **
-** Steps:
 ** 1. Output a fixed error message to stderr indicating a
 **    syntax error with the '|' token.
 ** 2. Return 1 to signal an error condition to the caller.

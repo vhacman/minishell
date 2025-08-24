@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   clean_utils.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vhacman <vhacman@student.42roma.it>        +#+  +:+       +#+        */
+/*   By: vhacman <vhacman@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/11 13:36:01 by vhacman           #+#    #+#             */
-/*   Updated: 2025/08/20 19:17:10 by vhacman          ###   ########.fr       */
+/*   Updated: 2025/08/24 11:09:56 by vhacman          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,6 +79,15 @@ void	free_parts(char *a, char *b, char *c)
 		free(c);
 }
 
+/*
+** cleanup_and_exit
+**
+** This function frees allocated resources and terminates the program.
+** - If the current command has tokens, redirections are restored
+**   and the token list is freed.
+** - The entire shell structure is destroyed to release memory.
+** - Finally, the process exits with the provided exit code.
+*/
 void	cleanup_and_exit(t_cmd *curr, t_shell *shell, int exit_code)
 {
 	if (curr->tokens)

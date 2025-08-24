@@ -6,12 +6,27 @@
 /*   By: vhacman <vhacman@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/16 15:55:35 by vhacman           #+#    #+#             */
-/*   Updated: 2025/08/22 15:29:58 by vhacman          ###   ########.fr       */
+/*   Updated: 2025/08/24 12:17:06 by vhacman          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../../include/minishell.h"
 
+/*
+** extract_and_expand_word
+**
+** This function extracts a raw word from the input and applies
+** transformations (unescaping and variable expansion).
+** - Call extract_raw_word() to read the word starting at *i.
+** - If no word is found, return NULL.
+** - If the word contains '*' not escaped with '\', treat it as
+**   a literal "\*" (escape it) and set exit_status to 0.
+** - Otherwise, call unescape_unquoted() to remove escape chars
+**   outside of quotes.
+** - Free the old word and keep the unescaped one.
+** - Expand variables in the word using expand_variables().
+** - Free the unescaped version and return the expanded word.
+*/
 char	*extract_and_expand_word(const char *input, int *i, t_shell *shell)
 {
 	char	*word;
@@ -35,6 +50,21 @@ char	*extract_and_expand_word(const char *input, int *i, t_shell *shell)
 	return (free(unescaped), expanded);
 }
 
+/*
+** append_to_previous_word_token
+**
+** This function appends expanded text to the last TK_WORD token
+** if no whitespace was encountered before it.
+** - If context->had_whitespace is set, return 0 because the
+**   expanded word must be treated as a new token.
+** - Retrieve the last token from the list.
+** - If no token exists or the last token is not TK_WORD, return 0.
+** - Concatenate last_token->value with the expanded string.
+**   * If concatenation fails, free expanded and return 1.
+** - Replace the old token value with the new concatenated one.
+** - Free the temporary expanded string.
+** - Return 1 to indicate the string was appended successfully.
+*/
 static int	append_to_previous_word_token(t_token_context *context,
 						char *expanded)
 {
@@ -54,6 +84,19 @@ static int	append_to_previous_word_token(t_token_context *context,
 	return (free(expanded), 1);
 }
 
+/*
+** handle_word_token
+**
+** This function processes a word token from the input.
+** - Calls extract_and_expand_word() to read the word and expand
+**   any variables if present.
+** - If extraction fails, return immediately.
+** - If the word can be appended to the previous word token,
+**   append it and return.
+** - Otherwise, create a new TK_WORD token with the expanded word
+**   and add it to the token list.
+** - Free the temporary expanded string after adding the token.
+*/
 void	handle_word_token(t_token_context *context)
 {
 	char	*expanded;

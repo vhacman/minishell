@@ -3,15 +3,25 @@
 /*                                                        :::      ::::::::   */
 /*   heredoc.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vhacman <vhacman@student.42roma.it>        +#+  +:+       +#+        */
+/*   By: vhacman <vhacman@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/20 19:12:36 by vhacman           #+#    #+#             */
-/*   Updated: 2025/08/20 19:22:42 by vhacman          ###   ########.fr       */
+/*   Updated: 2025/08/24 12:10:53 by vhacman          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/minishell.h"
 
+/*
+** process_heredoc_line
+**
+** This helper function processes a single line in a heredoc.
+** - Expand environment variables inside the line with
+**   expand_variables().
+** - Write the expanded line followed by a newline into the pipe.
+** - If write fails, print an error, free memory, and return -1.
+** - Free the expanded line and return 0 on success.
+*/
 static int	process_heredoc_line(int write_fd, char *line, t_shell *shell)
 {
 	char	*expanded_line;
@@ -30,6 +40,21 @@ static int	process_heredoc_line(int write_fd, char *line, t_shell *shell)
 	return (0);
 }
 
+
+/*
+** read_heredoc_lines
+**
+** This function continuously reads user input until the heredoc
+** delimiter is reached.
+** - Prompt the user with "> " using readline().
+** - If EOF is reached before the delimiter, print a warning and
+**   stop reading.
+** - If the input matches the delimiter, stop reading and free
+**   the line.
+** - Otherwise, process the line with process_heredoc_line() and
+**   write it to the pipe.
+** - Return 0 on success, or -1 if a write/processing error occurs.
+*/
 static int	read_heredoc_lines(int write_fd, char *delimiter, t_shell *shell)
 {
 	char	*line;
@@ -59,6 +84,20 @@ static int	read_heredoc_lines(int write_fd, char *delimiter, t_shell *shell)
 	return (0);
 }
 
+
+/*
+** create_heredoc_pipe
+**
+** This function creates a pipe and fills it with heredoc input.
+** - Create a pipe with pipe_fd.
+**     * On failure, print error and return -1.
+** - Call read_heredoc_lines() to read input until the delimiter
+**   is found and write lines into the pipe's write end.
+** - Close the write end of the pipe.
+** - If an error occurred, close the read end and return -1.
+** - Otherwise, return the read end of the pipe (pipe_fd[0]) so
+**   it can be used as input redirection.
+*/
 int	create_heredoc_pipe(char *delimiter, t_shell *shell)
 {
 	int	pipe_fd[2];
