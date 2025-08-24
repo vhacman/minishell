@@ -1,17 +1,29 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   expansion.c                                        :+:      :+:    :+:   */
+/*   env_expansion.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: vhacman <vhacman@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/28 13:41:09 by begiovan          #+#    #+#             */
-/*   Updated: 2025/08/22 12:53:36 by vhacman          ###   ########.fr       */
+/*   Updated: 2025/08/24 12:14:35 by vhacman          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../../include/minishell.h"
 
+/*
+** expand_program_name
+**
+** This function expands the special variable "$0" with the
+** program name.
+** - Split the input string into:
+**     * "before": part of the string before "$0".
+**     * "after": part of the string after "$0".
+** - Replace "$0" with shell->program_name.
+** - Concatenate before + program_name + after.
+** - Free temporary strings and return the result.
+*/
 char	*expand_program_name(char *input, int pos, t_shell *shell)
 {
 	char	*before;
@@ -26,6 +38,14 @@ char	*expand_program_name(char *input, int pos, t_shell *shell)
 	return (free_parts(before, after, joined), result);
 }
 
+/*
+** create_expanded_string
+**
+** This helper function builds a new string from three parts:
+** - "before" + "value" + "after".
+** - Used when expanding environment variables or exit status.
+** - Returns the newly allocated string, or NULL on failure.
+*/
 char	*create_expanded_string(char *before, char *value, char *after)
 {
 	char	*temp;
@@ -38,6 +58,17 @@ char	*create_expanded_string(char *before, char *value, char *after)
 	return (free(temp), result);
 }
 
+/*
+** expand_exit_status
+**
+** This function expands the special variable "$?" with the
+** shell's last exit status.
+** - Extract "before" (part of string before "$?").
+** - Extract "after" (part of string after "$?").
+** - Convert shell->exit_status into a string.
+** - Build new string: before + exit_status + after.
+** - Free temporary strings and return the result.
+*/
 char	*expand_exit_status(char *str, int start, t_shell *shell)
 {
 	char	*before;
@@ -61,6 +92,16 @@ char	*expand_exit_status(char *str, int start, t_shell *shell)
 	return (free_parts(before, after, exit_status_str), result);
 }
 
+/*
+** find_variable_end
+**
+** This function determines where a variable name ends in a
+** string after a '$' sign.
+** - If the variable is "$?", return its end immediately.
+** - Otherwise, advance until encountering a non-alphanumeric
+**   and non-underscore character.
+** - Return the index where the variable ends.
+*/
 int	find_variable_end(char *str, int start)
 {
 	int	i;
@@ -73,6 +114,18 @@ int	find_variable_end(char *str, int start)
 	return (i);
 }
 
+/*
+** get_variable_value
+**
+** This function retrieves the value of an environment variable.
+** - Extract the variable name between start and end indexes.
+** - Look for it in the shell's environment list:
+**     * If found and non-empty, duplicate its value.
+** - If not found, try to get it from the system environment
+**   using getenv().
+** - If still not found, return an empty string.
+** - Free the temporary var_name before returning.
+*/
 char	*get_variable_value(char *str, int start, int end, t_shell *shell)
 {
 	char	*var_name;
