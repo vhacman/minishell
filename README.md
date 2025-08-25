@@ -1,6 +1,6 @@
 # Minishell 
 
-Autrice: **Hacman Viorica Gabriela** & **Beniamino Giovannini**
+Autori: **Hacman Viorica Gabriela** & **Beniamino Giovannini**
 
 > Una shell minimale in C con supporto a pipeline, redirezioni, history e
 > built‑in, progettata per replicare (in parte) il comportamento di bash.
