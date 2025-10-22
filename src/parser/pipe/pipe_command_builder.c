@@ -79,11 +79,6 @@ static int	setup_command_type_and_path(t_cmd *cmd, t_shell *shell)
 	{
 		cmd->is_builtin = 0;
 		cmd->path = find_command_path(cmd->args[0], shell);
-		if (!cmd->path)
-		{
-			cleanup_per_command(shell);
-			cmd->path = NULL;
-		}
 	}
 	return (1);
 }

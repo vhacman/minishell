@@ -63,7 +63,9 @@ static void	execute_system_command(t_cmd *curr, t_shell *shell)
 	{
 		if (curr->args && curr->args[0])
 			cmd = curr->args[0];
-		ft_printf("minishell: %s: command not found\n", cmd);
+		ft_putstr_fd("minishell: ", 2);
+		ft_putstr_fd((char *)cmd, 2);
+		ft_putstr_fd(": command not found\n", 2);
 		cleanup_and_exit(curr, shell, 127);
 	}
 	envp = build_envp_from_list(shell->env);
