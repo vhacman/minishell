@@ -113,6 +113,8 @@ char	*expand_variables(char *input, t_shell *shell)
 		if (result[i] == '$' && result[i + 1])
 		{
 			temp = process_dollar_sign(result, i, shell);
+			if (!temp)
+				return (free(result), NULL);
 			if (temp != result)
 			{
 				result = temp;

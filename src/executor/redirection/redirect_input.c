@@ -45,7 +45,8 @@ void	restore_input_redirection(t_shell *shell)
 {
 	if (shell->saved_stdin >= 0)
 	{
-		dup2(shell->saved_stdin, 0);
+		if (dup2(shell->saved_stdin, 0) == -1)
+			perror("dup2");
 		close(shell->saved_stdin);
 		shell->saved_stdin = -1;
 	}

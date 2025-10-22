@@ -37,7 +37,13 @@ static void	setup_child_pipes(t_cmd *curr, int prev_fd, int *pipe_fd)
 	{
 		has_input_redir = has_input_redirection(curr->tokens);
 		if (!has_input_redir)
-			dup2(prev_fd, STDIN_FILENO);
+		{
+			if (dup2(prev_fd, STDIN_FILENO) == -1)
+			{
+				perror("dup2");
+				exit(1);
+			}
+		}
 		close(prev_fd);
 	}
 	if (curr->next && pipe_fd)
@@ -45,7 +51,13 @@ static void	setup_child_pipes(t_cmd *curr, int prev_fd, int *pipe_fd)
 		has_output_redir = has_output_redirection(curr->tokens);
 		close(pipe_fd[0]);
 		if (!has_output_redir)
-			dup2(pipe_fd[1], STDOUT_FILENO);
+		{
+			if (dup2(pipe_fd[1], STDOUT_FILENO) == -1)
+			{
+				perror("dup2");
+				exit(1);
+			}
+		}
 		close(pipe_fd[1]);
 	}
 }

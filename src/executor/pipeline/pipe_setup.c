@@ -27,6 +27,8 @@
 int	setup_command_execution(t_cmd *curr, int prev_fd, int *pipe_fd, pid_t *pid)
 {
 	(void)prev_fd;
+	pipe_fd[0] = -1;
+	pipe_fd[1] = -1;
 	if (curr->next && pipe(pipe_fd) == -1)
 		return (print_error("pipe"));
 	*pid = fork();

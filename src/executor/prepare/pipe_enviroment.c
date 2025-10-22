@@ -82,5 +82,6 @@ char	**build_envp_from_list(t_env *env)
 		i++;
 		env = env->next;
 	}
+	environment_array[i] = NULL;
 	return (environment_array);
 }

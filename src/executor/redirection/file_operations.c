@@ -86,7 +86,8 @@ void	restore_redirection(t_shell *shell)
 			|| shell->redirect_type == TK_APPEND)
 		&& shell->saved_stdout >= 0)
 	{
-		dup2(shell->saved_stdout, 1);
+		if (dup2(shell->saved_stdout, 1) == -1)
+			perror("dup2");
 		close(shell->saved_stdout);
 		shell->saved_stdout = -1;
 	}

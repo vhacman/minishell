@@ -66,7 +66,12 @@ char	**convert_tokens_to_args(t_token *tokens)
 	while (curr)
 	{
 		if (curr->type == TK_WORD)
-			args[i++] = ft_strdup(curr->value);
+		{
+			args[i] = ft_strdup(curr->value);
+			if (!args[i])
+				return (free_args_array(args), NULL);
+			i++;
+		}
 		curr = curr->next;
 	}
 	args[i] = NULL;
